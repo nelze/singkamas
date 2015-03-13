@@ -8,7 +8,7 @@ public class QuestionManager
 {
 	private HashMap<Integer, List<Question>> questionMap = new HashMap<Integer, List<Question>>();
 	
-	
+	List<Question> list;
 	public void loadQuestions(InputStream is, int difficulty)
 	{
 		QuestionParser parser = new QuestionParser();
@@ -22,12 +22,18 @@ public class QuestionManager
 	
 	public Question getQuestion(int difficulty, int index)
 	{
-		List<Question> list = questionMap.get(difficulty);
+		list = questionMap.get(difficulty);
 		
 		//int randomIndex = (int) (Math.random() * list.size());
 		
 		return list.get(index);
 		
 	}
+	
+	public int getCount()
+	{
+		return list.size();
+	}
+	
 	
 }

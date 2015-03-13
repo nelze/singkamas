@@ -32,20 +32,20 @@
         android:layout_centerHorizontal="true"
         android:text="Conversation (coming soon)" />
 
-    <TextView
-        android:id="@+id/textView1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignTop="@+id/spinner1"
-        android:text="*Multiple language support still in development" />
-
     <Spinner
         android:id="@+id/spinner1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignRight="@+id/button2"
-        android:layout_below="@+id/button2"
-        android:layout_marginTop="34dp" />
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_marginBottom="36dp" />
+
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/spinner1"
+        android:layout_alignParentLeft="true"
+        android:text="*Multiple language support still in development" />
 
 </RelativeLayout>

@@ -23,9 +23,10 @@ public class QuestionParser
         	{
         		currentLine = currentLine.trim();
         		
-        		if (currentLine.equals(""))
+        		if (currentLine.equals("") && currentQuestion!=null)
         		{
         			questionList.add(currentQuestion);
+        			currentQuestion = null;
         		}        		
         		else if (Character.isDigit(currentLine.charAt(0)))
         		{
@@ -52,7 +53,7 @@ public class QuestionParser
         {
         	e.printStackTrace();
         }
-        
+        System.out.println(questionList);
         return questionList;
 	}
 }

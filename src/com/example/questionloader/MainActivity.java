@@ -9,6 +9,7 @@ import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 public class MainActivity extends Activity {
@@ -26,15 +27,15 @@ public class MainActivity extends Activity {
 	String questionDifficulty;
 	String difficulty;
 	String songname;
+	double score;
+	double total;
+	private ProgressBar mProgress;
+	double progress;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         
-        
-        
-        
-    	
         setContentView(R.layout.activity_main);
     	
         	Bundle bundle = getIntent().getExtras();
@@ -47,7 +48,8 @@ public class MainActivity extends Activity {
     		input_ans   = (EditText)findViewById(R.id.editText1);
     		button1= (Button)findViewById(R.id.enterButton);
     		button2= (Button)findViewById(R.id.nextButton);
-    		
+    		mProgress = (ProgressBar) findViewById(R.id.progressBar1);
+    		mProgress.setMax(100);
     		button2.setVisibility(View.INVISIBLE);
     		
         try
@@ -56,27 +58,29 @@ public class MainActivity extends Activity {
         	InputStream isE = getResources().getAssets().open("Japanese/" + songname);
         	//InputStream isM = getResources().getAssets().open("questions_M.txt");
         	//InputStream isH = getResources().getAssets().open("questions_H.txt");
-
         	qm = new QuestionManager();
         	qm.loadQuestions(isE, Question.DIFFICULTY_EASY);
         	//qm.loadQuestions(isM, Question.DIFFICULTY_MEDIUM);
         	//qm.loadQuestions(isH, Question.DIFFICULTY_HARD);
         	newQues = qm.getQuestion(Question.DIFFICULTY_EASY,questionCounter);
         	
-        	System.out.println("easy one " + newQues);
+        	
         	String string = newQues.getQuestionText();
         	String[] parts = string.split("-");
         	if (difficulty.equalsIgnoreCase("easy"))
         		questionDifficulty = parts[0];
         	else
         		questionDifficulty = parts[1];	
-        	
+        	total = qm.getCount();
         	//System.out.println("The question is " + questionDifficulty);
         	question.setText(questionDifficulty);
         	result.setText("");
         	//answer.setText("Correct answer: "+ newQues.getCorrectAnswer());
         	answer.setText("");
-        	
+        	//progress counter
+        	//System.out.println(questionCounter +" " + total);
+        	progress = questionCounter/total;
+            mProgress.setProgress((int) (progress*100));
         }
         catch(Exception e)
         {
@@ -114,14 +118,18 @@ public class MainActivity extends Activity {
         	//answer.setText("World");
         	question.setText(questionDifficulty);
     		//question.setText(newQues.getQuestionText());
+        	progress = questionCounter/total;
+            mProgress.setProgress((int) (progress*100));
         	
         	
     	}
     	catch(Exception e)
     	{
-    		
+    		double totalScore = Math.round(score/total);
     		Intent i = new Intent(getApplicationContext(), MainMenuActivity.class);
     		startActivity(i);
+    		MainActivity.this.finish();
+    		//Switch to scoreboard
     	}
     	
     }
@@ -132,7 +140,7 @@ public class MainActivity extends Activity {
     	user_answer = input_ans.getText().toString();
     	double accuracy = compareAnswer(user_answer.replaceAll("\\s+",""),newQues.getCorrectAnswer().replaceAll("\\s+",""));
     	result.setText("Accuracy: " + Math.round(accuracy) + "%");
-    	
+    	score += Math.round(accuracy);
     	if (accuracy<100);
     	{
     		answer.setText("Correct answer: " + newQues.getCorrectAnswer());
@@ -145,6 +153,7 @@ public class MainActivity extends Activity {
     	catch(Exception e)
     	{
     		button2.setText("End");
+    		
     	}
     	button2.setVisibility(View.VISIBLE);
     	button1.setVisibility(View.INVISIBLE);
@@ -157,8 +166,6 @@ public class MainActivity extends Activity {
     	
     	char[] first  = a.toLowerCase().toCharArray();
     	char[] second = b.toLowerCase().toCharArray();
-    	System.out.println(first.length);
-    	System.out.println(second.length);
     	double counter = 0;
     	double minLength = Math.min(first.length, second.length);
 

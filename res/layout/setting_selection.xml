@@ -4,16 +4,6 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity" >
 
-    <Button
-        android:id="@+id/hiraganaButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="182dp"
-        android:text="Hiragana"
-        android:onClick="easy" />
-
     <TextView
         android:id="@+id/textView1"
         android:layout_width="wrap_content"
@@ -32,23 +22,31 @@
         android:layout_marginBottom="48dp"
         android:text="This setting is for those who are new to Japanese and just want to practice their hiragana and katakana" />
 
-    <Button
-        android:id="@+id/kanjiButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="91dp"
-        android:onClick="medium"
-        android:text="Kanji" />
-
     <TextView
         android:id="@+id/textView3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/kanjiButton"
-        android:layout_alignParentRight="true"
-        android:layout_marginBottom="24dp"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/hiraganaButton"
         android:text="This setting is for those who are confident about their kanji skills" />
+
+    <Button
+        android:id="@+id/kanjiButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textView3"
+        android:layout_centerHorizontal="true"
+        android:onClick="medium"
+        android:text="Kanji" />
+
+    <Button
+        android:id="@+id/hiraganaButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textView1"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="70dp"
+        android:onClick="easy"
+        android:text="Hiragana" />
 
 </RelativeLayout>

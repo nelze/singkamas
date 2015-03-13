@@ -73,7 +73,7 @@ public class Question implements Cloneable
 	public String toString() {
 		return "Question [difficulty=" + difficulty + ", questionText="
 				+ questionText + ", correctIndex=" + correctIndex
-				+ ", answers=" + answers + "]";
+				+ ", answers=" + answers + "]\n";
 	}
 	
 	public Question clone()
