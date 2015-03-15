@@ -53,7 +53,7 @@ public class QuestionParser
         {
         	e.printStackTrace();
         }
-        System.out.println(questionList);
+        //System.out.println(questionList);
         return questionList;
 	}
 }

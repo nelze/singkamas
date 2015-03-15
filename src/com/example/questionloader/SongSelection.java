@@ -23,16 +23,19 @@ import android.widget.TextView;
 public class SongSelection extends ListActivity {
 	
 	
-
+	String language;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         
+        Bundle bundle = getIntent().getExtras();
+    	language= bundle.getString("language");
+    	
         try
         {
-        	String[] fileList = getResources().getAssets().list("Japanese");
+        	String[] fileList = getResources().getAssets().list(language);
         	
-        	System.out.println(Arrays.toString(fileList));
+        	//System.out.println(Arrays.toString(fileList));
         	
         	MyListAdapter adapter = new MyListAdapter(fileList);        	
         	setListAdapter(adapter);
@@ -46,10 +49,23 @@ public class SongSelection extends ListActivity {
 						int position, long id) {
 					// TODO Auto-generated method stub
 					TextView text = (TextView) arg1.findViewById(R.id.textView1);
-					System.out.println(text.getText());
-					Intent intent = new Intent(SongSelection.this, SettingSelection.class);
-			    	intent.putExtra("song_title", text.getText());
-			    	startActivity(intent);
+					//System.out.println(text.getText());
+					if (language.equalsIgnoreCase("Japanese"))
+					{
+						Intent intent = new Intent(SongSelection.this, SettingSelection.class);
+						intent.putExtra("song_title", text.getText());
+						intent.putExtra("language", language);
+						//System.out.println("LAnguage"+language);
+						startActivity(intent);
+					}
+					else
+					{
+						Intent intent = new Intent(SongSelection.this, MainActivity.class);
+				    	intent.putExtra("difficulty", "easy");
+				    	intent.putExtra("song_title", text.getText());
+				    	intent.putExtra("language", language);
+				    	startActivity(intent);
+					}
 					
 				}
 			});
@@ -112,7 +128,7 @@ public class SongSelection extends ListActivity {
 			
 			// set the image here
 			// image.setImageBitmap(bm)
-			System.out.println(text);
+			//System.out.println(text);
 			// set the text
 			text.setText(fileList[position]);
 			

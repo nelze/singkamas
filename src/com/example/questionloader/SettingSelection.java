@@ -15,6 +15,7 @@ public class SettingSelection extends Activity {
 	
 	
 	String songname;
+	String language;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -27,6 +28,7 @@ public class SettingSelection extends Activity {
         
         Bundle bundle = getIntent().getExtras();
     	songname = bundle.getString("song_title");
+    	language = bundle.getString("language");
     	
     		
         
@@ -40,6 +42,7 @@ public class SettingSelection extends Activity {
     	Intent intent = new Intent(SettingSelection.this, MainActivity.class);
     	intent.putExtra("difficulty", "easy");
     	intent.putExtra("song_title", songname);
+    	intent.putExtra("language", language);
     	startActivity(intent);
     }
     
@@ -48,7 +51,9 @@ public class SettingSelection extends Activity {
     	Intent intent = new Intent(SettingSelection.this, MainActivity.class);
     	intent.putExtra("difficulty", "medium");
     	intent.putExtra("song_title", songname);
+    	intent.putExtra("language", language);
     	startActivity(intent);
+    	SettingSelection.this.finish();
     	
     }
     

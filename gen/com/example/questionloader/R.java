@@ -23,19 +23,20 @@ public final class R {
         public static final int button3=0x7f080009;
         public static final int editText1=0x7f080000;
         public static final int enterButton=0x7f080004;
-        public static final int hiraganaButton=0x7f08000e;
-        public static final int imageView1=0x7f080011;
-        public static final int kanjiButton=0x7f080010;
-        public static final int menu_settings=0x7f080012;
+        public static final int hiraganaButton=0x7f08000f;
+        public static final int imageView1=0x7f080012;
+        public static final int kanjiButton=0x7f080011;
+        public static final int menu_settings=0x7f080013;
         public static final int nextButton=0x7f080003;
+        public static final int numScore=0x7f08000c;
         public static final int progressBar1=0x7f080006;
         public static final int questionView=0x7f080001;
         public static final int resultView=0x7f080005;
-        public static final int score=0x7f08000c;
+        public static final int score=0x7f08000d;
         public static final int spinner1=0x7f08000a;
         public static final int textView1=0x7f08000b;
-        public static final int textView2=0x7f08000d;
-        public static final int textView3=0x7f08000f;
+        public static final int textView2=0x7f08000e;
+        public static final int textView3=0x7f080010;
     }
     public static final class layout {
         public static final int activity_main=0x7f030000;
