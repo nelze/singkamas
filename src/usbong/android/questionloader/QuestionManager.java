@@ -1,4 +1,4 @@
-package com.example.questionloader;
+package usbong.android.questionloader;
 
 import java.io.InputStream;
 import java.util.HashMap;
