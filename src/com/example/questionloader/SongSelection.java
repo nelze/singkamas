@@ -31,10 +31,11 @@ public class SongSelection extends ListActivity {
         Bundle bundle = getIntent().getExtras();
     	language= bundle.getString("language");
     	
+    	
         try
         {
         	String[] fileList = getResources().getAssets().list(language);
-        	
+        	System.out.println("filelist"+Arrays.toString(fileList));
         	//System.out.println(Arrays.toString(fileList));
         	
         	MyListAdapter adapter = new MyListAdapter(fileList);        	
@@ -65,6 +66,7 @@ public class SongSelection extends ListActivity {
 				    	intent.putExtra("song_title", text.getText());
 				    	intent.putExtra("language", language);
 				    	startActivity(intent);
+				    	
 					}
 					
 				}
