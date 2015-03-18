@@ -1,7 +1,9 @@
-package com.example.questionloader;
+package usbong.android.questionloader;
 
 import java.io.InputStream;
 import java.util.Arrays;
+
+import usbong.android.questionloader.R;
 
 import android.app.Activity;
 import android.app.ListActivity;

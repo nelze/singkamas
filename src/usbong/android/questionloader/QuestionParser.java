@@ -1,4 +1,4 @@
-package com.example.questionloader;
+package usbong.android.questionloader;
 
 import java.io.BufferedReader;
 import java.io.InputStream;

@@ -1,6 +1,8 @@
-package com.example.questionloader;
+package usbong.android.questionloader;
 
 import java.io.InputStream;
+
+import usbong.android.questionloader.R;
 
 import android.app.Activity;
 import android.content.Intent;
