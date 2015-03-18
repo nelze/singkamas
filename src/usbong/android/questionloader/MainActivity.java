@@ -33,6 +33,7 @@ public class MainActivity extends Activity {
 	double total;
 	private ProgressBar mProgress;
 	double progress;
+	String language;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,7 +44,7 @@ public class MainActivity extends Activity {
         	Bundle bundle = getIntent().getExtras();
         	difficulty = bundle.getString("difficulty");
         	songname = bundle.getString("song_title");
-        	System.out.println(difficulty);
+        	language = bundle.getString("language");
     		question   = (TextView)findViewById(R.id.questionView);
     		result   = (TextView)findViewById(R.id.resultView);
     		answer   = (TextView)findViewById(R.id.answerView);
@@ -57,7 +58,7 @@ public class MainActivity extends Activity {
         try
         {
         	
-        	InputStream isE = getResources().getAssets().open("Japanese/" + songname);
+        	InputStream isE = getResources().getAssets().open(language+"/" + songname);
         	//InputStream isM = getResources().getAssets().open("questions_M.txt");
         	//InputStream isH = getResources().getAssets().open("questions_H.txt");
         	qm = new QuestionManager();
@@ -128,7 +129,9 @@ public class MainActivity extends Activity {
     	catch(Exception e)
     	{
     		double totalScore = Math.round(score/total);
-    		Intent i = new Intent(getApplicationContext(), MainMenuActivity.class);
+    		Intent i = new Intent(getApplicationContext(), ResultPage.class);
+    		i.putExtra("score", totalScore);
+    		i.putExtra("language", language);
     		startActivity(i);
     		MainActivity.this.finish();
     		//Switch to scoreboard
@@ -178,7 +181,7 @@ public class MainActivity extends Activity {
     	            counter++;    //this is the number of different characters
     	        }
     	}
-    	System.out.println(counter);
+    	//System.out.println(counter);
     	
     	return 100*((minLength-counter)/minLength);
     }

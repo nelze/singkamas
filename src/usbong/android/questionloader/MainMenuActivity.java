@@ -19,6 +19,8 @@ public class MainMenuActivity extends Activity {
 	
 	Button start;
 	Button exit;
+	String language;
+	Spinner spinner;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,7 +28,7 @@ public class MainMenuActivity extends Activity {
     	
         setContentView(R.layout.main_game);
         
-        Spinner spinner = (Spinner) findViewById(R.id.spinner1);
+        spinner = (Spinner) findViewById(R.id.spinner1);
      // Create an ArrayAdapter using the string array and a default spinner layout
      ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
              R.array.language_array, android.R.layout.simple_spinner_item);
@@ -44,7 +46,10 @@ public class MainMenuActivity extends Activity {
     }
     
     public void startRecord(View view) {
+    	language = spinner.getSelectedItem().toString();
 		Intent i = new Intent(getApplicationContext(), SongSelection.class);
+		i.putExtra("language", language);
+		
 		startActivity(i);
 	 }
     public void exit(View view) {

@@ -11,7 +11,8 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="124dp"
-        android:text="Button" />
+        android:onClick="back"
+        android:text="Back to Song Selection" />
 
     <TextView
         android:id="@+id/textView1"
@@ -24,12 +25,23 @@
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
     <TextView
+        android:id="@+id/numScore"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:textSize="24sp"
+        android:text="Large Text"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    <TextView
         android:id="@+id/score"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/button1"
         android:layout_below="@+id/textView1"
-        android:layout_marginTop="62dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="30dp"
+        android:textSize="24sp"
         android:text="Score"
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
