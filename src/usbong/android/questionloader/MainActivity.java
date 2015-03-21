@@ -1,12 +1,14 @@
 package usbong.android.questionloader;
 
 import java.io.InputStream;
+import java.util.ArrayList;
 
-import usbong.android.questionloader.R;
-
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.text.Html;
 import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
@@ -33,17 +35,18 @@ public class MainActivity extends Activity {
 	double total;
 	private ProgressBar mProgress;
 	double progress;
+	ArrayList<Integer> indices = new ArrayList<Integer>();
+	String language;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         
         setContentView(R.layout.activity_main);
-    	
         	Bundle bundle = getIntent().getExtras();
         	difficulty = bundle.getString("difficulty");
         	songname = bundle.getString("song_title");
-        	System.out.println(difficulty);
+        	language = bundle.getString("language");
     		question   = (TextView)findViewById(R.id.questionView);
     		result   = (TextView)findViewById(R.id.resultView);
     		answer   = (TextView)findViewById(R.id.answerView);
@@ -57,13 +60,9 @@ public class MainActivity extends Activity {
         try
         {
         	
-        	InputStream isE = getResources().getAssets().open("Japanese/" + songname);
-        	//InputStream isM = getResources().getAssets().open("questions_M.txt");
-        	//InputStream isH = getResources().getAssets().open("questions_H.txt");
+        	InputStream isE = getResources().getAssets().open(language+"/" + songname);
         	qm = new QuestionManager();
         	qm.loadQuestions(isE, Question.DIFFICULTY_EASY);
-        	//qm.loadQuestions(isM, Question.DIFFICULTY_MEDIUM);
-        	//qm.loadQuestions(isH, Question.DIFFICULTY_HARD);
         	newQues = qm.getQuestion(Question.DIFFICULTY_EASY,questionCounter);
         	
         	
@@ -88,7 +87,7 @@ public class MainActivity extends Activity {
         {
         	e.printStackTrace();
         }
-        
+       
         
     }
 
@@ -101,12 +100,12 @@ public class MainActivity extends Activity {
     
     public void nextQuestion(View view)
     {
-    	button1.setVisibility(View.VISIBLE);
+    	
     	button2.setVisibility(View.INVISIBLE);
     	result.setText("");
     	answer.setText("");
     	input_ans.setText("");
-    	
+    	button1.setVisibility(View.INVISIBLE);
     	try
     	{
     		newQues = qm.getQuestion(Question.DIFFICULTY_EASY,questionCounter);
@@ -122,13 +121,17 @@ public class MainActivity extends Activity {
     		//question.setText(newQues.getQuestionText());
         	progress = questionCounter/total;
             mProgress.setProgress((int) (progress*100));
+            indices.clear();
+            button1.setVisibility(View.VISIBLE);
         	
         	
     	}
     	catch(Exception e)
     	{
     		double totalScore = Math.round(score/total);
-    		Intent i = new Intent(getApplicationContext(), MainMenuActivity.class);
+    		Intent i = new Intent(getApplicationContext(), ResultPage.class);
+    		i.putExtra("score", totalScore);
+    		i.putExtra("language", language);
     		startActivity(i);
     		MainActivity.this.finish();
     		//Switch to scoreboard
@@ -136,7 +139,8 @@ public class MainActivity extends Activity {
     	
     }
     
-    public void enterAnswer(View view)
+    @SuppressLint("NewApi")
+	public void enterAnswer(View view)
     {
     	
     	user_answer = input_ans.getText().toString();
@@ -145,7 +149,19 @@ public class MainActivity extends Activity {
     	score += Math.round(accuracy);
     	if (accuracy<100);
     	{
+    		/*try 
+    		{
+    			String sb = makeBold(indices, newQues.getCorrectAnswer());
+    			answer.setText(Html.fromHtml("Correct answer: " + sb));
+    		}
+    		
+    		catch (Exception e)
+    		{
+    			answer.setText(Html.fromHtml("Correct answer: <b>" + newQues.getCorrectAnswer() + "</b>"));
+    		}*/
+    		//
     		answer.setText("Correct answer: " + newQues.getCorrectAnswer());
+    		
     	}
     	questionCounter++;
     	try
@@ -154,7 +170,10 @@ public class MainActivity extends Activity {
     	}
     	catch(Exception e)
     	{
-    		button2.setText("End");
+    		//button2.setText("End");
+    		Drawable drawableX = this.getResources().getDrawable(R.drawable.end_selector);
+    		button2.setBackground(drawableX);
+    		
     		
     	}
     	button2.setVisibility(View.VISIBLE);
@@ -175,12 +194,38 @@ public class MainActivity extends Activity {
     	{
     	        if (first[i] != second[i])
     	        {
+    	        	indices.add(1);
+    	        	System.out.println("Here");
     	            counter++;    //this is the number of different characters
     	        }
+    	        else
+    	        {
+    	        	indices.add(0);
+    	        	System.out.println("Here");
+    	        	
+    	        }
     	}
-    	System.out.println(counter);
-    	
+    	//System.out.println(counter);
+    	System.out.println("Here" + indices.size());
     	return 100*((minLength-counter)/minLength);
+    }
+    
+    public String makeBold(ArrayList<Integer> index, String s)
+    {
+    	StringBuilder boldMe = new StringBuilder(s.replaceAll("\\s+", ""));
+    	System.out.println(boldMe);
+    	System.out.println(index.size());
+    	for (int i = indices.size()-1; i>0; i++)
+    	{
+    		if (indices.get(i)==1)
+    		{
+    			boldMe.insert(i+1, "</b");
+    			boldMe.insert(i, "<b>");
+    		}
+    	}
+    	
+		return boldMe.toString();
+    	
     }
     
 }

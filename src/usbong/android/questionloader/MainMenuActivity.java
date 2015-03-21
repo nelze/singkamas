@@ -2,8 +2,6 @@ package usbong.android.questionloader;
 
 
 
-import usbong.android.questionloader.R;
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -19,14 +17,17 @@ public class MainMenuActivity extends Activity {
 	
 	Button start;
 	Button exit;
+	String language;
+	Spinner spinner;
+	Button review;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-    	
+    	review = (Button)findViewById(R.id.button4);
         setContentView(R.layout.main_game);
         
-        Spinner spinner = (Spinner) findViewById(R.id.spinner1);
+        spinner = (Spinner) findViewById(R.id.spinner1);
      // Create an ArrayAdapter using the string array and a default spinner layout
      ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
              R.array.language_array, android.R.layout.simple_spinner_item);
@@ -44,7 +45,10 @@ public class MainMenuActivity extends Activity {
     }
     
     public void startRecord(View view) {
+    	language = spinner.getSelectedItem().toString();
 		Intent i = new Intent(getApplicationContext(), SongSelection.class);
+		i.putExtra("language", language);
+		
 		startActivity(i);
 	 }
     public void exit(View view) {
@@ -66,4 +70,14 @@ public class MainMenuActivity extends Activity {
 		AlertDialog alert = builder.create();
 		alert.show();
 	 }
+    
+    public void review(View view)
+    {
+    	language = spinner.getSelectedItem().toString();
+    	Intent intent = new Intent(MainMenuActivity.this, ReviewPage.class);
+    	intent.putExtra("language", language);
+    	startActivity(intent);
+    	
+    	
+    }
 }
