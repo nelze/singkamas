@@ -36,8 +36,9 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/textView3"
         android:layout_centerHorizontal="true"
+        android:background="@drawable/kanji_selector"
         android:onClick="medium"
-        android:text="Kanji" />
+         />
 
     <Button
         android:id="@+id/hiraganaButton"
@@ -46,7 +47,8 @@
         android:layout_below="@+id/textView1"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="70dp"
+        android:background="@drawable/hiragana_selector"
         android:onClick="easy"
-        android:text="Hiragana" />
+         />
 
 </RelativeLayout>
