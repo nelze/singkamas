@@ -53,7 +53,7 @@ public class MainMenuActivity extends Activity {
 	 }
     public void exit(View view) {
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
-
+		builder.setTitle("Exiting...");
 		builder.setMessage("Are you sure you want to exit?")
 
 		   .setCancelable(false)

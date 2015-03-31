@@ -2,7 +2,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity" >
+    tools:context=".MainActivity" 
+    android:background="#36342a">
 
     <Button
         android:id="@+id/button1"
@@ -22,6 +23,7 @@
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="81dp"
+        android:textSize="24sp"        
         android:text="Congratulations!"
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
@@ -31,8 +33,9 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
-        android:textSize="24sp"
+        android:textSize="48sp"
         android:text="Large Text"
+        android:textColor="#92d050"        
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
     <TextView
@@ -42,7 +45,7 @@
         android:layout_below="@+id/textView1"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="30dp"
-        android:textSize="24sp"
+        android:textSize="48sp"
         android:text="Score"
         android:textAppearance="?android:attr/textAppearanceLarge" />
 

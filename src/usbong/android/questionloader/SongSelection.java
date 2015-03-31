@@ -1,11 +1,14 @@
 package usbong.android.questionloader;
 
+import java.io.BufferedReader;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.Arrays;
 
 import android.app.Activity;
 import android.app.ListActivity;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -22,10 +25,9 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 public class SongSelection extends ListActivity {
-	
-	
 	String language;
 	Button review;
+	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,22 +43,23 @@ public class SongSelection extends ListActivity {
         	//System.out.println(Arrays.toString(fileList));
         	
         	MyListAdapter adapter = new MyListAdapter(fileList);        	
-        	setListAdapter(adapter);
+        	setListAdapter(adapter);        	
         	
-        	
-        	ListView list = getListView();
+        	ListView list = getListView();        	
         	list.setOnItemClickListener(new OnItemClickListener() {
 
 				@Override
 				public void onItemClick(AdapterView<?> arg0, View arg1,
 						int position, long id) {
+					arg1.setBackgroundColor(Color.parseColor("#4e4b3c"));
+					
 					// TODO Auto-generated method stub
-					TextView text = (TextView) arg1.findViewById(R.id.textView1);
+					TextView textPlaceHolder = (TextView) arg1.findViewById(R.id.textViewPlaceHolder);
 					//System.out.println(text.getText());
 					if (language.equalsIgnoreCase("Japanese"))
 					{
 						Intent intent = new Intent(SongSelection.this, SettingSelection.class);
-						intent.putExtra("song_title", text.getText());
+						intent.putExtra("song_title", textPlaceHolder.getText());
 						intent.putExtra("language", language);
 						//System.out.println("LAnguage"+language);
 						startActivity(intent);
@@ -66,7 +69,7 @@ public class SongSelection extends ListActivity {
 					{
 						Intent intent = new Intent(SongSelection.this, MainActivity.class);
 				    	intent.putExtra("difficulty", "easy");
-				    	intent.putExtra("song_title", text.getText());
+				    	intent.putExtra("song_title", textPlaceHolder.getText());
 				    	intent.putExtra("language", language);
 				    	startActivity(intent);
 				    	SongSelection.this.finish();
@@ -129,17 +132,33 @@ public class SongSelection extends ListActivity {
 			}
 			
 			ImageView image = (ImageView) view.findViewById(R.id.imageView1);
-			TextView text = (TextView) view.findViewById(R.id.textView1);
-			
+			TextView text = (TextView) view.findViewById(R.id.textView1);			
+			TextView textPlaceHolder = (TextView) view.findViewById(R.id.textViewPlaceHolder);			
 			
 			// set the image here
 			// image.setImageBitmap(bm)
 			//System.out.println(text);
 			// set the text
-			text.setText(fileList[position]);
+//			text.setText(fileList[position]); //commented out by Mike, 30 March 2015
+			textPlaceHolder.setText(fileList[position]); //added by Mike, 30 March 2015
 			
-			
-			
+			//added by Mike, 30 March 2015
+	        try
+	        {
+	        	InputStream is = getResources().getAssets().open(language+"/" + fileList[position]);        	
+	        	BufferedReader br = new BufferedReader(new InputStreamReader(is));
+	        	String currentLine=br.readLine();
+	        	text.setText(currentLine+"\n"+br.readLine());	        	
+/*
+	        	String currentLine;
+	        	while((currentLine=br.readLine())!=null){
+	        		text.setText(currentLine+"\n");
+	        	}
+*/	        	
+	        }
+	        catch(Exception e) {
+	        	e.printStackTrace();
+	        }
 			
 			return view;
 		}

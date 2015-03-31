@@ -2,15 +2,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/title_bg"
     tools:context=".MainActivity" >
 
     <Button
         android:id="@+id/button1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="172dp"
+        android:layout_above="@+id/button2"
         android:background="@drawable/start_selector"
         android:onClick="startRecord" />
 
@@ -19,8 +19,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignRight="@+id/button1"
-        android:layout_below="@+id/button1"
-        android:layout_marginTop="46dp"
+        android:layout_above="@+id/textView1"
+        android:layout_marginTop="4dp"
+        android:layout_marginBottom="10dp"        
         android:background="@drawable/exit_selector"
         android:onClick="exit" />
 
@@ -30,7 +31,8 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/button1"
         android:layout_centerHorizontal="true"
-        android:text="Conversation (coming soon)" />
+        android:text="Conversation (coming soon)" 
+        android:visibility="invisible"/>
 
     <Spinner
         android:id="@+id/spinner1"

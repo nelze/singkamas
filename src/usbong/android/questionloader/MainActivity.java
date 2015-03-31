@@ -5,10 +5,12 @@ import java.util.ArrayList;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.text.Html;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
@@ -38,6 +40,8 @@ public class MainActivity extends Activity {
 	ArrayList<Integer> indices = new ArrayList<Integer>();
 	String language;
 
+	double accuracy; //added by Mike, 27 March 2015
+	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,7 +64,8 @@ public class MainActivity extends Activity {
         try
         {
         	
-        	InputStream isE = getResources().getAssets().open(language+"/" + songname);
+        	InputStream isE = getResources().getAssets().open(language+"/" + songname);        	
+//        	Log.d(">>>language : songname", language+" : "+songname);
         	qm = new QuestionManager();
         	qm.loadQuestions(isE, Question.DIFFICULTY_EASY);
         	newQues = qm.getQuestion(Question.DIFFICULTY_EASY,questionCounter);
@@ -75,7 +80,7 @@ public class MainActivity extends Activity {
         	total = qm.getCount();
         	//System.out.println("The question is " + questionDifficulty);
         	question.setText(questionDifficulty);
-        	result.setText("");
+//        	result.setText(""); //commented out by Mike, 27 March 2015
         	//answer.setText("Correct answer: "+ newQues.getCorrectAnswer());
         	answer.setText("");
         	//progress counter
@@ -102,7 +107,7 @@ public class MainActivity extends Activity {
     {
     	
     	button2.setVisibility(View.INVISIBLE);
-    	result.setText("");
+//    	result.setText(""); //commented out by Mike, 27 March 2015
     	answer.setText("");
     	input_ans.setText("");
     	button1.setVisibility(View.INVISIBLE);
@@ -138,15 +143,49 @@ public class MainActivity extends Activity {
     	}
     	
     }
+
+    @SuppressLint("NewApi")
+	public void exitMainActivity(View view)
+    {
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		builder.setTitle("Exiting...");
+		builder.setMessage("Are you sure you want to return to song selection?")
+
+		   .setCancelable(false)
+		   .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+		       public void onClick(DialogInterface dialog, int id) {
+			       	Intent intent = new Intent(MainActivity.this, SongSelection.class);
+			    	intent.putExtra("language", language);
+			    	startActivity(intent);
+			    	MainActivity.this.finish();
+		       }
+		   })
+		   .setNegativeButton("No", new DialogInterface.OnClickListener() {
+		       public void onClick(DialogInterface dialog, int id) {
+		            dialog.cancel();
+		       }
+		   });
+		AlertDialog alert = builder.create();
+		alert.show();
+    }
     
     @SuppressLint("NewApi")
 	public void enterAnswer(View view)
     {
     	
     	user_answer = input_ans.getText().toString();
-    	double accuracy = compareAnswer(user_answer.replaceAll("\\s+",""),newQues.getCorrectAnswer().replaceAll("\\s+",""));
-    	result.setText("Accuracy: " + Math.round(accuracy) + "%");
-    	score += Math.round(accuracy);
+    	//edited by Mike, 27 March 2015
+    	double temp_accuracy = compareAnswer(user_answer.replaceAll("\\s+",""),newQues.getCorrectAnswer().replaceAll("\\s+",""));
+    	score += Math.round(temp_accuracy);
+
+    	//aggregate accuracy scores
+//    	accuracy = (accuracy+temp_accuracy)/(questionCounter+1);
+//    	result.setText("Accuracy: " + Math.round(accuracy) + "%");
+    	result.setText("Accuracy: " + score + "%");
+
+    	System.out.println("accuracy: "+accuracy);
+    	System.out.println("questionCounter: "+questionCounter);
+    	
     	if (accuracy<100);
     	{
     		/*try 
@@ -173,8 +212,6 @@ public class MainActivity extends Activity {
     		//button2.setText("End");
     		Drawable drawableX = this.getResources().getDrawable(R.drawable.end_selector);
     		button2.setBackground(drawableX);
-    		
-    		
     	}
     	button2.setVisibility(View.VISIBLE);
     	button1.setVisibility(View.INVISIBLE);

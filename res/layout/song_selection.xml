@@ -2,7 +2,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity" >
+    tools:context=".MainActivity" 
+    android:background="#36342a"
+    >
     
     <ImageView
         android:id="@+id/imageView1"
@@ -10,15 +12,27 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
-        android:layout_marginTop="18dp"
-        android:src="@drawable/ic_launcher" />
+        android:layout_marginTop="2dp"
+        android:layout_marginBottom="2dp"        
+        android:src="@drawable/song_icon" />
 
     <TextView
         android:id="@+id/textView1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/imageView1"
+        android:layout_alignBottom ="@+id/imageView1"
         android:layout_toRightOf="@+id/imageView1"
+        android:layout_marginBottom="12dp"
+        android:layout_marginLeft="6dp"
+        android:textSize="16sp"
         android:text="Voltes 5" />
 
+        <TextView
+        android:id="@+id/textViewPlaceHolder"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom ="@+id/textView1"
+        android:text="textViewPlaceHolder" 
+        android:visibility="invisible"/>
+    
 </RelativeLayout>
