@@ -23,34 +23,39 @@ public class QuestionParser
 //        		System.out.println("currentLine.charAt(0): "+currentLine.charAt(0));
 //        		System.out.println("Character.isDigit(currentLine.charAt(0)): "+Character.isDigit(currentLine.charAt(0)));        		        		
         		currentLine = currentLine.trim();
-        		
+        	
+//        		System.out.println(">>>>>currentLine: "+currentLine);
+        		//comment by Mike, 31 March 2015
+        		//make sure that there are three new lines after the last line of the song
         		if (currentLine.equals("") && currentQuestion!=null)
         		{
         			questionList.add(currentQuestion);
         			currentQuestion = null;
         		}        		
         		//I had to add "||Character.isDigit(currentLine.charAt(1)" because it seems that perhaps due to character encoding, charAt(0) produces a dot (top of :) and not a digit
-        		else if ((Character.isDigit(currentLine.charAt(0)))||Character.isDigit(currentLine.charAt(1)))
-        		{
-//        			System.out.println("inside: Character.isDigit(currentLine.charAt(0))");       			
-        			// digit, new question
-        			currentQuestion = new Question();
-        			int dotIndex = currentLine.indexOf('.');
-        			String questionString = currentLine.substring(dotIndex+1).trim();
-        			
-        			currentQuestion.setQuestionText(questionString);
-        			currentQuestion.setDifficulty(difficulty);
-        		}
-        		else if (currentLine.charAt(0)=='*')
-        		{
-        			// add answer
-        				// remove letter 
-        			int dotIndex = currentLine.indexOf('*');
-//        			System.out.println(">>>> currentLine: "+currentLine);
-//        			System.out.println(">>>> currentLine.substring(dotIndex+1): "+currentLine.substring(dotIndex+1).trim());        			
-        			String answerString = currentLine.substring(dotIndex+1).trim();       			
-        			
-        			currentQuestion.addAnswer(answerString); 
+        		else if (currentLine.length()>=1){
+        			if ((Character.isDigit(currentLine.charAt(0)))||(Character.isDigit(currentLine.charAt(1))))
+        			{
+	//        			System.out.println("inside: Character.isDigit(currentLine.charAt(0))");       			
+	        			// digit, new question
+	        			currentQuestion = new Question();
+	        			int dotIndex = currentLine.indexOf('.');
+	        			String questionString = currentLine.substring(dotIndex+1).trim();
+	        			System.out.println(">>>questionString: "+questionString);
+	        			currentQuestion.setQuestionText(questionString);
+	        			currentQuestion.setDifficulty(difficulty);
+        			}
+	        		else if (currentLine.charAt(0)=='*')
+	        		{
+	        			// add answer
+	        				// remove letter 
+	        			int dotIndex = currentLine.indexOf('*');
+	//        			System.out.println(">>>> currentLine: "+currentLine);
+	//        			System.out.println(">>>> currentLine.substring(dotIndex+1): "+currentLine.substring(dotIndex+1).trim());        			
+	        			String answerString = currentLine.substring(dotIndex+1).trim();       			
+	        			
+	        			currentQuestion.addAnswer(answerString); 
+	        		}
         		}
         	}
         }
@@ -59,6 +64,8 @@ public class QuestionParser
         	e.printStackTrace();
         }
         System.out.println(questionList);
+        System.out.println(questionList.size());        
+        
         return questionList;
 	}
 }

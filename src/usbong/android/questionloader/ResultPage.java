@@ -23,11 +23,6 @@ public class ResultPage extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        
-        
-        
-        
-    	
         setContentView(R.layout.result_page);
         
         Bundle bundle = getIntent().getExtras();
@@ -38,7 +33,8 @@ public class ResultPage extends Activity {
 		msg = (TextView)findViewById(R.id.textView1);
 		System.out.println("SCORE:"+score);
 		
-		numScore.setText(Double.toString(Math.round(score)));
+//		numScore.setText(Double.toString(Math.round(score)));
+		numScore.setText(Double.toString(score)); //edited by Mike, 31 March 2015
     	
 		if (score < 60 )
 		{

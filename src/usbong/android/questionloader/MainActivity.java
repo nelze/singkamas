@@ -1,6 +1,7 @@
 package usbong.android.questionloader;
 
 import java.io.InputStream;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 import android.annotation.SuppressLint;
@@ -10,7 +11,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
@@ -69,15 +69,16 @@ public class MainActivity extends Activity {
         	qm = new QuestionManager();
         	qm.loadQuestions(isE, Question.DIFFICULTY_EASY);
         	newQues = qm.getQuestion(Question.DIFFICULTY_EASY,questionCounter);
-        	
-        	
+        	        	
         	String string = newQues.getQuestionText();
         	String[] parts = string.split("-");
         	if (difficulty.equalsIgnoreCase("easy"))
         		questionDifficulty = parts[0];
         	else
         		questionDifficulty = parts[1];	
-        	total = qm.getCount();
+        	total = qm.getCount()-1;//do a -1 because questionCounter starts at 0; added by Mike, 31 March 2015
+        	System.out.println(">>>>TOTAL: "+total);
+
         	//System.out.println("The question is " + questionDifficulty);
         	question.setText(questionDifficulty);
 //        	result.setText(""); //commented out by Mike, 27 March 2015
@@ -181,7 +182,11 @@ public class MainActivity extends Activity {
     	//aggregate accuracy scores
 //    	accuracy = (accuracy+temp_accuracy)/(questionCounter+1);
 //    	result.setText("Accuracy: " + Math.round(accuracy) + "%");
-    	result.setText("Accuracy: " + score + "%");
+    	double temp_score = score/(questionCounter+1); //added by Mike, 31 March 2015    	
+    	//Reference: http://stackoverflow.com/questions/7747469/how-can-i-truncate-a-double-to-only-two-decimal-places-in-java
+    	//; answer by Bozho, last accessed: 31 March 2015
+    	String a = new DecimalFormat("#.##").format(temp_score); //added by Mike, 31 March 2015
+    	result.setText("Accuracy: " + a + "%");
 
     	System.out.println("accuracy: "+accuracy);
     	System.out.println("questionCounter: "+questionCounter);
@@ -221,30 +226,31 @@ public class MainActivity extends Activity {
     
     public double compareAnswer(String a, String b)
     {
-    	
     	char[] first  = a.toLowerCase().toCharArray();
     	char[] second = b.toLowerCase().toCharArray();
     	double counter = 0;
     	double minLength = Math.min(first.length, second.length);
+    	double maxLength = Math.max(first.length, second.length); //added by Mike, 31 March 2015    	
 
     	for(int i = 0; i < minLength; i++)
     	{
     	        if (first[i] != second[i])
     	        {
     	        	indices.add(1);
-    	        	System.out.println("Here");
+//    	        	System.out.println("Here");
     	            counter++;    //this is the number of different characters
     	        }
     	        else
     	        {
     	        	indices.add(0);
-    	        	System.out.println("Here");
-    	        	
+//    	        	System.out.println("Here");  	        	
     	        }
     	}
     	//System.out.println(counter);
     	System.out.println("Here" + indices.size());
-    	return 100*((minLength-counter)/minLength);
+
+//    	return 100*((minLength-counter)/minLength);
+    	return 100*((minLength-counter)/maxLength); //edited by Mike, 31 March 2015
     }
     
     public String makeBold(ArrayList<Integer> index, String s)
