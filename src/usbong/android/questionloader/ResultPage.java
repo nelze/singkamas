@@ -7,6 +7,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -112,12 +113,14 @@ public class ResultPage extends Activity {
 				return true;
 				
 			case(R.id.feedback):
+				//http://stackoverflow.com/questions/8701634/send-email-intent;
+				//last accessed: 1 April 2015, answer by Doraemon
 				//send to cloud-based service
-				Intent emailIntent = new Intent(android.content.Intent.ACTION_SEND);
-				emailIntent.putExtra(android.content.Intent.EXTRA_EMAIL, new String[]{"usbong.ph@gmail.com"});
-				emailIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-				emailIntent.addFlags(RESULT_OK);
-				startActivityForResult(Intent.createChooser(emailIntent, "Email:"),UsbongUtils.EMAIL_SENDING_SUCCESS);
+				Intent emailIntent = new Intent(android.content.Intent.ACTION_SENDTO, Uri.fromParts(
+						"mailto","usbong.ph@gmail.com",null));
+				emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Singkamas: Feedback (Android)");
+				emailIntent.putExtra(Intent.EXTRA_TEXT  , UsbongUtils.defaultFeedbackMessage);
+				startActivity(Intent.createChooser(emailIntent, "Sending feedback..."));
 				return true;
 			default:
 				return super.onOptionsItemSelected(item);
@@ -137,12 +140,37 @@ public class ResultPage extends Activity {
     @SuppressLint("NewApi")
 	public void sendFeedback(View view)
     {
+		//http://stackoverflow.com/questions/8701634/send-email-intent;
+		//last accessed: 1 April 2015, answer by Doraemon
 		//send to cloud-based service
-		Intent emailIntent = new Intent(android.content.Intent.ACTION_SEND);
-		emailIntent.putExtra(android.content.Intent.EXTRA_EMAIL, new String[]{"usbong.ph@gmail.com"});
-		emailIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-		emailIntent.addFlags(RESULT_OK);
-		startActivityForResult(Intent.createChooser(emailIntent, "Email:"),UsbongUtils.EMAIL_SENDING_SUCCESS);
+		Intent emailIntent = new Intent(android.content.Intent.ACTION_SENDTO, Uri.fromParts(
+				"mailto","usbong.ph@gmail.com",null));
+		emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Singkamas: Feedback (Android)");
+		emailIntent.putExtra(Intent.EXTRA_TEXT  , UsbongUtils.defaultFeedbackMessage);
+		startActivity(Intent.createChooser(emailIntent, "Sending feedback..."));
     }
     
+    @SuppressLint("NewApi")
+	public void exitResultPage(View view)
+    {
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		builder.setTitle("Exiting...");
+		builder.setMessage("Are you sure you want to return to Main Menu?")
+
+		   .setCancelable(false)
+		   .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+		       public void onClick(DialogInterface dialog, int id) {
+			       	Intent intent = new Intent(ResultPage.this, MainMenuActivity.class);
+			    	startActivity(intent);
+			    	ResultPage.this.finish();
+		       }
+		   })
+		   .setNegativeButton("No", new DialogInterface.OnClickListener() {
+		       public void onClick(DialogInterface dialog, int id) {
+		            dialog.cancel();
+		       }
+		   });
+		AlertDialog alert = builder.create();
+		alert.show();
+    }    
 }

@@ -7,7 +7,11 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Point;
+import android.net.Uri;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
+import android.view.Display;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -31,13 +35,30 @@ public class MainMenuActivity extends Activity {
         setContentView(R.layout.main_game);
         
         spinner = (Spinner) findViewById(R.id.spinner1);
-     // Create an ArrayAdapter using the string array and a default spinner layout
-     ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
-             R.array.language_array, android.R.layout.simple_spinner_item);
-     // Specify the layout to use when the list of choices appears
-     adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-     // Apply the adapter to the spinner
-     spinner.setAdapter(adapter);
+	     // Create an ArrayAdapter using the string array and a default spinner layout
+	     ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+	             R.array.language_array, android.R.layout.simple_spinner_item);
+	     // Specify the layout to use when the list of choices appears
+	     adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+	     // Apply the adapter to the spinner
+	     spinner.setAdapter(adapter);
+
+/*
+	     Display display = getWindowManager().getDefaultDisplay();
+	     Point size = new Point();
+	     display.getSize(size);
+	     UsbongUtils.width = size.x;
+	     UsbongUtils.height = size.y;
+*/	     
+	     //Reference: http://stackoverflow.com/questions/11338602/how-to-get-screen-resolution-of-your-android-device;
+	     //last accessed: 1 April 2015, answer by K_Anas
+	     DisplayMetrics metrics = getResources().getDisplayMetrics();
+	     getWindowManager().getDefaultDisplay().getMetrics(metrics);
+	     UsbongUtils.width = metrics.widthPixels;
+	     UsbongUtils.height = metrics.heightPixels;
+	     UsbongUtils.dpi = metrics.densityDpi;
+	     
+	     UsbongUtils.defaultFeedbackMessage="\n\n\n\n\n-----\nInformation\nApp version: "+UsbongUtils.APP_VERSION+"\nAPI Level: "+android.os.Build.VERSION.SDK+"\nOS Version: "+System.getProperty("os.version")+"\nHost (Device): "+android.os.Build.DEVICE+"\nModel: "+android.os.Build.MODEL+"\nScreen: "+UsbongUtils.width+"x"+UsbongUtils.height+", "+UsbongUtils.dpi+"dpi"+"\n-----";
     }
 
 	@Override
@@ -67,12 +88,14 @@ public class MainMenuActivity extends Activity {
 				return true;
 				
 			case(R.id.feedback):
+				//http://stackoverflow.com/questions/8701634/send-email-intent;
+				//last accessed: 1 April 2015, answer by Doraemon
 				//send to cloud-based service
-				Intent emailIntent = new Intent(android.content.Intent.ACTION_SEND);
-				emailIntent.putExtra(android.content.Intent.EXTRA_EMAIL, new String[]{"usbong.ph@gmail.com"});
-				emailIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-				emailIntent.addFlags(RESULT_OK);
-				startActivityForResult(Intent.createChooser(emailIntent, "Email:"),UsbongUtils.EMAIL_SENDING_SUCCESS);
+				Intent emailIntent = new Intent(android.content.Intent.ACTION_SENDTO, Uri.fromParts(
+						"mailto","usbong.ph@gmail.com",null));
+				emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Singkamas: Feedback (Android)");
+				emailIntent.putExtra(Intent.EXTRA_TEXT  , UsbongUtils.defaultFeedbackMessage);
+				startActivity(Intent.createChooser(emailIntent, "Sending feedback..."));
 				return true;
 			default:
 				return super.onOptionsItemSelected(item);

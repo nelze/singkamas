@@ -22,8 +22,15 @@ import android.app.Activity;
 import android.content.res.AssetManager;
 
 public class UsbongUtils {		
-	public final static int EMAIL_SENDING_SUCCESS=99;
+	public final static String APP_VERSION="1April2015 (Google Play)";	
 
+	public static int width;
+	public static int height;
+	public static int dpi;
+
+	public final static int EMAIL_SENDING_SUCCESS=99;
+	public static String defaultFeedbackMessage;
+	
     public static String readTextFileInAssetsFolder(Activity a, String filename) {
 		//READ A FILE
 		//Reference: Jeffrey Jongko, Aug. 31, 2010

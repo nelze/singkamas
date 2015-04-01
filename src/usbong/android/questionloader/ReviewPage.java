@@ -2,13 +2,18 @@ package usbong.android.questionloader;
 
 import java.io.InputStream;
 
+import usbong.android.utils.UsbongUtils;
+
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -30,10 +35,6 @@ public class ReviewPage extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         
-        
-        
-        
-    	
         setContentView(R.layout.review_page);
         
         Bundle bundle = getIntent().getExtras();
@@ -56,6 +57,48 @@ public class ReviewPage extends Activity {
     		tx.setText("Sorry, no review feature is available yet for your language.");
     	}
     }
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu)
+	{
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.about_and_feedback_menu, menu);
+		return true;
+	}
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item)
+	{		
+		switch(item.getItemId())
+		{
+			case(R.id.about):
+				AlertDialog.Builder builder = new AlertDialog.Builder(this);
+				builder.setTitle("About Singakamas");
+				builder.setMessage(UsbongUtils.readTextFileInAssetsFolder(ReviewPage.this,"credits.txt")); //don't add a '/', otherwise the file would not be found
+				builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+				       public void onClick(DialogInterface dialog, int id) {
+				            dialog.cancel();
+				       }
+				   });
+				AlertDialog alert = builder.create();
+				alert.show();
+				return true;
+				
+			case(R.id.feedback):
+				//http://stackoverflow.com/questions/8701634/send-email-intent;
+				//last accessed: 1 April 2015, answer by Doraemon
+				//send to cloud-based service
+				Intent emailIntent = new Intent(android.content.Intent.ACTION_SENDTO, Uri.fromParts(
+						"mailto","usbong.ph@gmail.com",null));
+				emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Singkamas: Feedback (Android)");
+				emailIntent.putExtra(Intent.EXTRA_TEXT  , UsbongUtils.defaultFeedbackMessage);
+				startActivity(Intent.createChooser(emailIntent, "Sending feedback..."));
+				return true;
+			default:
+				return super.onOptionsItemSelected(item);
+
+		}
+	}
 
     public void buttonPressed(View view) {
     	if (!isShowingHiraganaChart) {
@@ -95,5 +138,4 @@ public class ReviewPage extends Activity {
 		AlertDialog alert = builder.create();
 		alert.show();
     }
-
 }
