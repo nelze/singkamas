@@ -5,13 +5,19 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.Arrays;
 
+import usbong.android.utils.UsbongUtils;
+
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.ListActivity;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -65,6 +71,15 @@ public class SongSelection extends ListActivity {
 						startActivity(intent);
 						SongSelection.this.finish();
 					}
+					else if (language.equalsIgnoreCase("Mandarin"))
+					{
+						Intent intent = new Intent(SongSelection.this, SettingSelection.class);
+						intent.putExtra("song_title", textPlaceHolder.getText());
+						intent.putExtra("language", language);
+						//System.out.println("LAnguage"+language);
+						startActivity(intent);
+						SongSelection.this.finish();
+					}
 					else
 					{
 						Intent intent = new Intent(SongSelection.this, MainActivity.class);
@@ -86,6 +101,45 @@ public class SongSelection extends ListActivity {
         }
     }
 
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu)
+	{
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.about_and_feedback_menu, menu);
+		return true;
+	}
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item)
+	{		
+		switch(item.getItemId())
+		{
+			case(R.id.about):
+				AlertDialog.Builder builder = new AlertDialog.Builder(this);
+				builder.setTitle("About Singakamas");
+				builder.setMessage(UsbongUtils.readTextFileInAssetsFolder(SongSelection.this,"credits.txt")); //don't add a '/', otherwise the file would not be found
+				builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+				       public void onClick(DialogInterface dialog, int id) {
+				            dialog.cancel();
+				       }
+				   });
+				AlertDialog alert = builder.create();
+				alert.show();
+				return true;
+				
+			case(R.id.feedback):
+				//send to cloud-based service
+				Intent emailIntent = new Intent(android.content.Intent.ACTION_SEND);
+				emailIntent.putExtra(android.content.Intent.EXTRA_EMAIL, new String[]{"usbong.ph@gmail.com"});
+				emailIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+				emailIntent.addFlags(RESULT_OK);
+				startActivityForResult(Intent.createChooser(emailIntent, "Email:"),UsbongUtils.EMAIL_SENDING_SUCCESS);
+				return true;
+			default:
+				return super.onOptionsItemSelected(item);
+
+		}
+	}
     
     
     private class MyListAdapter extends BaseAdapter

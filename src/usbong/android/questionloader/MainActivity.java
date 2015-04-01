@@ -4,6 +4,8 @@ import java.io.InputStream;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 
+import usbong.android.utils.UsbongUtils;
+
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -12,6 +14,8 @@ import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -97,12 +101,45 @@ public class MainActivity extends Activity {
         
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.activity_main, menu);
-        return true;
-    }
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu)
+	{
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.about_and_feedback_menu, menu);
+		return true;
+	}
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item)
+	{		
+		switch(item.getItemId())
+		{
+			case(R.id.about):
+				AlertDialog.Builder builder = new AlertDialog.Builder(this);
+				builder.setTitle("About Singakamas");
+				builder.setMessage(UsbongUtils.readTextFileInAssetsFolder(MainActivity.this,"credits.txt")); //don't add a '/', otherwise the file would not be found
+				builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+				       public void onClick(DialogInterface dialog, int id) {
+				            dialog.cancel();
+				       }
+				   });
+				AlertDialog alert = builder.create();
+				alert.show();
+				return true;
+				
+			case(R.id.feedback):
+				//send to cloud-based service
+				Intent emailIntent = new Intent(android.content.Intent.ACTION_SEND);
+				emailIntent.putExtra(android.content.Intent.EXTRA_EMAIL, new String[]{"usbong.ph@gmail.com"});
+				emailIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+				emailIntent.addFlags(RESULT_OK);
+				startActivityForResult(Intent.createChooser(emailIntent, "Email:"),UsbongUtils.EMAIL_SENDING_SUCCESS);
+				return true;
+			default:
+				return super.onOptionsItemSelected(item);
+
+		}
+	}
     
     public void nextQuestion(View view)
     {
@@ -269,6 +306,5 @@ public class MainActivity extends Activity {
     	
 		return boldMe.toString();
     	
-    }
-    
+    }        
 }
