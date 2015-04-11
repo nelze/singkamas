@@ -74,15 +74,18 @@ public class ResultPage extends Activity {
 			letter.setTextColor(Color.parseColor("#b6f817"));
 			msg.setText("Keep it up!");
 		}
-		else if (score >= 92)
+		else if (score >= 92 && score < 100)
 		{
 			letter.setText("A");
 			letter.setTextColor(Color.parseColor("#5cf817"));
 			msg.setText("Congratuations!");
 		}
-		
-    	
-    		
+		else if (score >= 100)
+		{
+			letter.setText("S");
+			letter.setTextColor(Color.parseColor("#4eff00"));
+			msg.setText("Super Congrats!");
+		}
         
     }    
     

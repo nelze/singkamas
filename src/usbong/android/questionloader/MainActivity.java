@@ -80,7 +80,7 @@ public class MainActivity extends Activity {
         		questionDifficulty = parts[0];
         	else
         		questionDifficulty = parts[1];	
-        	total = qm.getCount()-1;//do a -1 because questionCounter starts at 0; added by Mike, 31 March 2015
+        	total = qm.getCount();//-1;//do a -1 because questionCounter starts at 0; added by Mike, 31 March 2015
         	System.out.println(">>>>TOTAL: "+total);
 
         	//System.out.println("The question is " + questionDifficulty);
@@ -173,7 +173,7 @@ public class MainActivity extends Activity {
     	}
     	catch(Exception e)
     	{
-    		double totalScore = Math.round(score/total);
+    		double totalScore = score;//Math.round(score/total); //edited by Mike, 11 April 2015
     		Intent i = new Intent(getApplicationContext(), ResultPage.class);
     		i.putExtra("score", totalScore);
     		i.putExtra("language", language);
@@ -227,10 +227,12 @@ public class MainActivity extends Activity {
     	String a = new DecimalFormat("#.##").format(temp_score); //added by Mike, 31 March 2015
     	result.setText("Accuracy: " + a + "%");
 
+    	score = temp_score;    	
+    	
     	System.out.println("accuracy: "+accuracy);
     	System.out.println("questionCounter: "+questionCounter);
     	
-    	if (accuracy<100);
+    	if (temp_accuracy<100) 
     	{
     		/*try 
     		{
@@ -246,6 +248,9 @@ public class MainActivity extends Activity {
     		answer.setText("Correct answer: " + newQues.getCorrectAnswer());
     		
     	}
+    	else {
+    		answer.setText("Correct!");
+    	}
     	questionCounter++;
     	try
     	{
@@ -256,6 +261,10 @@ public class MainActivity extends Activity {
     		//button2.setText("End");
     		Drawable drawableX = this.getResources().getDrawable(R.drawable.end_selector);
     		button2.setBackground(drawableX);
+    		
+    		//added by Mike, 11 April 2015
+    		progress=total;
+            mProgress.setProgress((int) (progress*100));
     	}
     	button2.setVisibility(View.VISIBLE);
     	button1.setVisibility(View.INVISIBLE);
