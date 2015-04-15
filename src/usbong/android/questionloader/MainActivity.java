@@ -3,6 +3,7 @@ package usbong.android.questionloader;
 import java.io.InputStream;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import usbong.android.utils.UsbongUtils;
 import android.annotation.SuppressLint;
@@ -13,6 +14,7 @@ import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.Html;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -217,7 +219,9 @@ public class MainActivity extends Activity {
     	//edited by Mike, 27 March 2015
     	double temp_accuracy = compareAnswer(user_answer.replaceAll("\\s+",""),newQues.getCorrectAnswer().replaceAll("\\s+",""));
     	score += Math.round(temp_accuracy);
-
+    	//make bold
+    	
+    	String newBold = makeBold(indices, newQues.getCorrectAnswer());
     	//aggregate accuracy scores
 //    	accuracy = (accuracy+temp_accuracy)/(questionCounter+1);
 //    	result.setText("Accuracy: " + Math.round(accuracy) + "%");
@@ -245,7 +249,8 @@ public class MainActivity extends Activity {
     			answer.setText(Html.fromHtml("Correct answer: <b>" + newQues.getCorrectAnswer() + "</b>"));
     		}*/
     		//
-    		answer.setText("Correct answer: " + newQues.getCorrectAnswer());
+    		//answer.setText("Correct answer: " + newQues.getCorrectAnswer());
+    		answer.setText(Html.fromHtml("Correct answer: " + newBold));
     		
     	}
     	else {
@@ -284,18 +289,18 @@ public class MainActivity extends Activity {
     	{
     	        if (first[i] != second[i])
     	        {
-    	        	indices.add(1);
+    	        	indices.add(i);
 //    	        	System.out.println("Here");
     	            counter++;    //this is the number of different characters
     	        }
     	        else
     	        {
-    	        	indices.add(0);
+    	        	//indices.add(0);
 //    	        	System.out.println("Here");  	        	
     	        }
     	}
     	//System.out.println(counter);
-    	System.out.println("Here" + indices.size());
+    	//System.out.println("Here" + indices.size());
 
 //    	return 100*((minLength-counter)/minLength);
     	return 100*((minLength-counter)/maxLength); //edited by Mike, 31 March 2015
@@ -303,19 +308,46 @@ public class MainActivity extends Activity {
     
     public String makeBold(ArrayList<Integer> index, String s)
     {
-    	StringBuilder boldMe = new StringBuilder(s.replaceAll("\\s+", ""));
-    	System.out.println(boldMe);
-    	System.out.println(index.size());
-    	for (int i = indices.size()-1; i>0; i++)
-    	{
-    		if (indices.get(i)==1)
-    		{
-    			boldMe.insert(i+1, "</b");
-    			boldMe.insert(i, "<b>");
-    		}
-    	}
     	
-		return boldMe.toString();
+		String withspace = s;
+		
+		ArrayList<Integer> spaces = new ArrayList<Integer>();
+		for (int i = 0; i < withspace.length(); i++)
+		{
+			if (withspace.charAt(i) == ' ')
+			{
+				spaces.add(i);
+			}
+		}
+		
+		for (int i = 0; i < spaces.size(); i++)
+		{
+			for (int j = 0; j < index.size(); j++)
+			{
+				if (index.get(j) >= spaces.get(i))
+				{
+					int temp = index.get(j)+1;
+					index.set(j, temp);
+				}
+				
+			}
+		}
+		
+		StringBuilder sb = new StringBuilder(withspace);
+		int last = index.size()-1;
+		for (int i = withspace.length(); i >=0; i--)
+		{
+			if (last >=0 && i == index.get(last))
+			{
+				System.out.println(i);
+				sb.insert(i+1, "</b></font>");
+				sb.insert(i, "<font color='red'><b>");
+				last--;
+			}
+		}
+		System.out.println(sb);
+		
+		return sb.toString();
     	
     }        
 }
