@@ -220,7 +220,6 @@ public class MainActivity extends Activity {
     	double temp_accuracy = compareAnswer(user_answer.replaceAll("\\s+",""),newQues.getCorrectAnswer().replaceAll("\\s+",""));
     	score += Math.round(temp_accuracy);
     	//make bold
-    	
     	String newBold = makeBold(indices, newQues.getCorrectAnswer());
     	//aggregate accuracy scores
 //    	accuracy = (accuracy+temp_accuracy)/(questionCounter+1);
@@ -238,18 +237,6 @@ public class MainActivity extends Activity {
     	
     	if (temp_accuracy<100) 
     	{
-    		/*try 
-    		{
-    			String sb = makeBold(indices, newQues.getCorrectAnswer());
-    			answer.setText(Html.fromHtml("Correct answer: " + sb));
-    		}
-    		
-    		catch (Exception e)
-    		{
-    			answer.setText(Html.fromHtml("Correct answer: <b>" + newQues.getCorrectAnswer() + "</b>"));
-    		}*/
-    		//
-    		//answer.setText("Correct answer: " + newQues.getCorrectAnswer());
     		answer.setText(Html.fromHtml("Correct answer: " + newBold));
     		
     	}
@@ -293,16 +280,18 @@ public class MainActivity extends Activity {
 //    	        	System.out.println("Here");
     	            counter++;    //this is the number of different characters
     	        }
-    	        else
-    	        {
-    	        	//indices.add(0);
-//    	        	System.out.println("Here");  	        	
-    	        }
+    	        
     	}
-    	//System.out.println(counter);
-    	//System.out.println("Here" + indices.size());
-
-//    	return 100*((minLength-counter)/minLength);
+    	//add missing characters to mistakes
+    	if (first.length < second.length)
+    	{
+    		for (int i = first.length; i < second.length; i++)
+    		{
+    			indices.add(i);
+    			
+    		}
+    	}
+    	
     	return 100*((minLength-counter)/maxLength); //edited by Mike, 31 March 2015
     }
     
@@ -310,6 +299,7 @@ public class MainActivity extends Activity {
     {
     	
 		String withspace = s;
+		
 		
 		ArrayList<Integer> spaces = new ArrayList<Integer>();
 		for (int i = 0; i < withspace.length(); i++)
@@ -339,13 +329,14 @@ public class MainActivity extends Activity {
 		{
 			if (last >=0 && i == index.get(last))
 			{
-				System.out.println(i);
+			
 				sb.insert(i+1, "</b></font>");
 				sb.insert(i, "<font color='red'><b>");
 				last--;
 			}
+			
 		}
-		System.out.println(sb);
+		
 		
 		return sb.toString();
     	
