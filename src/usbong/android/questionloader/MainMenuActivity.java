@@ -2,12 +2,19 @@ package usbong.android.questionloader;
 
 
 
+import usbong.android.utils.UsbongUtils;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Point;
+import android.net.Uri;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
+import android.view.Display;
 import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -28,21 +35,73 @@ public class MainMenuActivity extends Activity {
         setContentView(R.layout.main_game);
         
         spinner = (Spinner) findViewById(R.id.spinner1);
-     // Create an ArrayAdapter using the string array and a default spinner layout
-     ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
-             R.array.language_array, android.R.layout.simple_spinner_item);
-     // Specify the layout to use when the list of choices appears
-     adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-     // Apply the adapter to the spinner
-     spinner.setAdapter(adapter);
+	     // Create an ArrayAdapter using the string array and a default spinner layout
+	     ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+	             R.array.language_array, android.R.layout.simple_spinner_item);
+	     // Specify the layout to use when the list of choices appears
+	     adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+	     // Apply the adapter to the spinner
+	     spinner.setAdapter(adapter);
+
+/*
+	     Display display = getWindowManager().getDefaultDisplay();
+	     Point size = new Point();
+	     display.getSize(size);
+	     UsbongUtils.width = size.x;
+	     UsbongUtils.height = size.y;
+*/	     
+	     //Reference: http://stackoverflow.com/questions/11338602/how-to-get-screen-resolution-of-your-android-device;
+	     //last accessed: 1 April 2015, answer by K_Anas
+	     DisplayMetrics metrics = getResources().getDisplayMetrics();
+	     getWindowManager().getDefaultDisplay().getMetrics(metrics);
+	     UsbongUtils.width = metrics.widthPixels;
+	     UsbongUtils.height = metrics.heightPixels;
+	     UsbongUtils.dpi = metrics.densityDpi;
+	     
+	     UsbongUtils.defaultFeedbackMessage="\n\n\n\n\n-----\nInformation\nApp version: "+UsbongUtils.APP_VERSION+"\nAPI Level: "+android.os.Build.VERSION.SDK+"\nOS Version: "+System.getProperty("os.version")+"\nHost (Device): "+android.os.Build.DEVICE+"\nModel: "+android.os.Build.MODEL+"\nScreen: "+UsbongUtils.width+"x"+UsbongUtils.height+", "+UsbongUtils.dpi+"dpi"+"\n-----";
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.activity_main, menu);
-        return true;
-    }
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu)
+	{
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.about_and_feedback_menu, menu);
+		return true;
+	}
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item)
+	{		
+		switch(item.getItemId())
+		{
+			case(R.id.about):
+				AlertDialog.Builder builder = new AlertDialog.Builder(this);
+				builder.setTitle("About Singakamas");
+				builder.setMessage(UsbongUtils.readTextFileInAssetsFolder(MainMenuActivity.this,"credits.txt")); //don't add a '/', otherwise the file would not be found
+				builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+				       public void onClick(DialogInterface dialog, int id) {
+				            dialog.cancel();
+				       }
+				   });
+				AlertDialog alert = builder.create();
+				alert.show();
+				return true;
+				
+			case(R.id.feedback):
+				//http://stackoverflow.com/questions/8701634/send-email-intent;
+				//last accessed: 1 April 2015, answer by Doraemon
+				//send to cloud-based service
+				Intent emailIntent = new Intent(android.content.Intent.ACTION_SENDTO, Uri.fromParts(
+						"mailto","usbong.ph@gmail.com",null));
+				emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Singkamas: Feedback (Android)");
+				emailIntent.putExtra(Intent.EXTRA_TEXT  , UsbongUtils.defaultFeedbackMessage);
+				startActivity(Intent.createChooser(emailIntent, "Sending feedback..."));
+				return true;
+			default:
+				return super.onOptionsItemSelected(item);
+
+		}
+	}
     
     public void startRecord(View view) {
     	language = spinner.getSelectedItem().toString();
@@ -53,7 +112,7 @@ public class MainMenuActivity extends Activity {
 	 }
     public void exit(View view) {
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
-
+		builder.setTitle("Exiting...");
 		builder.setMessage("Are you sure you want to exit?")
 
 		   .setCancelable(false)

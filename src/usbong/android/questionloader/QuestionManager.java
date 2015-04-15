@@ -14,7 +14,7 @@ public class QuestionManager
 		QuestionParser parser = new QuestionParser();
     	List<Question> questionList = parser.parse(is, difficulty);
     	
-    	//System.out.println(questionList);
+    	//System.out.println(questionList);    	
     	
     	questionMap.put(difficulty, questionList);
 	}

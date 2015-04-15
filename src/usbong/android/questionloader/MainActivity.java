@@ -1,15 +1,21 @@
 package usbong.android.questionloader;
 
 import java.io.InputStream;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
+import usbong.android.utils.UsbongUtils;
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
-import android.text.Html;
 import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -38,6 +44,8 @@ public class MainActivity extends Activity {
 	ArrayList<Integer> indices = new ArrayList<Integer>();
 	String language;
 
+	double accuracy; //added by Mike, 27 March 2015
+	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,22 +68,24 @@ public class MainActivity extends Activity {
         try
         {
         	
-        	InputStream isE = getResources().getAssets().open(language+"/" + songname);
+        	InputStream isE = getResources().getAssets().open(language+"/" + songname);        	
+//        	Log.d(">>>language : songname", language+" : "+songname);
         	qm = new QuestionManager();
         	qm.loadQuestions(isE, Question.DIFFICULTY_EASY);
         	newQues = qm.getQuestion(Question.DIFFICULTY_EASY,questionCounter);
-        	
-        	
+        	        	
         	String string = newQues.getQuestionText();
         	String[] parts = string.split("-");
         	if (difficulty.equalsIgnoreCase("easy"))
         		questionDifficulty = parts[0];
         	else
         		questionDifficulty = parts[1];	
-        	total = qm.getCount();
+        	total = qm.getCount();//-1;//do a -1 because questionCounter starts at 0; added by Mike, 31 March 2015
+        	System.out.println(">>>>TOTAL: "+total);
+
         	//System.out.println("The question is " + questionDifficulty);
         	question.setText(questionDifficulty);
-        	result.setText("");
+//        	result.setText(""); //commented out by Mike, 27 March 2015
         	//answer.setText("Correct answer: "+ newQues.getCorrectAnswer());
         	answer.setText("");
         	//progress counter
@@ -91,18 +101,53 @@ public class MainActivity extends Activity {
         
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.activity_main, menu);
-        return true;
-    }
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu)
+	{
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.about_and_feedback_menu, menu);
+		return true;
+	}
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item)
+	{		
+		switch(item.getItemId())
+		{
+			case(R.id.about):
+				AlertDialog.Builder builder = new AlertDialog.Builder(this);
+				builder.setTitle("About Singakamas");
+				builder.setMessage(UsbongUtils.readTextFileInAssetsFolder(MainActivity.this,"credits.txt")); //don't add a '/', otherwise the file would not be found
+				builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+				       public void onClick(DialogInterface dialog, int id) {
+				            dialog.cancel();
+				       }
+				   });
+				AlertDialog alert = builder.create();
+				alert.show();
+				return true;
+				
+			case(R.id.feedback):
+				//http://stackoverflow.com/questions/8701634/send-email-intent;
+				//last accessed: 1 April 2015, answer by Doraemon
+				//send to cloud-based service
+				Intent emailIntent = new Intent(android.content.Intent.ACTION_SENDTO, Uri.fromParts(
+						"mailto","usbong.ph@gmail.com",null));
+				emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Singkamas: Feedback (Android)");
+				emailIntent.putExtra(Intent.EXTRA_TEXT  , UsbongUtils.defaultFeedbackMessage);
+				startActivity(Intent.createChooser(emailIntent, "Sending feedback..."));
+				return true;
+			default:
+				return super.onOptionsItemSelected(item);
+
+		}
+	}
     
     public void nextQuestion(View view)
     {
     	
     	button2.setVisibility(View.INVISIBLE);
-    	result.setText("");
+//    	result.setText(""); //commented out by Mike, 27 March 2015
     	answer.setText("");
     	input_ans.setText("");
     	button1.setVisibility(View.INVISIBLE);
@@ -128,7 +173,7 @@ public class MainActivity extends Activity {
     	}
     	catch(Exception e)
     	{
-    		double totalScore = Math.round(score/total);
+    		double totalScore = score;//Math.round(score/total); //edited by Mike, 11 April 2015
     		Intent i = new Intent(getApplicationContext(), ResultPage.class);
     		i.putExtra("score", totalScore);
     		i.putExtra("language", language);
@@ -138,16 +183,56 @@ public class MainActivity extends Activity {
     	}
     	
     }
+
+    @SuppressLint("NewApi")
+	public void exitMainActivity(View view)
+    {
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		builder.setTitle("Exiting...");
+		builder.setMessage("Are you sure you want to return to song selection?")
+
+		   .setCancelable(false)
+		   .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+		       public void onClick(DialogInterface dialog, int id) {
+			       	Intent intent = new Intent(MainActivity.this, SongSelection.class);
+			    	intent.putExtra("language", language);
+			    	startActivity(intent);
+			    	MainActivity.this.finish();
+		       }
+		   })
+		   .setNegativeButton("No", new DialogInterface.OnClickListener() {
+		       public void onClick(DialogInterface dialog, int id) {
+		            dialog.cancel();
+		       }
+		   });
+		AlertDialog alert = builder.create();
+		alert.show();
+    }
     
     @SuppressLint("NewApi")
 	public void enterAnswer(View view)
     {
     	
     	user_answer = input_ans.getText().toString();
-    	double accuracy = compareAnswer(user_answer.replaceAll("\\s+",""),newQues.getCorrectAnswer().replaceAll("\\s+",""));
-    	result.setText("Accuracy: " + Math.round(accuracy) + "%");
-    	score += Math.round(accuracy);
-    	if (accuracy<100);
+    	//edited by Mike, 27 March 2015
+    	double temp_accuracy = compareAnswer(user_answer.replaceAll("\\s+",""),newQues.getCorrectAnswer().replaceAll("\\s+",""));
+    	score += Math.round(temp_accuracy);
+
+    	//aggregate accuracy scores
+//    	accuracy = (accuracy+temp_accuracy)/(questionCounter+1);
+//    	result.setText("Accuracy: " + Math.round(accuracy) + "%");
+    	double temp_score = score/(questionCounter+1); //added by Mike, 31 March 2015    	
+    	//Reference: http://stackoverflow.com/questions/7747469/how-can-i-truncate-a-double-to-only-two-decimal-places-in-java
+    	//; answer by Bozho, last accessed: 31 March 2015
+    	String a = new DecimalFormat("#.##").format(temp_score); //added by Mike, 31 March 2015
+    	result.setText("Accuracy: " + a + "%");
+
+    	score = temp_score;    	
+    	
+    	System.out.println("accuracy: "+accuracy);
+    	System.out.println("questionCounter: "+questionCounter);
+    	
+    	if (temp_accuracy<100) 
     	{
     		/*try 
     		{
@@ -163,6 +248,9 @@ public class MainActivity extends Activity {
     		answer.setText("Correct answer: " + newQues.getCorrectAnswer());
     		
     	}
+    	else {
+    		answer.setText("Correct!");
+    	}
     	questionCounter++;
     	try
     	{
@@ -174,7 +262,9 @@ public class MainActivity extends Activity {
     		Drawable drawableX = this.getResources().getDrawable(R.drawable.end_selector);
     		button2.setBackground(drawableX);
     		
-    		
+    		//added by Mike, 11 April 2015
+    		progress=total;
+            mProgress.setProgress((int) (progress*100));
     	}
     	button2.setVisibility(View.VISIBLE);
     	button1.setVisibility(View.INVISIBLE);
@@ -184,30 +274,31 @@ public class MainActivity extends Activity {
     
     public double compareAnswer(String a, String b)
     {
-    	
     	char[] first  = a.toLowerCase().toCharArray();
     	char[] second = b.toLowerCase().toCharArray();
     	double counter = 0;
     	double minLength = Math.min(first.length, second.length);
+    	double maxLength = Math.max(first.length, second.length); //added by Mike, 31 March 2015    	
 
     	for(int i = 0; i < minLength; i++)
     	{
     	        if (first[i] != second[i])
     	        {
     	        	indices.add(1);
-    	        	System.out.println("Here");
+//    	        	System.out.println("Here");
     	            counter++;    //this is the number of different characters
     	        }
     	        else
     	        {
     	        	indices.add(0);
-    	        	System.out.println("Here");
-    	        	
+//    	        	System.out.println("Here");  	        	
     	        }
     	}
     	//System.out.println(counter);
     	System.out.println("Here" + indices.size());
-    	return 100*((minLength-counter)/minLength);
+
+//    	return 100*((minLength-counter)/minLength);
+    	return 100*((minLength-counter)/maxLength); //edited by Mike, 31 March 2015
     }
     
     public String makeBold(ArrayList<Integer> index, String s)
@@ -226,6 +317,5 @@ public class MainActivity extends Activity {
     	
 		return boldMe.toString();
     	
-    }
-    
+    }        
 }

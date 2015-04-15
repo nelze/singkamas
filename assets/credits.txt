@@ -1,0 +1,17 @@
+--Singkamas (beta)--
+ver: April. 1, 2015
+
+Singkamas: Language Learning through Songs
+
+Usbong Social Systems, Inc.
+--Core Developers--
+Michael B. Syson 
+Nadia C. Leetian
+Nikko A. Nolasco 
+
+Contact:
+Website: www.usbong.ph
+Mailing List: usbong-users@googlegroups.com
+Email: usbong.ph@gmail.com
+
+Copyright 2011-2015.
