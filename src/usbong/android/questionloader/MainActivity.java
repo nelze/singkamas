@@ -175,7 +175,7 @@ public class MainActivity extends Activity {
     	}
     	catch(Exception e)
     	{
-    		double totalScore = score;//Math.round(score/total); //edited by Mike, 11 April 2015
+    		double totalScore = score/total; //added by Mike, 18 April 2015    	
     		Intent i = new Intent(getApplicationContext(), ResultPage.class);
     		i.putExtra("score", totalScore);
     		i.putExtra("language", language);
@@ -218,20 +218,29 @@ public class MainActivity extends Activity {
     	user_answer = input_ans.getText().toString();
     	//edited by Mike, 27 March 2015
     	double temp_accuracy = compareAnswer(user_answer.replaceAll("\\s+",""),newQues.getCorrectAnswer().replaceAll("\\s+",""));
-    	score += Math.round(temp_accuracy);
+    	System.out.println(">>>temp_accuracy: "+temp_accuracy);
+
+//    	score += Math.round(temp_accuracy);
+    	score += temp_accuracy;
+
     	//make bold
     	String newBold = makeBold(indices, newQues.getCorrectAnswer());
     	//aggregate accuracy scores
 //    	accuracy = (accuracy+temp_accuracy)/(questionCounter+1);
 //    	result.setText("Accuracy: " + Math.round(accuracy) + "%");
+
+    	int temp = questionCounter+1;
+    	System.out.println(">>>score: "+score);
+    	System.out.println(">>>questionCounter: "+temp);
+    	
     	double temp_score = score/(questionCounter+1); //added by Mike, 31 March 2015    	
     	//Reference: http://stackoverflow.com/questions/7747469/how-can-i-truncate-a-double-to-only-two-decimal-places-in-java
     	//; answer by Bozho, last accessed: 31 March 2015
     	String a = new DecimalFormat("#.##").format(temp_score); //added by Mike, 31 March 2015
     	result.setText("Accuracy: " + a + "%");
 
-    	score = temp_score;    	
-    	
+//    	score = temp_score;    	//removed by Mike, 18 April 2015
+     	
     	System.out.println("accuracy: "+accuracy);
     	System.out.println("questionCounter: "+questionCounter);
     	
@@ -252,7 +261,7 @@ public class MainActivity extends Activity {
     	{
     		//button2.setText("End");
     		Drawable drawableX = this.getResources().getDrawable(R.drawable.end_selector);
-    		button2.setBackground(drawableX);
+    		button2.setBackgroundDrawable(drawableX);
     		
     		//added by Mike, 11 April 2015
     		progress=total;
