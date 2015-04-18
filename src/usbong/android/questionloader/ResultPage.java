@@ -1,5 +1,7 @@
 package usbong.android.questionloader;
 
+import java.text.DecimalFormat;
+
 import usbong.android.utils.UsbongUtils;
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -36,8 +38,11 @@ public class ResultPage extends Activity {
 		System.out.println("SCORE:"+score);
 		
 //		numScore.setText(Double.toString(Math.round(score)));
-		numScore.setText(Double.toString(score)); //edited by Mike, 31 March 2015
+//		numScore.setText(Double.toString(score)); //edited by Mike, 31 March 2015
     	
+    	String a = new DecimalFormat("#.##").format(score); //added by Mike, 18 April 2015
+		numScore.setText(a); //edited by Mike, 18 April 2015
+		
 		if (score < 60 )
 		{
 			letter.setText("F");
