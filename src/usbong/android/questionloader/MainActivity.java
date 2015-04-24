@@ -35,8 +35,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.OnInitializedListener{
-	public static final String API_KEY = "singkamas_api_key";
-
 	//http://youtu.be/<VIDEO_ID>
 	//public static final String VIDEO_ID = "dKLftgvYsVU";
 	
@@ -98,7 +96,7 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
         	String string = newQues.getQuestionText();
         	String[] parts = string.split("-");
         	YouTubePlayerView youTubePlayerView = (YouTubePlayerView) findViewById(R.id.youtube_player);
-    		youTubePlayerView.initialize(API_KEY, this);
+    		youTubePlayerView.initialize(UsbongUtils.API_KEY, this);
         	if (difficulty.equalsIgnoreCase("easy"))
         		questionDifficulty = parts[0];
         	else
