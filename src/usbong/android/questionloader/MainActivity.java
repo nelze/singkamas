@@ -5,6 +5,15 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import com.google.android.youtube.player.YouTubeBaseActivity;
+import com.google.android.youtube.player.YouTubeInitializationResult;
+import com.google.android.youtube.player.YouTubePlayer;
+import com.google.android.youtube.player.YouTubePlayer.ErrorReason;
+import com.google.android.youtube.player.YouTubePlayer.PlaybackEventListener;
+import com.google.android.youtube.player.YouTubePlayer.PlayerStateChangeListener;
+import com.google.android.youtube.player.YouTubePlayer.Provider;
+import com.google.android.youtube.player.YouTubePlayerView;
+
 import usbong.android.utils.UsbongUtils;
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -23,9 +32,15 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
-public class MainActivity extends Activity {
+public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.OnInitializedListener{
+	public static final String API_KEY = "singkamas_api_key";
+
+	//http://youtu.be/<VIDEO_ID>
+	//public static final String VIDEO_ID = "dKLftgvYsVU";
 	
+	String VIDEO_ID ;
 	TextView question;
 	TextView answer;
 	TextView result;
@@ -41,6 +56,7 @@ public class MainActivity extends Activity {
 	String songname;
 	double score;
 	double total;
+	String link;
 	private ProgressBar mProgress;
 	double progress;
 	ArrayList<Integer> indices = new ArrayList<Integer>();
@@ -67,6 +83,8 @@ public class MainActivity extends Activity {
     		mProgress.setMax(100);
     		button2.setVisibility(View.INVISIBLE);
     		
+
+    		
         try
         {
         	
@@ -75,9 +93,12 @@ public class MainActivity extends Activity {
         	qm = new QuestionManager();
         	qm.loadQuestions(isE, Question.DIFFICULTY_EASY);
         	newQues = qm.getQuestion(Question.DIFFICULTY_EASY,questionCounter);
-        	        	
+        	VIDEO_ID = newQues.getVideo();
+        	link = newQues.getLink();
         	String string = newQues.getQuestionText();
         	String[] parts = string.split("-");
+        	YouTubePlayerView youTubePlayerView = (YouTubePlayerView) findViewById(R.id.youtube_player);
+    		youTubePlayerView.initialize(API_KEY, this);
         	if (difficulty.equalsIgnoreCase("easy"))
         		questionDifficulty = parts[0];
         	else
@@ -184,6 +205,16 @@ public class MainActivity extends Activity {
     		//Switch to scoreboard
     	}
     	
+    }
+    public void openLink(View view)
+    {
+    	if(link.equalsIgnoreCase(""))
+    		Toast.makeText(this, "Sorry, no link available!", Toast.LENGTH_LONG).show();
+    	else
+    	{
+    		Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(link));
+    		startActivity(browserIntent);
+    		}
     }
 
     @SuppressLint("NewApi")
@@ -349,5 +380,81 @@ public class MainActivity extends Activity {
 		
 		return sb.toString();
     	
-    }        
+    }
+
+	@Override
+	public void onInitializationFailure(Provider arg0,
+			YouTubeInitializationResult arg1) {
+		// TODO Auto-generated method stub
+		Toast.makeText(this, "Failed! Please check your internet connection", Toast.LENGTH_LONG).show();
+		
+	}
+
+	@Override
+	public void onInitializationSuccess(Provider provider, YouTubePlayer player, boolean wasRestored) {
+
+		/** add listeners to YouTubePlayer instance **/
+		player.setPlayerStateChangeListener(playerStateChangeListener);
+		player.setPlaybackEventListener(playbackEventListener);
+
+		/** Start buffering **/
+		if (!wasRestored) {
+			player.cueVideo(VIDEO_ID);
+		}
+	}    
+	
+	private PlaybackEventListener playbackEventListener = new PlaybackEventListener() {
+
+		@Override
+		public void onBuffering(boolean arg0) {
+		}
+
+		@Override
+		public void onPaused() {
+		}
+
+		@Override
+		public void onPlaying() {
+		}
+
+		@Override
+		public void onSeekTo(int arg0) {
+		}
+
+		@Override
+		public void onStopped() {
+		}
+
+	};
+
+	private PlayerStateChangeListener playerStateChangeListener = new PlayerStateChangeListener() {
+
+		@Override
+		public void onAdStarted() {
+		}
+		
+		@Override
+		public void onLoaded(String arg0) {
+		}
+
+		@Override
+		public void onLoading() {
+		}
+
+		@Override
+		public void onVideoEnded() {
+		}
+
+		@Override
+		public void onVideoStarted() {
+		}
+
+
+
+		@Override
+		public void onError(ErrorReason arg0) {
+			// TODO Auto-generated method stub
+			
+		}
+	};
 }

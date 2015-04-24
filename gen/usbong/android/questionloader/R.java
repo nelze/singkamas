@@ -68,33 +68,34 @@ public final class R {
         public static final int traditional_selector=0x7f020033;
     }
     public static final class id {
-        public static final int about=0x7f080019;
+        public static final int about=0x7f08001a;
         public static final int answerView=0x7f080002;
-        public static final int bottomButton=0x7f080017;
-        public static final int button=0x7f080013;
-        public static final int button1=0x7f080009;
-        public static final int button2=0x7f08000a;
-        public static final int button3=0x7f08000c;
-        public static final int button4=0x7f08000e;
+        public static final int bottomButton=0x7f080018;
+        public static final int button=0x7f080014;
+        public static final int button1=0x7f08000a;
+        public static final int button2=0x7f08000b;
+        public static final int button3=0x7f08000d;
+        public static final int button4=0x7f08000f;
         public static final int editText1=0x7f080000;
         public static final int enterButton=0x7f080004;
         public static final int exitButton=0x7f080007;
-        public static final int feedback=0x7f08001a;
-        public static final int imageView1=0x7f080011;
-        public static final int imageView2=0x7f080012;
+        public static final int feedback=0x7f08001b;
+        public static final int imageView1=0x7f080012;
+        public static final int imageView2=0x7f080013;
         public static final int instructionsView=0x7f080005;
         public static final int nextButton=0x7f080003;
-        public static final int numScore=0x7f08000f;
+        public static final int numScore=0x7f080010;
         public static final int progressBar1=0x7f080006;
         public static final int questionView=0x7f080001;
         public static final int resultView=0x7f080008;
-        public static final int score=0x7f080010;
-        public static final int spinner1=0x7f08000d;
-        public static final int textView1=0x7f08000b;
-        public static final int textView2=0x7f080014;
-        public static final int textView3=0x7f080016;
-        public static final int textViewPlaceHolder=0x7f080018;
-        public static final int topButton=0x7f080015;
+        public static final int score=0x7f080011;
+        public static final int spinner1=0x7f08000e;
+        public static final int textView1=0x7f08000c;
+        public static final int textView2=0x7f080015;
+        public static final int textView3=0x7f080017;
+        public static final int textViewPlaceHolder=0x7f080019;
+        public static final int topButton=0x7f080016;
+        public static final int youtube_player=0x7f080009;
     }
     public static final class layout {
         public static final int activity_main=0x7f030000;

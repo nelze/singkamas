@@ -95,5 +95,23 @@
         android:background="@drawable/next_selector"
         android:onClick="nextQuestion"
          />
+    
+     <com.google.android.youtube.player.YouTubePlayerView
+        android:id="@+id/youtube_player"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/nextButton"
+        android:background="#fff"
+        android:padding="5dp" />
+
+    <Button
+        android:id="@+id/button1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/youtube_player"
+        android:layout_marginTop="68dp"
+        android:text="Link to Spotify"
+        android:onClick="openLink" />
 
 </RelativeLayout>

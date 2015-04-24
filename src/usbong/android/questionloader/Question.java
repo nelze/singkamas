@@ -13,6 +13,8 @@ public class Question implements Cloneable
 	private int difficulty;
 	private String questionText;
 	private int correctIndex;
+	private String videoLink;
+	private String spotifyLink="";
 	private List<String> answers = new ArrayList<String>();
 	
 	
@@ -39,6 +41,20 @@ public class Question implements Cloneable
 
 	public String getQuestionText() {
 		return questionText;
+	}
+	public void setVideo(String videoLink) {
+		this.videoLink = videoLink;
+	}
+
+	public String getVideo() {
+		return videoLink;
+	}
+	public void setLink(String spotifyLink) {
+		this.spotifyLink = spotifyLink;
+	}
+
+	public String getLink() {
+		return spotifyLink;
 	}
 
 	public void setQuestionText(String questionText) {
