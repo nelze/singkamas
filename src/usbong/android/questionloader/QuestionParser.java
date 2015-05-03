@@ -24,7 +24,7 @@ public class QuestionParser
 //        		System.out.println("Character.isDigit(currentLine.charAt(0)): "+Character.isDigit(currentLine.charAt(0)));        		        		
         		currentLine = currentLine.trim();
         	
-//        		System.out.println(">>>>>currentLine: "+currentLine);
+        		System.out.println(">>>>>currentLine: "+currentLine);
         		//comment by Mike, 31 March 2015
         		//make sure that there are three new lines after the last line of the song
         		if (currentLine.equals("") && currentQuestion!=null)
@@ -34,7 +34,7 @@ public class QuestionParser
         		}        		
         		//I had to add "||Character.isDigit(currentLine.charAt(1)" because it seems that perhaps due to character encoding, charAt(0) produces a dot (top of :) and not a digit
         		else if (currentLine.length()>=1){
-        			if ((Character.isDigit(currentLine.charAt(0)))||(Character.isDigit(currentLine.charAt(1))))
+        			if ((Character.isDigit(currentLine.charAt(0)))||(currentLine.length()>1 && Character.isDigit(currentLine.charAt(1))))
         			{
 	//        			System.out.println("inside: Character.isDigit(currentLine.charAt(0))");       			
 	        			// digit, new question
@@ -55,6 +55,32 @@ public class QuestionParser
 	        			String answerString = currentLine.substring(dotIndex+1).trim();       			
 	        			
 	        			currentQuestion.addAnswer(answerString); 
+	        		}
+	        		else if (currentLine.charAt(0)=='+')
+	        		{
+	        			// add answer
+	        				// remove letter 
+	        			int dotIndex = currentLine.indexOf('+');
+	//        			System.out.println(">>>> currentLine: "+currentLine);
+	//        			System.out.println(">>>> currentLine.substring(dotIndex+1): "+currentLine.substring(dotIndex+1).trim());        			
+	        			String videoString = currentLine.substring(dotIndex+1).trim();       			
+	        			
+	        			currentQuestion.setVideo(videoString); 
+	        		}
+	        		else if (currentLine.charAt(0)=='$')
+	        		{
+	        			// add answer
+	        				// remove letter 
+	        			try{
+	        			int dotIndex = currentLine.indexOf('$');
+	//        			System.out.println(">>>> currentLine: "+currentLine);
+	//        			System.out.println(">>>> currentLine.substring(dotIndex+1): "+currentLine.substring(dotIndex+1).trim());        			
+	        			String spotifyString = currentLine.substring(dotIndex+1).trim();       				        			
+	        			currentQuestion.setLink(spotifyString); }
+	        			catch (Exception e)
+	        			{
+	        				
+	        			}
 	        		}
         		}
         	}

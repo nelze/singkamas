@@ -1,5 +1,9 @@
 --Singkamas (beta)--
+<<<<<<< HEAD
+ver: April 24, 2015
+=======
 ver: April 20, 2015
+>>>>>>> 202d2314c5638c959d457ea02d185fdf73252022
 
 Singkamas: Language Learning through Songs
 

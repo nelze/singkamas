@@ -22,7 +22,8 @@ import android.app.Activity;
 import android.content.res.AssetManager;
 
 public class UsbongUtils {		
-	public final static String APP_VERSION="1April2015 (Google Play)";	
+	public final static String APP_VERSION="24April2015 (Google Play)";	
+	public final static String API_KEY = "singkamas_api_key";
 
 	public static int width;
 	public static int height;
