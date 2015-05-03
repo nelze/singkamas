@@ -1,5 +1,9 @@
 --Singkamas (beta)--
+<<<<<<< HEAD
 ver: April 24, 2015
+=======
+ver: April 20, 2015
+>>>>>>> 202d2314c5638c959d457ea02d185fdf73252022
 
 Singkamas: Language Learning through Songs
 
@@ -14,4 +18,6 @@ Website: www.usbong.ph
 Mailing List: usbong-users@googlegroups.com
 Email: usbong.ph@gmail.com
 
-Copyright 2011-2015.
+Disclaimer: The songs/artists in this application are not directly affiliated with Singkamas. This application is only for educational purposes.
+
+Copyright 2015.
