@@ -22,7 +22,7 @@ import android.app.Activity;
 import android.content.res.AssetManager;
 
 public class UsbongUtils {		
-	public final static String APP_VERSION="24April2015 (Google Play)";	
+	public final static String APP_VERSION="May4,2015 (Google Play)";	
 	public final static String API_KEY = "developer_key";
 
 	public static int width;
