@@ -96,7 +96,7 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
         	String string = newQues.getQuestionText();
         	String[] parts = string.split("-");
         	YouTubePlayerView youTubePlayerView = (YouTubePlayerView) findViewById(R.id.youtube_player);
-    		youTubePlayerView.initialize(UsbongUtils.API_KEY, this);
+    		youTubePlayerView.initialize(usbong.android.utils.UsbongUtils.API_KEY, this);
         	if (difficulty.equalsIgnoreCase("easy"))
         		questionDifficulty = parts[0];
         	else
@@ -384,7 +384,7 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
 	public void onInitializationFailure(Provider arg0,
 			YouTubeInitializationResult arg1) {
 		// TODO Auto-generated method stub
-		Toast.makeText(this, "Failed! Please check your internet connection", Toast.LENGTH_LONG).show();
+		Toast.makeText(this, arg1.toString(), Toast.LENGTH_LONG).show();
 		
 	}
 
