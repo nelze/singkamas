@@ -96,7 +96,7 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
         	String string = newQues.getQuestionText();
         	String[] parts = string.split("-");
         	YouTubePlayerView youTubePlayerView = (YouTubePlayerView) findViewById(R.id.youtube_player);
-    		youTubePlayerView.initialize(usbong.apikey, this);
+    		youTubePlayerView.initialize(usbong.android.utils.UsbongUtils.API_KEY, this);
         	if (difficulty.equalsIgnoreCase("easy"))
         		questionDifficulty = parts[0];
         	else
