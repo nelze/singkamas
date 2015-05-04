@@ -7,7 +7,6 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Point;
 import android.net.Uri;
 import android.os.Bundle;
@@ -43,11 +42,7 @@ public class MainMenuActivity extends Activity {
 	     adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 	     // Apply the adapter to the spinner
 	     spinner.setAdapter(adapter);
-	     SharedPreferences sharedPref = getSharedPreferences("FileName",MODE_PRIVATE);
-	     int spinnerValue = sharedPref.getInt("userChoiceSpinner",-1);
-	     if(spinnerValue != -1) 
-	       // set the value of the spinner 
-	       spinner.setSelection(spinnerValue);
+
 /*
 	     Display display = getWindowManager().getDefaultDisplay();
 	     Point size = new Point();
@@ -110,7 +105,6 @@ public class MainMenuActivity extends Activity {
     
     public void startRecord(View view) {
     	language = spinner.getSelectedItem().toString();
-    	
 		Intent i = new Intent(getApplicationContext(), SongSelection.class);
 		i.putExtra("language", language);
 		
@@ -139,11 +133,6 @@ public class MainMenuActivity extends Activity {
     public void review(View view)
     {
     	language = spinner.getSelectedItem().toString();
-    	int userChoice = spinner.getSelectedItemPosition();
-    	SharedPreferences sharedPref = getSharedPreferences("FileName",0);
-    	SharedPreferences.Editor prefEditor = sharedPref.edit();
-    	prefEditor.putInt("userChoiceSpinner",userChoice);
-    	prefEditor.commit();
     	Intent intent = new Intent(MainMenuActivity.this, ReviewPage.class);
     	intent.putExtra("language", language);
     	startActivity(intent);
