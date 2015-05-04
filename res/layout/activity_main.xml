@@ -106,9 +106,8 @@
         android:id="@+id/youtube_player"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/nextButton"
-        android:background="#fff"
-        android:padding="5dp" />
+        android:layout_below="@+id/answerView"
+        android:background="#fff"/>
 
     <Button
         android:id="@+id/button1"
