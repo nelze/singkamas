@@ -1,9 +1,5 @@
 --Singkamas (beta)--
-<<<<<<< HEAD
-ver: April 24, 2015
-=======
-ver: April 20, 2015
->>>>>>> 202d2314c5638c959d457ea02d185fdf73252022
+ver: May 8, 2015
 
 Singkamas: Language Learning through Songs
 
@@ -12,6 +8,17 @@ Usbong Social Systems, Inc.
 Michael B. Syson 
 Nadia C. Leetian
 Nikko A. Nolasco 
+
+--QA Engineer--
+Juaneo Fernando
+
+--Graphics Artists--
+Angela Escudero
+Juaneo Fernando
+
+--Community Developers--
+Nikko A. Nolasco
+Jaime D. Lopez
 
 Contact:
 Website: www.usbong.ph

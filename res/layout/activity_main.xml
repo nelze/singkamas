@@ -100,6 +100,7 @@
         android:layout_toRightOf="@+id/enterButton"
         android:background="@drawable/next_selector"
         android:onClick="nextQuestion"
+        android:paddingBottom="5dp" 
          />
     
      <com.google.android.youtube.player.YouTubePlayerView
@@ -108,16 +109,27 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/answerView"
         android:background="#fff"/>
-
-    <Button
-        android:id="@+id/button1"
+     
+     <TextView
+        android:id="@+id/textView3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
+        android:layout_alignLeft="@+id/editText1"
+        android:layout_centerVertical="true"
         android:layout_below="@+id/youtube_player"
-        android:layout_marginTop="68dp"
-        android:text="Link to Xiami"
-        android:onClick="openLink" />
+        android:text="Related Videos:" 
+        android:textSize="20sp"
+        android:textColor="#92d050"/>
+     
+     <ListView
+        android:id="@+id/videos_found"
+        android:layout_width="match_parent"
+       android:layout_height="1000dip"
+         android:layout_alignLeft="@+id/editText1"
+        android:layout_below="@+id/textView3"
+        android:dividerHeight="5dp"
+        />
 
+       
 </RelativeLayout>
 </ScrollView>

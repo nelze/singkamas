@@ -4,6 +4,7 @@ import java.io.InputStream;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import com.google.android.youtube.player.YouTubeBaseActivity;
 import com.google.android.youtube.player.YouTubeInitializationResult;
@@ -12,44 +13,61 @@ import com.google.android.youtube.player.YouTubePlayer.ErrorReason;
 import com.google.android.youtube.player.YouTubePlayer.PlaybackEventListener;
 import com.google.android.youtube.player.YouTubePlayer.PlayerStateChangeListener;
 import com.google.android.youtube.player.YouTubePlayer.Provider;
+import com.google.android.youtube.player.YouTubePlayerFragment;
 import com.google.android.youtube.player.YouTubePlayerView;
+import com.squareup.picasso.Picasso;
 
 import usbong.android.utils.UsbongUtils;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
+import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.Html;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.OnInitializedListener{
 	//http://youtu.be/<VIDEO_ID>
-	//public static final String VIDEO_ID = "dKLftgvYsVU";
+	public static final String API_KEY = Usbong.API_KEY;
 	
 	String VIDEO_ID ;
+	MediaPlayer mpSplash1;
+	MediaPlayer mpSplash2;
 	TextView question;
 	TextView answer;
 	TextView result;
+	ListView videosFound;
+    Handler handler;
 	EditText input_ans;
 	int questionCounter = 0;
 	QuestionManager qm;
+	YouTubePlayerView youTubePlayerView;
 	Question newQues;
 	Button button1;
 	Button button2;
 	String user_answer;
 	String questionDifficulty;
+	YouTubePlayerFragment youTubePlayerFragment;
 	String difficulty;
 	String songname;
 	double score;
@@ -59,7 +77,7 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
 	double progress;
 	ArrayList<Integer> indices = new ArrayList<Integer>();
 	String language;
-
+	List<VideoItem> searchResults;
 	double accuracy; //added by Mike, 27 March 2015
 	
     @Override
@@ -71,6 +89,7 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
         	difficulty = bundle.getString("difficulty");
         	songname = bundle.getString("song_title");
         	language = bundle.getString("language");
+        	videosFound = (ListView)findViewById(R.id.videos_found); 
     		question   = (TextView)findViewById(R.id.questionView);
     		result   = (TextView)findViewById(R.id.resultView);
     		answer   = (TextView)findViewById(R.id.answerView);
@@ -79,6 +98,7 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
     		button2= (Button)findViewById(R.id.nextButton);
     		mProgress = (ProgressBar) findViewById(R.id.progressBar1);
     		mProgress.setMax(100);
+    		handler = new Handler();
     		button2.setVisibility(View.INVISIBLE);
     		
 
@@ -95,8 +115,8 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
         	link = newQues.getLink();
         	String string = newQues.getQuestionText();
         	String[] parts = string.split("-");
-        	YouTubePlayerView youTubePlayerView = (YouTubePlayerView) findViewById(R.id.youtube_player);
-    		youTubePlayerView.initialize(usbong.android.utils.UsbongUtils.API_KEY, this);
+        	youTubePlayerView = (YouTubePlayerView) findViewById(R.id.youtube_player);
+    		youTubePlayerView.initialize(API_KEY, this);
         	if (difficulty.equalsIgnoreCase("easy"))
         		questionDifficulty = parts[0];
         	else
@@ -113,6 +133,7 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
         	//System.out.println(questionCounter +" " + total);
         	progress = questionCounter/total;
             mProgress.setProgress((int) (progress*100));
+            searchOnYoutube(songname);
         }
         catch(Exception e)
         {
@@ -120,6 +141,68 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
         }
        
         
+    }
+    
+    private void searchOnYoutube(final String keywords){
+            new Thread(){
+                public void run(){
+                    YoutubeConnector yc = new YoutubeConnector(MainActivity.this);
+                    searchResults = yc.search(keywords);       
+                    System.out.println("SR:" + searchResults);
+                    System.out.println("KW:" + keywords);
+                    if (searchResults!= null)
+                    {
+                    handler.post(new Runnable(){
+                        public void run(){
+                            updateVideosFound();
+                        }
+                    });
+                }
+                }
+            }.start();
+        }
+    
+    private void updateVideosFound(){
+        ArrayAdapter<VideoItem> adapter = new ArrayAdapter<VideoItem>(getApplicationContext(), R.layout.video_item, searchResults){
+            @Override
+            public View getView(int position, View convertView, ViewGroup parent) {
+                if(convertView == null){
+                    convertView = getLayoutInflater().inflate(R.layout.video_item, parent, false);
+                }
+                ImageView thumbnail = (ImageView)convertView.findViewById(R.id.video_thumbnail);
+                TextView title = (TextView)convertView.findViewById(R.id.video_title);
+                TextView description = (TextView)convertView.findViewById(R.id.video_description);
+                 
+                VideoItem searchResult = searchResults.get(position);
+                 
+                Picasso.with(getApplicationContext()).load(searchResult.getThumbnailURL()).into(thumbnail);
+                title.setText(searchResult.getTitle());
+                description.setText(searchResult.getDescription());
+                return convertView;
+            }
+        };          
+         
+        videosFound.setAdapter(adapter);
+        
+   
+        videosFound.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+     
+            @Override
+            public void onItemClick(AdapterView<?> av, View v, int pos,
+                    long id) {              
+                //Intent intent = new Intent(getApplicationContext(), PlayerActivity.class);
+                //intent.putExtra("VIDEO_ID", searchResults.get(pos).getId());
+                //startActivity(intent);
+            	
+            	VIDEO_ID = searchResults.get(pos).getId();
+            	System.out.println("Here" + VIDEO_ID);
+            	player.cueVideo(VIDEO_ID);
+            	
+
+                
+            }
+             
+        });
     }
 
 	@Override
@@ -166,7 +249,8 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
     
     public void nextQuestion(View view)
     {
-    	
+    	mpSplash1.stop();
+    	mpSplash2.stop();
     	button2.setVisibility(View.INVISIBLE);
 //    	result.setText(""); //commented out by Mike, 27 March 2015
     	answer.setText("");
@@ -204,7 +288,9 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
     	}
     	
     }
-    public void openLink(View view)
+    // Old Xiami Code
+    
+   /* public void openLink(View view)
     {
     	if(link.equalsIgnoreCase(""))
     		Toast.makeText(this, "Sorry, no link available!", Toast.LENGTH_LONG).show();
@@ -213,7 +299,7 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
     		Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(link));
     		startActivity(browserIntent);
     		}
-    }
+    }*/
 
     @SuppressLint("NewApi")
 	public void exitMainActivity(View view)
@@ -277,9 +363,16 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
     	{
     		answer.setText(Html.fromHtml("Correct answer: " + newBold));
     		
+    		//Play wrong sound
+    		mpSplash1 = MediaPlayer.create(this, R.raw.wrong);
+    		mpSplash1.start();
     	}
     	else {
     		answer.setText("Correct!");
+    		
+    		//Play correct sound
+    		mpSplash2 = MediaPlayer.create(this, R.raw.correct);
+    		mpSplash2.start();
     	}
     	questionCounter++;
     	try
@@ -387,11 +480,19 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
 		Toast.makeText(this, arg1.toString(), Toast.LENGTH_LONG).show();
 		
 	}
+	
+	 
+     
+      
+     
+      
+     YouTubePlayer player;
 
 	@Override
 	public void onInitializationSuccess(Provider provider, YouTubePlayer player, boolean wasRestored) {
 
 		/** add listeners to YouTubePlayer instance **/
+		this.player = player;
 		player.setPlayerStateChangeListener(playerStateChangeListener);
 		player.setPlaybackEventListener(playbackEventListener);
 
