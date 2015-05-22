@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import usbong.android.utils.UsbongUtils;
+
 import android.content.Context;
 import android.util.Log;
 
@@ -21,7 +23,7 @@ public class YoutubeConnector {
      
     // Your developer key goes here
     public static final String KEY 
-        = Usbong.API_KEY;
+        = UsbongUtils.API_KEY;
      
     public YoutubeConnector(Context context) { 
         youtube = new YouTube.Builder(new NetHttpTransport(), 

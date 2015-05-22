@@ -48,7 +48,7 @@ import android.widget.Toast;
 
 public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.OnInitializedListener{
 	//http://youtu.be/<VIDEO_ID>
-	public static final String API_KEY = Usbong.API_KEY;
+	public static final String API_KEY = UsbongUtils.API_KEY;
 	
 	String VIDEO_ID ;
 	MediaPlayer mpSplash1;
@@ -69,6 +69,7 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
 	String questionDifficulty;
 	YouTubePlayerFragment youTubePlayerFragment;
 	String difficulty;
+	boolean correct = true;
 	String songname;
 	double score;
 	double total;
@@ -249,8 +250,10 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
     
     public void nextQuestion(View view)
     {
-    	mpSplash1.stop();
-    	mpSplash2.stop();
+    	if (!correct)
+    		mpSplash1.stop();
+    	else
+    		mpSplash2.stop();
     	button2.setVisibility(View.INVISIBLE);
 //    	result.setText(""); //commented out by Mike, 27 March 2015
     	answer.setText("");
@@ -366,6 +369,7 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
     		//Play wrong sound
     		mpSplash1 = MediaPlayer.create(this, R.raw.wrong);
     		mpSplash1.start();
+    		correct = false;
     	}
     	else {
     		answer.setText("Correct!");
@@ -373,6 +377,7 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
     		//Play correct sound
     		mpSplash2 = MediaPlayer.create(this, R.raw.correct);
     		mpSplash2.start();
+    		correct = true;
     	}
     	questionCounter++;
     	try

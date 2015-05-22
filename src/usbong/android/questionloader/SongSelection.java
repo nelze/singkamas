@@ -7,6 +7,7 @@ import java.util.Arrays;
 
 import usbong.android.utils.UsbongUtils;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ListActivity;
@@ -179,6 +180,7 @@ public class SongSelection extends ListActivity {
 			return arg0;
 		}
 
+		@SuppressLint("DefaultLocale")
 		@Override
 		public View getView(int position, View convertView, ViewGroup arg2) {
 			// TODO Auto-generated method stub
@@ -201,7 +203,10 @@ public class SongSelection extends ListActivity {
 
 			// set the image here
 			try {
-				myDrawableImage = myRes.getDrawable(myRes.getIdentifier(fileList[position], "drawable", UsbongUtils.myPackageName));
+				
+				String imgFile = (fileList[position].replaceAll("[()?:!.,;{}\\'\\s+]", "")).toLowerCase();
+				System.out.println("Image here" + imgFile);
+				myDrawableImage = myRes.getDrawable(myRes.getIdentifier(imgFile, "drawable", UsbongUtils.myPackageName));
 				image.setImageDrawable(myDrawableImage);		        		        	
 			}
 			catch (NotFoundException e) { //if song is not found
