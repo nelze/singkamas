@@ -7,12 +7,16 @@ import java.util.Arrays;
 
 import usbong.android.utils.UsbongUtils;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ListActivity;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.Resources;
+import android.content.res.Resources.NotFoundException;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -34,6 +38,8 @@ import android.widget.TextView;
 public class SongSelection extends ListActivity {
 	String language;
 	Button review;
+	Resources myRes;
+	Drawable myDrawableImage;
 	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +48,8 @@ public class SongSelection extends ListActivity {
         Bundle bundle = getIntent().getExtras();
     	language= bundle.getString("language");
     	
+		//Reference: http://www.anddev.org/tinytut_-_get_resources_by_name__getidentifier_-t460.html; last accessed 14 Sept 2011
+        myRes = getResources();        
     	
         try
         {
@@ -172,6 +180,7 @@ public class SongSelection extends ListActivity {
 			return arg0;
 		}
 
+		@SuppressLint("DefaultLocale")
 		@Override
 		public View getView(int position, View convertView, ViewGroup arg2) {
 			// TODO Auto-generated method stub
@@ -191,9 +200,21 @@ public class SongSelection extends ListActivity {
 			ImageView image = (ImageView) view.findViewById(R.id.imageView1);
 			TextView text = (TextView) view.findViewById(R.id.textView1);			
 			TextView textPlaceHolder = (TextView) view.findViewById(R.id.textViewPlaceHolder);			
-			
+
+/*			//commented out by Mike, 25 May 2015
 			// set the image here
-			// image.setImageBitmap(bm)
+			try {
+				
+				String imgFile = (fileList[position].replaceAll("[()?:!.,;{}\\'\\s+]", "")).toLowerCase();
+				System.out.println("Image here" + imgFile);
+				myDrawableImage = myRes.getDrawable(myRes.getIdentifier(imgFile, "drawable", UsbongUtils.myPackageName));
+				image.setImageDrawable(myDrawableImage);		        		        	
+			}
+			catch (NotFoundException e) { //if song is not found
+				//use default image
+			}
+*/			
+			
 			//System.out.println(text);
 			// set the text
 //			text.setText(fileList[position]); //commented out by Mike, 30 March 2015

@@ -50,6 +50,7 @@ public class MainMenuActivity extends Activity {
 	     UsbongUtils.width = size.x;
 	     UsbongUtils.height = size.y;
 */	     
+
 	     //Reference: http://stackoverflow.com/questions/11338602/how-to-get-screen-resolution-of-your-android-device;
 	     //last accessed: 1 April 2015, answer by K_Anas
 	     DisplayMetrics metrics = getResources().getDisplayMetrics();

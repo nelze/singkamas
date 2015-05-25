@@ -1,9 +1,9 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
     android:background="@drawable/title_bg"
-    tools:context=".MainActivity" >
+    tools:context=".MainActivity">
 
     <Button
         android:id="@+id/button1"
@@ -12,7 +12,7 @@
         android:layout_centerHorizontal="true"
         android:layout_above="@+id/button2"
         android:background="@drawable/start_selector"
-        android:onClick="startRecord" />
+        android:onClick="startRecord"/>
 
     <Button
         android:id="@+id/button2"
@@ -21,7 +21,7 @@
         android:layout_alignRight="@+id/button1"
         android:layout_above="@+id/textView1"
         android:layout_marginTop="4dp"
-        android:layout_marginBottom="10dp"        
+        android:layout_marginBottom="4dp"        
         android:background="@drawable/exit_selector"
         android:onClick="exit" />
 
@@ -58,5 +58,14 @@
         android:layout_alignTop="@+id/spinner1"
         android:onClick="review"
         android:text="Review Basic Characters" />
-
+   	
+   	<ImageView
+   	    android:id="@+id/powered_by_usbong_imageview"
+   	    android:layout_width="wrap_content"
+   	    android:layout_height="wrap_content"
+        android:background="@drawable/powered_by_usbong_logov3"
+   	    android:layout_alignParentBottom="true"
+   	    android:layout_centerHorizontal="true"
+   	    android:layout_marginBottom="4dp"
+   	    />    
 </RelativeLayout>

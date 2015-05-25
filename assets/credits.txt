@@ -1,7 +1,7 @@
 --Singkamas (beta)--
-ver: May 4, 2015
+ver: May 25, 2015
 
-Singkamas: Language Learning through Songs
+Singkamas: Language Learning through Music
 
 Usbong Social Systems, Inc.
 --Core Developers--
@@ -11,6 +11,11 @@ Nikko A. Nolasco
 
 --QA Engineer--
 Juaneo Fernando
+
+--Graphics Artists--
+Angela Escudero
+Juaneo Fernando
+Jaime D. Lopez
 
 --Community Developers--
 Nikko A. Nolasco
