@@ -119,17 +119,15 @@
         android:layout_below="@+id/youtube_player"
         android:text="Related Videos:" 
         android:textSize="20sp"
-        android:textColor="#92d050"/>
+        android:textColor="#f9ce59"/>
      
      <ListView
         android:id="@+id/videos_found"
         android:layout_width="match_parent"
-       android:layout_height="1000dip"
-         android:layout_alignLeft="@+id/editText1"
+        android:layout_height="320dip"
+        android:layout_alignLeft="@+id/editText1"
         android:layout_below="@+id/textView3"
-        android:dividerHeight="5dp"
-        />
-
-       
-</RelativeLayout>
+        android:dividerHeight="2dp"
+        />       
+	</RelativeLayout>
 </ScrollView>
