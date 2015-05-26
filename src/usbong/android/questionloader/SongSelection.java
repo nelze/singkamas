@@ -201,6 +201,10 @@ public class SongSelection extends ListActivity {
 			TextView text = (TextView) view.findViewById(R.id.textView1);			
 			TextView textPlaceHolder = (TextView) view.findViewById(R.id.textViewPlaceHolder);			
 
+<<<<<<< HEAD
+=======
+/*			//commented out by Mike, 25 May 2015
+>>>>>>> 089f312b1d1561b52775e892b29c2d2bf81d122e
 			// set the image here
 			try {
 				
@@ -212,6 +216,10 @@ public class SongSelection extends ListActivity {
 			catch (NotFoundException e) { //if song is not found
 				//use default image
 			}
+<<<<<<< HEAD
+=======
+*/			
+>>>>>>> 089f312b1d1561b52775e892b29c2d2bf81d122e
 			
 			//System.out.println(text);
 			// set the text

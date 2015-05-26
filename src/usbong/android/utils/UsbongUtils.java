@@ -25,8 +25,13 @@ import android.graphics.BitmapFactory;
 import android.widget.ImageView;
 
 public class UsbongUtils {		
+<<<<<<< HEAD
 	public final static String APP_VERSION="May4,2015 (Google Play)";	
 	public final static String API_KEY = "AIzaSyBh-kcAg1pmfCSQsbNqz4K4BxvBIgjOd90";
+=======
+	public final static String APP_VERSION="May24,2015v2 (Google Play)";	
+	public final static String API_KEY = "AIzaSyB5mM_lk_bbdT5nUWQTO6S5FyZ9IgaxqXc";
+>>>>>>> 089f312b1d1561b52775e892b29c2d2bf81d122e
 
 	public final static String myPackageName="usbong.android.questionloader";
 

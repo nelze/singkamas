@@ -1,7 +1,11 @@
 --Singkamas (beta)--
+<<<<<<< HEAD
 ver: May 8, 2015
+=======
+ver: May 25, 2015
+>>>>>>> 089f312b1d1561b52775e892b29c2d2bf81d122e
 
-Singkamas: Language Learning through Songs
+Singkamas: Language Learning through Music
 
 Usbong Social Systems, Inc.
 --Core Developers--
@@ -15,6 +19,10 @@ Juaneo Fernando
 --Graphics Artists--
 Angela Escudero
 Juaneo Fernando
+<<<<<<< HEAD
+=======
+Jaime D. Lopez
+>>>>>>> 089f312b1d1561b52775e892b29c2d2bf81d122e
 
 --Community Developers--
 Nikko A. Nolasco

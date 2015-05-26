@@ -5,7 +5,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import usbong.android.utils.UsbongUtils;
+<<<<<<< HEAD
 
+=======
+>>>>>>> 089f312b1d1561b52775e892b29c2d2bf81d122e
 import android.content.Context;
 import android.util.Log;
 
@@ -20,7 +23,12 @@ import com.google.api.services.youtube.model.SearchResult;
 public class YoutubeConnector {
     private YouTube youtube; 
     private YouTube.Search.List query;
+<<<<<<< HEAD
      
+=======
+//    private YouTube.Channels.List query2; //added by Mike, 22 May 2015
+    
+>>>>>>> 089f312b1d1561b52775e892b29c2d2bf81d122e
     // Your developer key goes here
     public static final String KEY 
         = UsbongUtils.API_KEY;
@@ -36,7 +44,13 @@ public class YoutubeConnector {
             query = youtube.search().list("id,snippet");
             query.setKey(KEY);          
             query.setType("video");
+<<<<<<< HEAD
             query.setFields("items(id/videoId,snippet/title,snippet/description,snippet/thumbnails/default/url)");                              
+=======
+            query.setFields("items(id/videoId,snippet/title,snippet/description,snippet/thumbnails/default/url)");
+            
+//            query2 = youtube.channels().list("id,statistics");
+>>>>>>> 089f312b1d1561b52775e892b29c2d2bf81d122e
         }catch(IOException e){
             Log.d("YC", "Could not initialize: "+e);
         }
@@ -46,12 +60,22 @@ public class YoutubeConnector {
         try{
             SearchListResponse response = query.execute();
             List<SearchResult> results = response.getItems();
+<<<<<<< HEAD
              
+=======
+                         
+>>>>>>> 089f312b1d1561b52775e892b29c2d2bf81d122e
             List<VideoItem> items = new ArrayList<VideoItem>();
             for(SearchResult result:results){
                 VideoItem item = new VideoItem();
                 item.setTitle(result.getSnippet().getTitle());
+<<<<<<< HEAD
                 item.setDescription(result.getSnippet().getDescription());
+=======
+
+                //commented out by Mike, 22 May 2015
+//                item.setDescription(result.getSnippet().getDescription());
+>>>>>>> 089f312b1d1561b52775e892b29c2d2bf81d122e
                 item.setThumbnailURL(result.getSnippet().getThumbnails().getDefault().getUrl());
                 item.setId(result.getId().getVideoId());
                 items.add(item);            
