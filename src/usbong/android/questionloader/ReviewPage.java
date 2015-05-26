@@ -50,7 +50,7 @@ public class ReviewPage extends Activity {
     	}
     	else if (language.equalsIgnoreCase("Korean"))
     	{
-    		image.setImageResource(R.drawable.hangeul_chart);
+    		image.setImageResource(R.drawable.korean_chart);
     	}
     	else
     	{

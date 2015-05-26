@@ -64,7 +64,6 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
 	YouTubePlayerView youTubePlayerView;
 	Question newQues;
 	Button button1;
-	TextView error;
 	Button button2;
 	String user_answer;
 	String questionDifficulty;
@@ -92,7 +91,6 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
         	songname = bundle.getString("song_title");
         	language = bundle.getString("language");
         	videosFound = (ListView)findViewById(R.id.videos_found); 
-        	error = (TextView)findViewById(R.id.textView3); 
     		question   = (TextView)findViewById(R.id.questionView);
     		result   = (TextView)findViewById(R.id.resultView);
     		answer   = (TextView)findViewById(R.id.answerView);
@@ -103,6 +101,9 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
     		mProgress.setMax(100);
     		handler = new Handler();
     		button2.setVisibility(View.INVISIBLE);
+    		
+
+    		
         try
         {
         	
@@ -116,13 +117,7 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
         	String string = newQues.getQuestionText();
         	String[] parts = string.split("-");
         	youTubePlayerView = (YouTubePlayerView) findViewById(R.id.youtube_player);
-        	try{
     		youTubePlayerView.initialize(API_KEY, this);
-        	}
-        	catch (Exception e)
-        	{
-        		youTubePlayerView.initialize("AIzaSyBh-kcAg1pmfCSQsbNqz4K4BxvBIgjOd90", this);
-        	}
         	if (difficulty.equalsIgnoreCase("easy"))
         		questionDifficulty = parts[0];
         	else
@@ -150,67 +145,65 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
     }
     
     private void searchOnYoutube(final String keywords){
-    		new Thread(){
+            new Thread(){
                 public void run(){
-                	try
-                	{
                     YoutubeConnector yc = new YoutubeConnector(MainActivity.this);
-                    searchResults = yc.search(keywords);  
-                    searchResults = searchResults.subList(0,2); //added by Mike, 22 May 2015
+                    searchResults = yc.search(keywords);       
                     System.out.println("SR:" + searchResults);
                     System.out.println("KW:" + keywords);
                     if (searchResults!= null)
                     {
-	                    handler.post(new Runnable(){
-	                        public void run(){
-	                        		updateVideosFound();
-	                        }
-	                    });
+                    handler.post(new Runnable(){
+                        public void run(){
+                            updateVideosFound();
+                        }
+                    });
                 }
-                	}
-                	catch (Exception e)
-                	{
-                		error.setText("Please check your internet connection.");
-                	}
                 }
             }.start();
         }
     
     private void updateVideosFound(){
-        	ArrayAdapter<VideoItem> adapter = new ArrayAdapter<VideoItem>(getApplicationContext(), R.layout.video_item, searchResults){
-	            @Override
-	            public View getView(int position, View convertView, ViewGroup parent) {
-	                if(convertView == null){
-	                    convertView = getLayoutInflater().inflate(R.layout.video_item, parent, false);
-	                }
-	                ImageView thumbnail = (ImageView)convertView.findViewById(R.id.video_thumbnail);
-	                TextView title = (TextView)convertView.findViewById(R.id.video_title);
-	                TextView description = (TextView)convertView.findViewById(R.id.video_description);
-	                 
-	                VideoItem searchResult = searchResults.get(position);
-	                 
-	                Picasso.with(getApplicationContext()).load(searchResult.getThumbnailURL()).into(thumbnail);
-	                title.setText(searchResult.getTitle());
-	                description.setText(searchResult.getDescription());
-	                return convertView;
-	            }
-	        };          
-	         
-	        videosFound.setAdapter(adapter);          
-	        videosFound.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-	     
-	            @Override
-	            public void onItemClick(AdapterView<?> av, View v, int pos,
-	                    long id) {              
-	                //Intent intent = new Intent(getApplicationContext(), PlayerActivity.class);
-	                //intent.putExtra("VIDEO_ID", searchResults.get(pos).getId());
-	                //startActivity(intent);
-	            	
-	            	VIDEO_ID = searchResults.get(pos).getId();
-	            	System.out.println("Here" + VIDEO_ID);
-	            	player.cueVideo(VIDEO_ID);
-	            }             
-	        });			
+        ArrayAdapter<VideoItem> adapter = new ArrayAdapter<VideoItem>(getApplicationContext(), R.layout.video_item, searchResults){
+            @Override
+            public View getView(int position, View convertView, ViewGroup parent) {
+                if(convertView == null){
+                    convertView = getLayoutInflater().inflate(R.layout.video_item, parent, false);
+                }
+                ImageView thumbnail = (ImageView)convertView.findViewById(R.id.video_thumbnail);
+                TextView title = (TextView)convertView.findViewById(R.id.video_title);
+                TextView description = (TextView)convertView.findViewById(R.id.video_description);
+                 
+                VideoItem searchResult = searchResults.get(position);
+                 
+                Picasso.with(getApplicationContext()).load(searchResult.getThumbnailURL()).into(thumbnail);
+                title.setText(searchResult.getTitle());
+                description.setText(searchResult.getDescription());
+                return convertView;
+            }
+        };          
+         
+        videosFound.setAdapter(adapter);
+        
+   
+        videosFound.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+     
+            @Override
+            public void onItemClick(AdapterView<?> av, View v, int pos,
+                    long id) {              
+                //Intent intent = new Intent(getApplicationContext(), PlayerActivity.class);
+                //intent.putExtra("VIDEO_ID", searchResults.get(pos).getId());
+                //startActivity(intent);
+            	
+            	VIDEO_ID = searchResults.get(pos).getId();
+            	System.out.println("Here" + VIDEO_ID);
+            	player.cueVideo(VIDEO_ID);
+            	
+
+                
+            }
+             
+        });
     }
 
 	@Override
