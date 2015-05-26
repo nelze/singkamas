@@ -10,7 +10,10 @@
 <RelativeLayout 
     
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    
+    android:descendantFocusability="beforeDescendants"
+  	android:focusableInTouchMode="true" >
 
     <EditText
         android:id="@+id/editText1"
@@ -19,8 +22,8 @@
         android:layout_below="@+id/questionView"
         android:layout_marginTop="8dp"
         android:inputType="textNoSuggestions|textVisiblePassword"
-        android:ems="10">
-        <requestFocus />
+        android:ems="10"
+        >
     </EditText>
 
     <TextView
