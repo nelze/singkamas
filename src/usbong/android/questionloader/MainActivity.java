@@ -112,7 +112,7 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
         	VIDEO_ID = newQues.getVideo();
         	link = newQues.getLink();
         	String string = newQues.getQuestionText();
-        	String[] parts = string.split("-");
+        	String[] parts = string.split("~"); //changed "-" to "~" by Mike, 2 June 2015
         	youTubePlayerView = (YouTubePlayerView) findViewById(R.id.youtube_player);
     		youTubePlayerView.initialize(API_KEY, this);
         	if (difficulty.equalsIgnoreCase("easy"))
@@ -257,7 +257,7 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
     	{
     		newQues = qm.getQuestion(Question.DIFFICULTY_EASY,questionCounter);
     		String string = newQues.getQuestionText();
-        	String[] parts = string.split("-");
+        	String[] parts = string.split("~"); //changed "-" to "~" by Mike, 2 June 2015
         	if (difficulty.equalsIgnoreCase("easy"))
         		questionDifficulty = parts[0];
         	else
