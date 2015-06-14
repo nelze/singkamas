@@ -27,6 +27,7 @@ import android.widget.ImageView;
 public class UsbongUtils {		
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 	public final static String APP_VERSION="May4,2015 (Google Play)";	
 	public final static String API_KEY = "AIzaSyBh-kcAg1pmfCSQsbNqz4K4BxvBIgjOd90";
 =======
@@ -34,6 +35,9 @@ public class UsbongUtils {
 =======
 	public final static String APP_VERSION="May26,2015 (Google Play)";	
 >>>>>>> 94457e6665fe4246f335c6c7a30326297d8a6890
+=======
+	public final static String APP_VERSION="June13,2015 (Google Play)";	
+>>>>>>> 2630c58938752403574ce0ad48b70eca6dbdd338
 	public final static String API_KEY = "AIzaSyB5mM_lk_bbdT5nUWQTO6S5FyZ9IgaxqXc";
 >>>>>>> 089f312b1d1561b52775e892b29c2d2bf81d122e
 

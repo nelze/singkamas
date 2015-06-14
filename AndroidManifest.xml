@@ -3,6 +3,7 @@
     package="usbong.android.questionloader"
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
     android:versionCode="6"
     android:versionName="May4,2015" >
 =======
@@ -13,6 +14,10 @@
     android:versionCode="10"
     android:versionName="May26,2015" >
 >>>>>>> 94457e6665fe4246f335c6c7a30326297d8a6890
+=======
+    android:versionCode="12"
+    android:versionName="June13,2015" >
+>>>>>>> 2630c58938752403574ce0ad48b70eca6dbdd338
 
     <uses-sdk
         android:minSdkVersion="8"

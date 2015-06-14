@@ -3,19 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity" 
-    android:background="#36342a"
     >
-    
-    <ImageView
-        android:id="@+id/imageView1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="2dp"
-        android:layout_marginBottom="2dp"        
-        android:src="@drawable/song_icon" />
-
     <TextView
         android:id="@+id/textView1"
         android:layout_width="wrap_content"
