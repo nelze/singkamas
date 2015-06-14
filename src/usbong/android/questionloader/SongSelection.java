@@ -62,10 +62,7 @@ public class SongSelection extends ListActivity {
         	String[] fileList = getResources().getAssets().list(language);
         	System.out.println("filelist"+Arrays.toString(fileList));
         	//System.out.println(Arrays.toString(fileList));
-        	
-        	MyListAdapter adapter = new MyListAdapter(fileList);
-        	setListAdapter(adapter);        	
-        	
+        	        	
         	ListView list = getListView();
             //added by Mike, 12 June 2015
         	list.setCacheColorHint(0);
@@ -132,6 +129,10 @@ public class SongSelection extends ListActivity {
 					
 				}
 			});
+
+            //edited by Mike, 13 June 2015
+        	MyListAdapter adapter = new MyListAdapter(fileList);
+        	setListAdapter(adapter);        	
     		
         }
         catch(Exception e)
