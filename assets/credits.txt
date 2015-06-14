@@ -1,6 +1,7 @@
 --Singkamas (beta)--
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 ver: May 8, 2015
 =======
 ver: May 25, 2015
@@ -8,6 +9,9 @@ ver: May 25, 2015
 =======
 ver: May 26, 2015
 >>>>>>> 94457e6665fe4246f335c6c7a30326297d8a6890
+=======
+ver: June 13, 2015
+>>>>>>> 2630c58938752403574ce0ad48b70eca6dbdd338
 
 Singkamas: Language Learning through Music
 
@@ -31,6 +35,9 @@ Jaime D. Lopez
 --Community Developers--
 Nikko A. Nolasco
 Jaime D. Lopez
+
+--Acknowledgment--
+Brent Anonas
 
 Contact:
 Website: www.usbong.ph

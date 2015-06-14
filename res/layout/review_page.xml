@@ -24,7 +24,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="30dp"
         android:contentDescription="imageView1"
          />
     <ImageView
@@ -53,7 +53,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="32dp"
+        android:layout_marginBottom="20dp"
         android:visibility="invisible"
         android:onClick="buttonPressed"
         android:background="@drawable/review_katakana"        
