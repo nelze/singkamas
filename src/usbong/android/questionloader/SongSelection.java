@@ -38,7 +38,8 @@ public class SongSelection extends ListActivity {
 	Resources myRes;
 	Drawable myDrawableImage;
 	
-    @Override
+    @SuppressLint("NewApi")
+	@Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         
@@ -235,50 +236,7 @@ public class SongSelection extends ListActivity {
 
 			TextView text = (TextView) view.findViewById(R.id.textView1);			
 			TextView textPlaceHolder = (TextView) view.findViewById(R.id.textViewPlaceHolder);			
-<<<<<<< HEAD
 
-<<<<<<< HEAD
-=======
-=======
-/*
-			// set the image here
-			try {
-				String bannerString = "banner";
-				if (language.equalsIgnoreCase("Japanese")) {
-					myDrawableImage = myRes.getDrawable(myRes.getIdentifier("japan"+bannerString, "drawable", UsbongUtils.myPackageName));
-					banner_image.setImageDrawable(myDrawableImage);		        		        						
-				}
-				else if (language.equalsIgnoreCase("Mandarin")) {
-					myDrawableImage = myRes.getDrawable(myRes.getIdentifier("china"+bannerString, "drawable", UsbongUtils.myPackageName));
-					banner_image.setImageDrawable(myDrawableImage);		        		        						
-				}
-				else if (language.equalsIgnoreCase("Korean")) {
-					myDrawableImage = myRes.getDrawable(myRes.getIdentifier("korea"+bannerString, "drawable", UsbongUtils.myPackageName));
-					banner_image.setImageDrawable(myDrawableImage);		        		        						
-				}
-			}
-			catch (NotFoundException e) { //if song is not found
-				//use default image
-			}
-*/
->>>>>>> 2630c58938752403574ce0ad48b70eca6dbdd338
-/*			//commented out by Mike, 25 May 2015
->>>>>>> 089f312b1d1561b52775e892b29c2d2bf81d122e
-			// set the image here
-			try {
-				
-				String imgFile = (fileList[position].replaceAll("[()?:!.,;{}\\'\\s+]", "")).toLowerCase();
-				System.out.println("Image here" + imgFile);
-				myDrawableImage = myRes.getDrawable(myRes.getIdentifier(imgFile, "drawable", UsbongUtils.myPackageName));
-				image.setImageDrawable(myDrawableImage);		        		        	
-			}
-			catch (NotFoundException e) { //if song is not found
-				//use default image
-			}
-<<<<<<< HEAD
-=======
-*/			
->>>>>>> 089f312b1d1561b52775e892b29c2d2bf81d122e
 			
 			//System.out.println(text);
 			// set the text

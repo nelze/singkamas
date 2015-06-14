@@ -23,6 +23,8 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
@@ -142,12 +144,6 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
     }
     
     private void searchOnYoutube(final String keywords){
-<<<<<<< HEAD
-            new Thread(){
-                public void run(){
-                    YoutubeConnector yc = new YoutubeConnector(MainActivity.this);
-                    searchResults = yc.search(keywords);       
-=======
     		new Thread(){
                 public void run(){
                     YoutubeConnector yc = new YoutubeConnector(MainActivity.this);
@@ -155,72 +151,21 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
                     if ((searchResults!=null)&&(searchResults.size()>2)) {
                     	searchResults = searchResults.subList(0,2); //added by Mike, 22 May 2015
                     }
->>>>>>> 089f312b1d1561b52775e892b29c2d2bf81d122e
                     System.out.println("SR:" + searchResults);
                     System.out.println("KW:" + keywords);
                     if (searchResults!= null)
                     {
-<<<<<<< HEAD
-                    handler.post(new Runnable(){
-                        public void run(){
-                            updateVideosFound();
-                        }
-                    });
-=======
 	                    handler.post(new Runnable(){
 	                        public void run(){
 	                        		updateVideosFound();
 	                        }
 	                    });
->>>>>>> 089f312b1d1561b52775e892b29c2d2bf81d122e
                 }
                 }
             }.start();
         }
     
     private void updateVideosFound(){
-<<<<<<< HEAD
-        ArrayAdapter<VideoItem> adapter = new ArrayAdapter<VideoItem>(getApplicationContext(), R.layout.video_item, searchResults){
-            @Override
-            public View getView(int position, View convertView, ViewGroup parent) {
-                if(convertView == null){
-                    convertView = getLayoutInflater().inflate(R.layout.video_item, parent, false);
-                }
-                ImageView thumbnail = (ImageView)convertView.findViewById(R.id.video_thumbnail);
-                TextView title = (TextView)convertView.findViewById(R.id.video_title);
-                TextView description = (TextView)convertView.findViewById(R.id.video_description);
-                 
-                VideoItem searchResult = searchResults.get(position);
-                 
-                Picasso.with(getApplicationContext()).load(searchResult.getThumbnailURL()).into(thumbnail);
-                title.setText(searchResult.getTitle());
-                description.setText(searchResult.getDescription());
-                return convertView;
-            }
-        };          
-         
-        videosFound.setAdapter(adapter);
-        
-   
-        videosFound.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-     
-            @Override
-            public void onItemClick(AdapterView<?> av, View v, int pos,
-                    long id) {              
-                //Intent intent = new Intent(getApplicationContext(), PlayerActivity.class);
-                //intent.putExtra("VIDEO_ID", searchResults.get(pos).getId());
-                //startActivity(intent);
-            	
-            	VIDEO_ID = searchResults.get(pos).getId();
-            	System.out.println("Here" + VIDEO_ID);
-            	player.cueVideo(VIDEO_ID);
-            	
-
-                
-            }
-             
-        });
-=======
         	ArrayAdapter<VideoItem> adapter = new ArrayAdapter<VideoItem>(getApplicationContext(), R.layout.video_item, searchResults){
 	            @Override
 	            public View getView(int position, View convertView, ViewGroup parent) {
@@ -255,7 +200,6 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
 	            	player.cueVideo(VIDEO_ID);
 	            }             
 	        });			
->>>>>>> 089f312b1d1561b52775e892b29c2d2bf81d122e
     }
 
 	@Override
@@ -298,6 +242,14 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
 				return super.onOptionsItemSelected(item);
 
 		}
+	}
+	
+	public void copyToClipboard(View view)
+	{
+		ClipboardManager clipboard = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
+		ClipData clip = ClipData.newPlainText("text", question.getText().toString());
+		clipboard.setPrimaryClip(clip);
+		Toast.makeText(getApplicationContext(), "Text Copied to Clipboard", Toast.LENGTH_SHORT).show();
 	}
     
     public void nextQuestion(View view)

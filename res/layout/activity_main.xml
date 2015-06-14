@@ -61,6 +61,8 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/instructionsView"
         android:text="@string/hello_world" 
+        android:clickable="true"
+        android:onClick="copyToClipboard"
         android:textSize="20sp"/>
 
     <Button
@@ -122,30 +124,15 @@
         android:layout_below="@+id/youtube_player"
         android:text="Related Videos:" 
         android:textSize="20sp"
-<<<<<<< HEAD
-        android:textColor="#92d050"/>
-=======
         android:textColor="#f9ce59"/>
->>>>>>> 089f312b1d1561b52775e892b29c2d2bf81d122e
      
      <ListView
         android:id="@+id/videos_found"
         android:layout_width="match_parent"
-<<<<<<< HEAD
-       android:layout_height="1000dip"
-         android:layout_alignLeft="@+id/editText1"
-        android:layout_below="@+id/textView3"
-        android:dividerHeight="5dp"
-        />
-
-       
-</RelativeLayout>
-=======
         android:layout_height="320dip"
         android:layout_alignLeft="@+id/editText1"
         android:layout_below="@+id/textView3"
         android:dividerHeight="2dp"
         />       
 	</RelativeLayout>
->>>>>>> 089f312b1d1561b52775e892b29c2d2bf81d122e
 </ScrollView>
