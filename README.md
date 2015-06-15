@@ -1,2 +1,2 @@
 # singkamas
-Language learning by songs!
+Language learning through Music!
