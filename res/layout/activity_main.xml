@@ -61,7 +61,8 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/instructionsView"
         android:text="@string/hello_world" 
-        android:textSize="20sp"/>
+        android:textSize="20sp"
+        android:textColor="#acacab"/>
 
     <Button
         android:id="@+id/exitButton"

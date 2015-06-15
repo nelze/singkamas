@@ -3,8 +3,38 @@ package usbong.android.questionloader;
 import java.io.InputStream;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
+
+import usbong.android.utils.UsbongUtils;
+import android.annotation.SuppressLint;
+import android.app.AlertDialog;
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
+import android.media.MediaPlayer;
+import android.net.Uri;
+import android.os.Bundle;
+import android.os.Handler;
+import android.text.Html;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.MotionEvent;
+import android.view.View;
+import android.view.View.OnTouchListener;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.ListView;
+import android.widget.ProgressBar;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.youtube.player.YouTubeBaseActivity;
 import com.google.android.youtube.player.YouTubeInitializationResult;
@@ -16,35 +46,6 @@ import com.google.android.youtube.player.YouTubePlayer.Provider;
 import com.google.android.youtube.player.YouTubePlayerFragment;
 import com.google.android.youtube.player.YouTubePlayerView;
 import com.squareup.picasso.Picasso;
-
-import usbong.android.utils.UsbongUtils;
-import android.annotation.SuppressLint;
-import android.app.Activity;
-import android.app.AlertDialog;
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.graphics.drawable.Drawable;
-import android.media.MediaPlayer;
-import android.net.Uri;
-import android.os.Bundle;
-import android.os.Handler;
-import android.text.Html;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.ListView;
-import android.widget.ProgressBar;
-import android.widget.TextView;
-import android.widget.Toast;
 
 public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.OnInitializedListener{
 	//http://youtu.be/<VIDEO_ID>
@@ -80,6 +81,7 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
 	String language;
 	List<VideoItem> searchResults;
 	double accuracy; //added by Mike, 27 March 2015
+    YouTubePlayer player;
 	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,6 +94,32 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
         	language = bundle.getString("language");
         	videosFound = (ListView)findViewById(R.id.videos_found); 
     		question   = (TextView)findViewById(R.id.questionView);
+    		//added by Mike, 15 June 2015
+    		//Reference: http://stackoverflow.com/questions/17945176/want-textview-to-change-color-with-click-just-like-on-a-button
+    		//; last accessed: 15 June 2015; answer by Raghunandan
+    		question.setOnTouchListener(new OnTouchListener() {
+    			@Override
+    			public boolean onTouch(View v, MotionEvent event) {
+    			    if (event.getAction() == MotionEvent.ACTION_DOWN) {
+    			        // change color
+    		    		question.setTextColor(Color.parseColor("#d1e1f6"));		
+    			    }
+    			    else if (event.getAction() == MotionEvent.ACTION_UP) {
+    			        // set to default color
+    		    		question.setTextColor(Color.parseColor("#acacab"));		
+
+    		    		ClipboardManager clipboard = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
+    		    		ClipData clip = ClipData.newPlainText("text", question.getText().toString());
+    		    		clipboard.setPrimaryClip(clip);
+    		    		Toast.makeText(getApplicationContext(), "Text Copied to Clipboard", Toast.LENGTH_SHORT).show();
+    		    		
+    			    }
+
+    			    return true;
+    			}
+    			});
+    		
+    		
     		result   = (TextView)findViewById(R.id.resultView);
     		answer   = (TextView)findViewById(R.id.answerView);
     		input_ans   = (EditText)findViewById(R.id.editText1);
@@ -241,7 +269,16 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
 
 		}
 	}
-    
+
+	/*//commented out by Mike, June 15, 2015
+	public void copyToClipboard(View view)
+	{		
+		ClipboardManager clipboard = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
+		ClipData clip = ClipData.newPlainText("text", question.getText().toString());
+		clipboard.setPrimaryClip(clip);
+		Toast.makeText(getApplicationContext(), "Text Copied to Clipboard", Toast.LENGTH_SHORT).show();
+	}*/
+	
     public void nextQuestion(View view)
     {
     	if (!correct)
@@ -322,8 +359,10 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
 		AlertDialog alert = builder.create();
 		alert.show();
     }
-    
-    @SuppressLint("NewApi")
+/*    
+    @SuppressWarnings("deprecation")
+	@SuppressLint("NewApi")
+*/	
 	public void enterAnswer(View view)
     {
     	
@@ -358,7 +397,10 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
     	
     	if (temp_accuracy<100) 
     	{
-    		answer.setText(Html.fromHtml("Correct answer: " + newBold));
+/*//commented out by Mike, 15 June 2015
+  answer.setText(Html.fromHtml("Correct answer: " + newBold));
+*/
+    		answer.setText(Html.fromHtml("Correct answer: <b>" + newQues.getCorrectAnswer()+"</b>"));
     		
     		//Play wrong sound
     		mpSplash1 = MediaPlayer.create(this, R.raw.wrong);
@@ -381,7 +423,8 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
     	catch(Exception e)
     	{
     		//button2.setText("End");
-    		Drawable drawableX = this.getResources().getDrawable(R.drawable.end_selector);
+//    		@SuppressWarnings("deprecation")
+			Drawable drawableX = this.getResources().getDrawable(R.drawable.end_selector);
     		button2.setBackgroundDrawable(drawableX);
     		
     		//added by Mike, 11 April 2015
@@ -478,15 +521,8 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
 		// TODO Auto-generated method stub
 		Toast.makeText(this, arg1.toString(), Toast.LENGTH_LONG).show();
 		
-	}
-	
-	 
-     
+	}     
       
-     
-      
-     YouTubePlayer player;
-
 	@Override
 	public void onInitializationSuccess(Provider provider, YouTubePlayer player, boolean wasRestored) {
 
