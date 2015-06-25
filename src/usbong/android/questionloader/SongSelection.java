@@ -38,8 +38,13 @@ public class SongSelection extends ListActivity {
 	Resources myRes;
 	Drawable myDrawableImage;
 	
+<<<<<<< HEAD
     @SuppressLint("NewApi")
 	@Override
+=======
+	@SuppressLint("NewApi")
+    @Override
+>>>>>>> 180c57f28043a0cdadff69b0bbcbcb1fafba0f46
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         
@@ -87,7 +92,7 @@ public class SongSelection extends ListActivity {
         	}
 			
             list.addHeaderView(v);
-        	list.setBackgroundColor(0x6f5c44);
+        	list.setBackgroundColor(Color.parseColor("#36342a")); //6f5c44
 
             list.setOnItemClickListener(new OnItemClickListener() {
 
