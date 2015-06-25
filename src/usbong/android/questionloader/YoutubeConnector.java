@@ -19,6 +19,7 @@ import com.google.api.services.youtube.model.SearchResult;
 public class YoutubeConnector {
     private YouTube youtube; 
     private YouTube.Search.List query;
+
 //    private YouTube.Channels.List query2; //added by Mike, 22 May 2015
     
     // Your developer key goes here
@@ -48,12 +49,10 @@ public class YoutubeConnector {
         try{
             SearchListResponse response = query.execute();
             List<SearchResult> results = response.getItems();
-                         
             List<VideoItem> items = new ArrayList<VideoItem>();
             for(SearchResult result:results){
                 VideoItem item = new VideoItem();
                 item.setTitle(result.getSnippet().getTitle());
-
                 //commented out by Mike, 22 May 2015
 //                item.setDescription(result.getSnippet().getDescription());
                 item.setThumbnailURL(result.getSnippet().getThumbnails().getDefault().getUrl());

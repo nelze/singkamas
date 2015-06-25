@@ -1,11 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="usbong.android.questionloader"
+<<<<<<< HEAD
+
+    android:versionCode="12"
+    android:versionName="June13,2015" >
+=======
     android:versionCode="13"
     android:versionName="June15,2015" >
+>>>>>>> 180c57f28043a0cdadff69b0bbcbcb1fafba0f46
 
     <uses-sdk
-        android:minSdkVersion="8"
+        android:minSdkVersion="13"
         android:targetSdkVersion="16" />
     
     <uses-permission android:name="android.permission.INTERNET" />

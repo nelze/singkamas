@@ -8,6 +8,11 @@ import java.util.List;
 import usbong.android.utils.UsbongUtils;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
+<<<<<<< HEAD
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
+=======
+>>>>>>> 180c57f28043a0cdadff69b0bbcbcb1fafba0f46
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.DialogInterface;
@@ -269,16 +274,27 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
 
 		}
 	}
+<<<<<<< HEAD
+	
+	public void copyToClipboard(View view)
+	{
+=======
 
 	/*//commented out by Mike, June 15, 2015
 	public void copyToClipboard(View view)
 	{		
+>>>>>>> 180c57f28043a0cdadff69b0bbcbcb1fafba0f46
 		ClipboardManager clipboard = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
 		ClipData clip = ClipData.newPlainText("text", question.getText().toString());
 		clipboard.setPrimaryClip(clip);
 		Toast.makeText(getApplicationContext(), "Text Copied to Clipboard", Toast.LENGTH_SHORT).show();
+<<<<<<< HEAD
+	}
+    
+=======
 	}*/
 	
+>>>>>>> 180c57f28043a0cdadff69b0bbcbcb1fafba0f46
     public void nextQuestion(View view)
     {
     	if (!correct)

@@ -38,8 +38,13 @@ public class SongSelection extends ListActivity {
 	Resources myRes;
 	Drawable myDrawableImage;
 	
+<<<<<<< HEAD
+    @SuppressLint("NewApi")
+	@Override
+=======
 	@SuppressLint("NewApi")
     @Override
+>>>>>>> 180c57f28043a0cdadff69b0bbcbcb1fafba0f46
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         
@@ -236,40 +241,7 @@ public class SongSelection extends ListActivity {
 
 			TextView text = (TextView) view.findViewById(R.id.textView1);			
 			TextView textPlaceHolder = (TextView) view.findViewById(R.id.textViewPlaceHolder);			
-/*
-			// set the image here
-			try {
-				String bannerString = "banner";
-				if (language.equalsIgnoreCase("Japanese")) {
-					myDrawableImage = myRes.getDrawable(myRes.getIdentifier("japan"+bannerString, "drawable", UsbongUtils.myPackageName));
-					banner_image.setImageDrawable(myDrawableImage);		        		        						
-				}
-				else if (language.equalsIgnoreCase("Mandarin")) {
-					myDrawableImage = myRes.getDrawable(myRes.getIdentifier("china"+bannerString, "drawable", UsbongUtils.myPackageName));
-					banner_image.setImageDrawable(myDrawableImage);		        		        						
-				}
-				else if (language.equalsIgnoreCase("Korean")) {
-					myDrawableImage = myRes.getDrawable(myRes.getIdentifier("korea"+bannerString, "drawable", UsbongUtils.myPackageName));
-					banner_image.setImageDrawable(myDrawableImage);		        		        						
-				}
-			}
-			catch (NotFoundException e) { //if song is not found
-				//use default image
-			}
-*/
-/*			//commented out by Mike, 25 May 2015
-			// set the image here
-			try {
-				
-				String imgFile = (fileList[position].replaceAll("[()?:!.,;{}\\'\\s+]", "")).toLowerCase();
-				System.out.println("Image here" + imgFile);
-				myDrawableImage = myRes.getDrawable(myRes.getIdentifier(imgFile, "drawable", UsbongUtils.myPackageName));
-				image.setImageDrawable(myDrawableImage);		        		        	
-			}
-			catch (NotFoundException e) { //if song is not found
-				//use default image
-			}
-*/			
+
 			
 			//System.out.println(text);
 			// set the text

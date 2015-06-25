@@ -61,8 +61,14 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/instructionsView"
         android:text="@string/hello_world" 
+<<<<<<< HEAD
+        android:clickable="true"
+        android:onClick="copyToClipboard"
+        android:textSize="20sp"/>
+=======
         android:textSize="20sp"
         android:textColor="#acacab"/>
+>>>>>>> 180c57f28043a0cdadff69b0bbcbcb1fafba0f46
 
     <Button
         android:id="@+id/exitButton"

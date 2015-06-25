@@ -1,5 +1,21 @@
 --Singkamas (beta)--
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+ver: May 8, 2015
+=======
+ver: May 25, 2015
+>>>>>>> 089f312b1d1561b52775e892b29c2d2bf81d122e
+=======
+ver: May 26, 2015
+>>>>>>> 94457e6665fe4246f335c6c7a30326297d8a6890
+=======
+ver: June 13, 2015
+>>>>>>> 2630c58938752403574ce0ad48b70eca6dbdd338
+=======
 ver: June 15, 2015
+>>>>>>> 180c57f28043a0cdadff69b0bbcbcb1fafba0f46
 
 Singkamas: Language Learning through Music
 
@@ -15,7 +31,10 @@ Juaneo Fernando
 --Graphics Artists--
 Angela Escudero
 Juaneo Fernando
+<<<<<<< HEAD
+=======
 Jaime D. Lopez
+>>>>>>> 089f312b1d1561b52775e892b29c2d2bf81d122e
 
 --Community Developers--
 Nikko A. Nolasco

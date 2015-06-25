@@ -2,11 +2,11 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="usbong.android.questionloader"
 
-    android:versionCode="6"
-    android:versionName="May4,2015" >
+    android:versionCode="12"
+    android:versionName="June13,2015" >
 
     <uses-sdk
-        android:minSdkVersion="8"
+        android:minSdkVersion="13"
         android:targetSdkVersion="16" />
     
     <uses-permission android:name="android.permission.INTERNET" />
