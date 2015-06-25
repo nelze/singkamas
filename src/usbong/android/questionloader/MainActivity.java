@@ -1,18 +1,28 @@
 package usbong.android.questionloader;
 
+import java.io.BufferedReader;
 import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.URLEncoder;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.DefaultHttpClient;
+/*import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.htmlunit.HtmlUnitDriver;
+import org.openqa.selenium.remote.DesiredCapabilities;
+import org.openqa.selenium.remote.RemoteWebDriver;*/
+
 import usbong.android.utils.UsbongUtils;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
-<<<<<<< HEAD
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
-=======
->>>>>>> 180c57f28043a0cdadff69b0bbcbcb1fafba0f46
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.DialogInterface;
@@ -24,6 +34,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.Html;
+import android.text.Layout;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -52,7 +63,7 @@ import com.google.android.youtube.player.YouTubePlayerFragment;
 import com.google.android.youtube.player.YouTubePlayerView;
 import com.squareup.picasso.Picasso;
 
-public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.OnInitializedListener{
+public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.OnInitializedListener, Runnable{
 	//http://youtu.be/<VIDEO_ID>
 	public static final String API_KEY = UsbongUtils.API_KEY;
 	
@@ -63,6 +74,7 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
 	TextView answer;
 	TextView result;
 	ListView videosFound;
+	String translate1;
     Handler handler;
 	EditText input_ans;
 	int questionCounter = 0;
@@ -83,6 +95,8 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
 	private ProgressBar mProgress;
 	double progress;
 	ArrayList<Integer> indices = new ArrayList<Integer>();
+	ArrayList<String> definitions = new ArrayList<String>();
+	ArrayList<Integer> wordIndices = new ArrayList<Integer>();
 	String language;
 	List<VideoItem> searchResults;
 	double accuracy; //added by Mike, 27 March 2015
@@ -107,9 +121,31 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
     			public boolean onTouch(View v, MotionEvent event) {
     			    if (event.getAction() == MotionEvent.ACTION_DOWN) {
     			        // change color
-    		    		question.setTextColor(Color.parseColor("#d1e1f6"));		
+    			    	// brent
+    		    		question.setTextColor(Color.parseColor("#d1e1f6"));
+    		    		Layout layout = ((TextView) v).getLayout();
+    		    	      int x = (int)event.getX();
+    		    	      int y = (int)event.getY();
+    		    	      if (layout!=null){
+    		    	          int line = layout.getLineForVertical(y);
+    		    	          int offset = layout.getOffsetForHorizontal(line, x);
+    		    	          
+    		    	          for (int i = wordIndices.size()-1; i >=0 ; i--)
+    		    	          {
+    		    	        	  if (offset >= wordIndices.get(i))
+    		    	        	  {
+    		    	        		  String def = definitions.get(i);
+    		    	        		  System.out.println("def here" + def);
+    		    	        		  Toast.makeText(getApplicationContext(), def,
+    		    	        				   Toast.LENGTH_SHORT).show();
+    		    	        		  break;
+    		    	        	  }
+    		    	          //Log.v("index", ""+offset);
+    		    	          }
+    		    	    }
+    		    	    return true;
     			    }
-    			    else if (event.getAction() == MotionEvent.ACTION_UP) {
+    			    /*else if (event.getAction() == MotionEvent.ACTION_UP) {
     			        // set to default color
     		    		question.setTextColor(Color.parseColor("#acacab"));		
 
@@ -118,7 +154,7 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
     		    		clipboard.setPrimaryClip(clip);
     		    		Toast.makeText(getApplicationContext(), "Text Copied to Clipboard", Toast.LENGTH_SHORT).show();
     		    		
-    			    }
+    			    }*/
 
     			    return true;
     			}
@@ -157,6 +193,8 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
 
         	//System.out.println("The question is " + questionDifficulty);
         	question.setText(questionDifficulty);
+        	if (language.equalsIgnoreCase("japanese"))
+        		japaneseDictionary(questionDifficulty);
 //        	result.setText(""); //commented out by Mike, 27 March 2015
         	//answer.setText("Correct answer: "+ newQues.getCorrectAnswer());
         	answer.setText("");
@@ -274,11 +312,7 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
 
 		}
 	}
-<<<<<<< HEAD
-	
-	public void copyToClipboard(View view)
-	{
-=======
+
 
 	/*//commented out by Mike, June 15, 2015
 	public void copyToClipboard(View view)
@@ -294,7 +328,6 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
 =======
 	}*/
 	
->>>>>>> 180c57f28043a0cdadff69b0bbcbcb1fafba0f46
     public void nextQuestion(View view)
     {
     	if (!correct)
@@ -318,6 +351,8 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
         	//question.setText("Hello");
         	//answer.setText("World");
         	question.setText(questionDifficulty);
+        	if (language.equalsIgnoreCase("japanese"))
+        		japaneseDictionary(questionDifficulty);
     		//question.setText(newQues.getQuestionText());
         	progress = questionCounter/total;
             mProgress.setProgress((int) (progress*100));
@@ -530,6 +565,81 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
 		return sb.toString();
     	
     }
+    
+    public void japaneseDictionary(String translate)
+    {
+    	Thread t = new Thread(this);
+    	t.start();
+    	System.out.println("JDict here" + translate);
+    	definitions.clear();
+    	wordIndices.clear();
+    	translate1 = translate;
+    	
+    	run();
+    	System.out.println("Indices here: " +wordIndices.toString());
+    	/*WebDriver driver = new RemoteWebDriver(DesiredCapabilities.android());
+
+
+        // And now use this to visit edict
+        driver.get("http://www.edrdg.org/cgi-bin/wwwjdic/wwwjdic?9T");
+
+        // Find the text input element by its name
+        WebElement element = driver.findElement(By.name("gloss_line"));
+        // Enter something to search for
+        element.sendKeys(translate);
+        element.submit();
+           
+        List<WebElement> allLi = driver.findElements(By.tagName("li"));
+        for(WebElement eachLi:allLi){
+            String tmp = eachLi.getText();
+            //System.out.println("Text in li: "+tmp); 
+            definitions.add(tmp);
+            String[] parts = tmp.split(" ");
+            wordIndices.add(charCounter);
+            charCounter += parts[0].length();        
+            
+        }
+        
+
+        driver.quit();*/
+    	
+    	
+    }
+    
+    public static String postFormDataToUrl(String url, String data) throws Exception
+	{
+		InputStream is = null;
+		try {
+			DefaultHttpClient httpClient = new DefaultHttpClient();
+	        HttpPost httpPost = new HttpPost(url);
+	        httpPost.setEntity(new StringEntity(data));
+	        httpPost.setHeader("Content-type", "application/x-www-form-urlencoded");
+	        
+	        HttpResponse httpResponse = httpClient.execute(httpPost);
+	        HttpEntity httpEntity = httpResponse.getEntity();
+	        is = httpEntity.getContent();           
+	        InputStreamReader isr = new InputStreamReader(is);
+	            
+	        BufferedReader reader = new BufferedReader(isr);
+	        StringBuilder sb = new StringBuilder();
+	        String line = null;
+	        while ((line = reader.readLine()) != null) {
+	                sb.append(line + "\n");
+	        }
+	        
+	        return sb.toString();
+	    }
+		finally
+		{
+			try
+			{
+				is.close();
+			}
+			catch(Exception e)
+			{
+			}
+		}
+	}
 
 	@Override
 	public void onInitializationFailure(Provider arg0,
@@ -607,4 +717,48 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
 			
 		}
 	};
+
+	@Override
+	public void run() {
+		// TODO Auto-generated method stub
+		int charCounter = 0;
+    	String reply = "";
+    	
+    	String url = "http://www.edrdg.org/cgi-bin/wwwjdic/wwwjdic?9U";
+    	try{
+    	String data = "gloss_line="+ URLEncoder.encode(translate1,"UTF-8")+"&dicsel=9&glleng=60";
+
+		reply = postFormDataToUrl(url, data);
+    	}
+    	catch (Exception e)
+    	{
+    		System.out.println(e);
+    	}
+		
+		
+		// collect <li> stuff
+		ArrayList<String> liList = new ArrayList<String>();
+		
+		int position = reply.indexOf("<li>", 0);
+		while(position>-1)
+		{
+			String s = reply.substring(position+4, reply.indexOf("</li>", position));
+			liList.add(s);
+			position = reply.indexOf("<li>", position+4);
+		}
+		
+		
+		// print the <li> stuff
+		for (String s : liList)
+		{
+			System.out.println("S here" + s);
+            //System.out.println("Text in li: "+tmp); 
+            definitions.add(s);
+            String[] parts = s.split(" ");
+            wordIndices.add(charCounter);
+            System.out.println("charnow" + charCounter);
+            System.out.println("parts"+parts[1]);
+            charCounter += parts[1].length();
+		}
+	}
 }
