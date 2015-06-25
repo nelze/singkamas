@@ -2,6 +2,7 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 ver: May 8, 2015
 =======
 ver: May 25, 2015
@@ -12,6 +13,9 @@ ver: May 26, 2015
 =======
 ver: June 13, 2015
 >>>>>>> 2630c58938752403574ce0ad48b70eca6dbdd338
+=======
+ver: June 15, 2015
+>>>>>>> 180c57f28043a0cdadff69b0bbcbcb1fafba0f46
 
 Singkamas: Language Learning through Music
 
