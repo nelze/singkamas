@@ -3,10 +3,14 @@ package usbong.android.questionloader;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.net.URL;
 import java.net.URLEncoder;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
+
+import net.londatiga.android.ActionItem;
+import net.londatiga.android.QuickAction;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -37,8 +41,11 @@ import android.os.Handler;
 import android.text.Html;
 import android.text.Layout;
 import android.text.Spannable;
+import android.text.style.BackgroundColorSpan;
 import android.text.style.ForegroundColorSpan;
+import android.text.style.UnderlineSpan;
 import android.util.Log;
+import android.view.Display;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -70,9 +77,11 @@ import com.squareup.picasso.Picasso;
 
 public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.OnInitializedListener{
 	//http://youtu.be/<VIDEO_ID>
+	ActionItem actionItem;
 	public static final String API_KEY = UsbongUtils.API_KEY;
-	
+	//ActionItem ai = new ActionItem();
 	String VIDEO_ID ;
+	boolean clickable;
 	Spannable spannable;
 	MediaPlayer mpSplash1;
 	MediaPlayer mpSplash2;
@@ -104,6 +113,7 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
 	ArrayList<String> definitions = new ArrayList<String>();
 	//ArrayList<Integer> wordIndices = new ArrayList<Integer>();
 	ArrayList<String> partsList = new ArrayList<String>();
+	QuickAction quickAction;
 	String language;
 	List<VideoItem> searchResults;
 	double accuracy; //added by Mike, 27 March 2015
@@ -114,6 +124,8 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
         super.onCreate(savedInstanceState);
         
         setContentView(R.layout.activity_main);
+        	actionItem = new ActionItem();
+        	quickAction = new QuickAction(this);
         	Bundle bundle = getIntent().getExtras();
         	difficulty = bundle.getString("difficulty");
         	songname = bundle.getString("song_title");
@@ -125,41 +137,60 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
     		//; last accessed: 15 June 2015; answer by Raghunandan
     	
     		//added by Lev, edited by Brent, 28 June 2015
+    		clickable = false;
     		question.setOnTouchListener(new OnTouchListener() {
     			int start;
     			int end;
     			@Override
     			public boolean onTouch(View v, MotionEvent event) {
-    				
-    			    if (event.getAction() == MotionEvent.ACTION_DOWN) {
-    		    		//question.setTextColor(Color.parseColor("#d1e1f6"));
-	    			    	Layout layout = ((TextView) v).getLayout();
-	    		    	      int x = (int)event.getX();
-	    		    	      int y = (int)event.getY();
-	    		    	      if (layout!=null){
-	    		    	          int line = layout.getLineForVertical(y);
-	    		    	          int offset = layout.getOffsetForHorizontal(line,x);
-	    		    	          for (int i = partsList.size()-1; i >=0 ; i--)
-	    		    	          {
-	    		    	        	  start = questionDifficulty.indexOf(partsList.get(i));
-	    		    	        	  end = start+partsList.get(i).length();
-	    		    	        	  if (offset-start > 0 && offset-end < 0)
-	    		    	        	  {
-	    		    	        		  String def = definitions.get(i);
-	    		    	        		  System.out.println("def here" + def);
-	    		    	        		  spannable.setSpan(new ForegroundColorSpan(0xFFFFFFFF), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-	    		    	        		  Toast.makeText(getApplicationContext(), def,
-	    		    	        				   Toast.LENGTH_SHORT).show();
-	    		    	        		  break;
-	    		    	        	  }
-	    		    	          }
-	    		    	    }
-	    		    	    return true;
-    			    }
-    			    else if (event.getAction() == MotionEvent.ACTION_UP) {
-			        // set to default color
-    			    spannable.setSpan(new ForegroundColorSpan(0xFFFF0000), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-			    }
+    			try
+    			{
+    			if(clickable){
+	    			    if (event.getAction() == MotionEvent.ACTION_DOWN) {
+	    		    		//question.setTextColor(Color.parseColor("#d1e1f6"));
+		    			    	Layout layout = ((TextView) v).getLayout();
+		    		    	      int x = (int)event.getX();
+		    		    	      int y = (int)event.getY();
+		    		    	      if (layout!=null){
+		    		    	          int line = layout.getLineForVertical(y);
+		    		    	          int offset = layout.getOffsetForHorizontal(line,x);
+		    		    	          //for (int i = partsList.size()-1; i >=0 ; i--)
+		    		    	          Log.i(Integer.toString(offset),"OOOOOOFFSEETT");
+		    		    	          for(int i = 0; i<partsList.size();i++)
+		    		    	          {
+		    		    	        	  start = questionDifficulty.indexOf(partsList.get(i));
+		    		    	        	  end = start+partsList.get(i).length();
+		    		    	        	  if (offset-start >= 0 && offset-end < 0)
+		    		    	        	  {
+		    		    	        		  String def = definitions.get(i);
+		    		    	        		  QuickAction quickAction = new QuickAction(MainActivity.this);
+		    		    	        		  actionItem.setTitle(def);
+		    		    	        		  quickAction.addActionItem(actionItem);
+		    		    	        		  quickAction.setOnActionItemClickListener(new QuickAction.OnActionItemClickListener() {
+		    		    	        			  @Override
+		    		    	        			  public void onItemClick(QuickAction source,int pos, int actionId) {
+		    		    	        				     if (pos == 0) { //Add item selected
+		    		    	        				          Toast.makeText(MainActivity.this, "Word copied to clipboard.", Toast.LENGTH_SHORT).show();
+		    		    	        				     }
+		    		    	        				 }
+		    		    	        				});
+		    		    	        		  quickAction.show(v);
+		    		    	        		  System.out.println("def here" + def);
+		    		    	        		  spannable.setSpan(new ForegroundColorSpan(0xFFFFFFFF), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+		    		    	        		  spannable.setSpan(new BackgroundColorSpan(0xFFFF0000), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+		    		    	        		  //Toast.makeText(getApplicationContext(), def,  Toast.LENGTH_SHORT).show();
+		    		    	        		  break;
+		    		    	        	  }
+		    		    	          }
+		    		    	    }
+		    		    	    return true;
+	    			    }
+	    			    else if (event.getAction() == MotionEvent.ACTION_UP) {
+				        // set to default color
+	    			    	spannable.setSpan(new ForegroundColorSpan(0x93CCEA00),start ,end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+	    			    	spannable.setSpan(new BackgroundColorSpan(Color.TRANSPARENT), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+	    			    	return true;
+	    			    }
     			    /*else if (event.getAction() == MotionEvent.ACTION_UP) {
     			        // set to default color
     		    		question.setTextColor(Color.parseColor("#acacab"));		
@@ -170,9 +201,10 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
     		    		Toast.makeText(getApplicationContext(), "Text Copied to Clipboard", Toast.LENGTH_SHORT).show();
     		    		
     			    }*/
-
-    			    return true;
     			}
+    				}catch(Exception e){System.out.println("huehuehuehueahaue "+e);}    			
+    				return true;
+    				}
     			});
     		
     		
@@ -213,11 +245,8 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
         	question.setText(questionDifficulty,BufferType.SPANNABLE);
         	spannable = (Spannable)question.getText();
         	answer.setText("");
-        	if (language.equalsIgnoreCase("japanese"))
-        	{
-        		translate1 = questionDifficulty;
-        		new DictionaryTask().execute();
-        	}
+        	translate1 = questionDifficulty;
+    		new DictionaryTask().execute();
         	
         	//progress counter
         	//System.out.println(questionCounter +" " + total);
@@ -298,22 +327,48 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
     {
 		@Override
 		protected Void doInBackground(Void... params) {
-			partsList.clear();
+			//EXECUTE THEM ALL!
+        	if (language.equalsIgnoreCase("japanese"))
+        		japExecute();
+        	else if(language.equalsIgnoreCase("chinese"))
+        		chineseExecute();
+        	//else if(language.equalsIgnoreCase("korean"))
+        		
+			return null;
+		}
+		
+    	@Override
+    	protected void onPostExecute(Void result)
+    	{
+    		try{
+	    		for(int i = 0; i < partsList.size();i++)
+	    		{
+	    			int start = questionDifficulty.indexOf(partsList.get(i));
+	    			int end = questionDifficulty.indexOf(partsList.get(i))+partsList.get(i).length();
+	    			spannable.setSpan(new ForegroundColorSpan(0x93CCEA00),start ,end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+	    			clickable=true;
+	    			//overlapping search words
+	    			//int overlap = overlap(partsList.get(i-1),partsList.get(i));
+	    			//if(overlap>0)
+	    			//	spannable.setSpan(new BackgroundColorSpan(0xFFFFFF00),start-overlap,end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+	    			//spannable.setSpan(new UnderlineSpan(), start, end-1, 0);
+	    			//question.setText(spannable);
+	    		}
+    		}catch(Exception e){System.out.println("problem in post execute "+e);}
+    	}
+    }
+    private void japExecute()
+    {
+    	try
+    	{
+	    	partsList.clear();
 			definitions.clear();
 			// TODO Auto-generated method stub
 		    	String reply = "";
-		    	
 		    	String url = "http://www.edrdg.org/cgi-bin/wwwjdic/wwwjdic?9U";
-		    	try{
 		    	String data = "gloss_line="+ URLEncoder.encode(translate1,"UTF-8")+"&dicsel=9&glleng=60";
-	
 				reply = postFormDataToUrl(url, data);
-		    	}
-		    	catch (Exception e)
-		    	{
-		    		System.out.println(e+"retrieval is gg");
-		    	}
-				
+		    	
 				// collect <li> stuff
 				ArrayList<String> liList = new ArrayList<String>();
 				int position = reply.indexOf("<li>", 0);
@@ -323,33 +378,42 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
 					liList.add(s);
 					position = reply.indexOf("<li>", position+4);
 				}
-						
-				// print the <li> stuff
-				for (String s : liList)
+				
+				//collect all inflected verbs
+				ArrayList<String> fontList = new ArrayList<String>();
+				int positionFont = reply.indexOf("<font color=\"blue\">");
+				while(positionFont>-1)
 				{
+					String s = reply.substring(positionFont+19, reply.indexOf("</font>", positionFont));
+					System.out.println(s+"hahahahahahahahahahahah");
+					fontList.add(s);
+					System.out.println("added fontList "+s);
+					positionFont = reply.indexOf("<font color=\"blue\">", positionFont+19);
+				}
+				
+				// print the <li> stuff
+				int fontListIndex = 0;
+				for (String s : liList)
+				{	
 					System.out.println("S here" + s);
+					s = s.replace("<br>", "\n");
 		            //System.out.println("Text in li: "+tmp); 
 		            definitions.add(s);
 		            String[] parts = s.split(" ");
-		            //wordIndices.add(questionDifficulty.indexOf(parts[1]));
-		            
-		            //System.out.println("charnow" + charCounter);
+	
+		            if(parts[1].equals("Possible"))
+		            {
+		            	partsList.add(fontList.get(fontListIndex));
+		            	System.out.println("fontList "+fontList.get(fontListIndex));
+		            	fontListIndex++;
+		            }
+		            else
+		            	partsList.add(parts[1]);
 		            System.out.println("parts"+parts[1]);
-		            partsList.add(parts[1]);
+		            
 				}
-			return null;
-		}
-		
-    	@Override
-    	protected void onPostExecute(Void result)
-    	{
-	    		for(String part:partsList)
-	    		{
-	    			spannable.setSpan(new ForegroundColorSpan(0xFFFF0000), questionDifficulty.indexOf(part),questionDifficulty.indexOf(part)+part.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-	    		}
-    	}
+    	}catch(Exception e){System.out.println("THE PROBLEEEM "+e);}
     }
-
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu)
 	{
@@ -391,6 +455,29 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
 
 		}
 	}
+	private void chineseExecute()
+	{
+		partsList.clear();
+		definitions.clear();
+		URL url;
+		final String src = "https://dl-web.dropbox.com/get/SingkamasEdictFiles/cedict_ts.u8?_subject_uid=255783137&w=AAAvpUYhD6ab98HxxCkLObTMoKq4fgOLBV4Kaa1Odtyl3w";
+		try
+		{
+			url = new URL(src);
+			BufferedReader br = new BufferedReader(new InputStreamReader(url.openStream()));
+			
+			String stringBr;
+			String stringText = "";
+			while ((stringBr = br.readLine())!=null)
+			{
+				String[] parts = stringBr.split(" /");
+			}	
+			br.close();
+		}catch(Exception e)
+		{
+			System.out.println(e+"na-greatwall beh");
+		}
+	}
 
 
 	/*//commented out by Mike, June 15, 2015
@@ -406,9 +493,9 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
     
 =======
 	}*/
-	
     public void nextQuestion(View view)
     {
+    	clickable=false;
     	if (!correct)
     		mpSplash1.stop();
     	else
