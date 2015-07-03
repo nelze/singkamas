@@ -62,6 +62,8 @@
         android:layout_below="@+id/instructionsView"
         android:text="@string/hello_world" 
         android:textSize="20sp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
         android:textColor="#acacab"/>
 
     <Button
