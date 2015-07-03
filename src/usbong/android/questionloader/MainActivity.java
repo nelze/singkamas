@@ -17,12 +17,6 @@ import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
-/*import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.htmlunit.HtmlUnitDriver;
-import org.openqa.selenium.remote.DesiredCapabilities;
-import org.openqa.selenium.remote.RemoteWebDriver;*/
 
 import usbong.android.utils.UsbongUtils;
 import android.annotation.SuppressLint;
@@ -32,6 +26,7 @@ import android.content.ClipboardManager;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.Point;
 import android.graphics.drawable.Drawable;
 import android.media.MediaPlayer;
 import android.net.Uri;
@@ -187,8 +182,10 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
 		    		    	        				 }
 		    		    	        				});
 		    		    	        		  
-		    		    	        		  quickAction.show(question);
+		    		    	        		  quickAction.show(question,(offset+1)*60);
+		    		    	        		  
 		    		    	        		  quickAction.setAnimStyle(QuickAction.ANIM_AUTO);
+		    		    	        		  //quickAction.setAnimationStyle(width,offset, true);
 		    		    	        		  System.out.println("def here" + def);
 		    		    	        		  spannable.setSpan(new ForegroundColorSpan(0xFFFFFFFF), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 		    		    	        		  spannable.setSpan(new BackgroundColorSpan(0xFFFF0000), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
@@ -391,6 +388,15 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
 				while(position>-1)
 				{
 					String s = reply.substring(position+4, reply.indexOf("</li>", position));
+					
+					if (s.toLowerCase().trim().startsWith("possible"))
+					{
+						s = s.substring(s.indexOf("<br>")+4);
+						System.out.println("FIXED: "+s);
+						
+						
+					}
+					
 					liList.add(s);
 					position = reply.indexOf("<li>", position+4);
 				}
@@ -413,7 +419,7 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
 				{	
 					System.out.println("S here" + s);
 					String[] parts = s.split(" ");
-					s = s.replace(parts[1]+" ",parts[1]+"\n").replace("<br>", "\n").replace("�y","\n�y");
+					s = s.replace(parts[1]+" ",parts[1]+"\n").replace("<br>", "\n").replace("�y","\n�y");
 					SpannableStringBuilder ssb = new SpannableStringBuilder(s);
 					ssb.setSpan(new RelativeSizeSpan(2f), s.indexOf(parts[1]),s.indexOf(parts[1])+parts[1].length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 					ssb.setSpan(new ForegroundColorSpan(0x93CCEA00), s.indexOf(parts[1]),s.indexOf(parts[1])+parts[1].length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
@@ -438,12 +444,13 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
 	{
 		partsList.clear();
 		definitionsSsb.clear();
-		Log.i(translate1,"SADFSDFASDFASDFASFASDFASFASDFASDF");
-		searchPrefix(translate1,"");
+		//Log.i(translate1,"SADFSDFASDFASDFASFASDFASFASDFASDF");
+		//searchPrefix(translate1,"");
+		searchPrefix("混淆我想說的話","");
 	}
     private void searchPrefix(String word,String result)
 	{
-    	Log.i(translate1,"SADFSDFASDFASDFASFASDFASFASDFASDF");
+    	//Log.i(translate1,"SADFSDFASDFASDFASFASDFASFASDFASDF");
 		for(int i=1;i<=word.length();i++)
 		{
 			String prefix = word.substring(0,i);
@@ -452,7 +459,10 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
 				if(i==word.length())
 				{
 					result+=prefix;
-					Log.i(result,"RESUUUUUUUUUUUULT");
+					System.out.println("Result here" + result);
+					//Log.i(result,"RESUUUUUUUUUUUULT");
+					//definitionsSsb.add(result);
+					
 					break;
 				}
 				searchPrefix(word.substring(i,word.length()),result+prefix+"   ");
@@ -462,6 +472,7 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
 	private boolean dictContains(String word)
 	{
 		
+
 		//String[] dictionary = {"mobile","samsung","sam","sung","man","mango","icecream","and","go","i","love","ice","cream"};
 		//chinDict is not that small huhu ambagal.
 		for(String dict:chinDict)
@@ -499,6 +510,7 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
 				} catch(Exception e){System.out.println(e);}
 			 Log.i("added mandarin dictionary","SADFSDFASDFASDFASFASDFASFASDFASDF");
 	}
+
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu)
 	{
