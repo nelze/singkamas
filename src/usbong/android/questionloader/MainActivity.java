@@ -320,6 +320,15 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
 				while(position>-1)
 				{
 					String s = reply.substring(position+4, reply.indexOf("</li>", position));
+					
+					if (s.toLowerCase().trim().startsWith("possible"))
+					{
+						s = s.substring(s.indexOf("<br>")+4);
+						System.out.println("FIXED: "+s);
+						
+						
+					}
+					
 					liList.add(s);
 					position = reply.indexOf("<li>", position+4);
 				}
@@ -345,7 +354,16 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
     	{
 	    		for(String part:partsList)
 	    		{
+	    			try
+	    			{
+	    				System.out.println("PART:"+part);
 	    			spannable.setSpan(new ForegroundColorSpan(0xFFFF0000), questionDifficulty.indexOf(part),questionDifficulty.indexOf(part)+part.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+	    			}
+	    			catch(Exception e)
+	    			{
+	    				e.printStackTrace();
+	    			}
 	    		}
     	}
     }
