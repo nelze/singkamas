@@ -41,8 +41,10 @@ import android.os.Handler;
 import android.text.Html;
 import android.text.Layout;
 import android.text.Spannable;
+import android.text.SpannableStringBuilder;
 import android.text.style.BackgroundColorSpan;
 import android.text.style.ForegroundColorSpan;
+import android.text.style.RelativeSizeSpan;
 import android.text.style.UnderlineSpan;
 import android.util.Log;
 import android.view.Display;
@@ -110,8 +112,11 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
 	private ProgressBar mProgress;
 	double progress;
 	ArrayList<Integer> indices = new ArrayList<Integer>();
-	ArrayList<String> definitions = new ArrayList<String>();
-	//ArrayList<Integer> wordIndices = new ArrayList<Integer>();
+	ArrayList<String> chinDict = new ArrayList<String>();
+	
+	//this is the new definitions arraylist. uses SpannableStringBuilder instead of string to edit style in textview
+	ArrayList<SpannableStringBuilder> definitionsSsb = new ArrayList<SpannableStringBuilder>();
+	
 	ArrayList<String> partsList = new ArrayList<String>();
 	QuickAction quickAction;
 	String language;
@@ -135,7 +140,13 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
     		//added by Mike, 15 June 2015
     		//Reference: http://stackoverflow.com/questions/17945176/want-textview-to-change-color-with-click-just-like-on-a-button
     		//; last accessed: 15 June 2015; answer by Raghunandan
-    	
+    		
+    		//i put addChinDict here so that it does not have to run every time a user taps on next.
+    		//I tested it, and it's slower to not put it in an arraylist. it's cleaner that way too.
+    		//although if there's another solution without the arraylist that's more efficient, pls replace it in addChineseDictionary()
+    		if(language.equalsIgnoreCase("Mandarin"))
+    			addChineseDictionary();
+    		
     		//added by Lev, edited by Brent, 28 June 2015
     		clickable = false;
     		question.setOnTouchListener(new OnTouchListener() {
@@ -145,9 +156,10 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
     			public boolean onTouch(View v, MotionEvent event) {
     			try
     			{
+    			//clickable is set by default to false when the app has not connected to the internet.
+    			//bugs tend to happen when a user clicks on the textview without it loading yet.
     			if(clickable){
 	    			    if (event.getAction() == MotionEvent.ACTION_DOWN) {
-	    		    		//question.setTextColor(Color.parseColor("#d1e1f6"));
 		    			    	Layout layout = ((TextView) v).getLayout();
 		    		    	      int x = (int)event.getX();
 		    		    	      int y = (int)event.getY();
@@ -162,9 +174,9 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
 		    		    	        	  end = start+partsList.get(i).length();
 		    		    	        	  if (offset-start >= 0 && offset-end < 0)
 		    		    	        	  {
-		    		    	        		  String def = definitions.get(i);
+		    		    	        		  SpannableStringBuilder def = definitionsSsb.get(i);
 		    		    	        		  QuickAction quickAction = new QuickAction(MainActivity.this);
-		    		    	        		  actionItem.setTitle(def);
+		    		    	        		  actionItem.setTitleSpan(def);
 		    		    	        		  quickAction.addActionItem(actionItem);
 		    		    	        		  quickAction.setOnActionItemClickListener(new QuickAction.OnActionItemClickListener() {
 		    		    	        			  @Override
@@ -174,7 +186,9 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
 		    		    	        				     }
 		    		    	        				 }
 		    		    	        				});
-		    		    	        		  quickAction.show(v);
+		    		    	        		  
+		    		    	        		  quickAction.show(question);
+		    		    	        		  quickAction.setAnimStyle(QuickAction.ANIM_AUTO);
 		    		    	        		  System.out.println("def here" + def);
 		    		    	        		  spannable.setSpan(new ForegroundColorSpan(0xFFFFFFFF), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 		    		    	        		  spannable.setSpan(new BackgroundColorSpan(0xFFFF0000), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
@@ -186,7 +200,7 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
 		    		    	    return true;
 	    			    }
 	    			    else if (event.getAction() == MotionEvent.ACTION_UP) {
-				        // set to default color
+				        //set to default color
 	    			    	spannable.setSpan(new ForegroundColorSpan(0x93CCEA00),start ,end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 	    			    	spannable.setSpan(new BackgroundColorSpan(Color.TRANSPARENT), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 	    			    	return true;
@@ -246,6 +260,7 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
         	spannable = (Spannable)question.getText();
         	answer.setText("");
         	translate1 = questionDifficulty;
+        	//runs async task
     		new DictionaryTask().execute();
         	
         	//progress counter
@@ -330,8 +345,8 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
 			//EXECUTE THEM ALL!
         	if (language.equalsIgnoreCase("japanese"))
         		japExecute();
-        	else if(language.equalsIgnoreCase("chinese"))
-        		chineseExecute();
+        	else if (language.equalsIgnoreCase("mandarin"))
+    			chineseExecute();
         	//else if(language.equalsIgnoreCase("korean"))
         		
 			return null;
@@ -347,7 +362,8 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
 	    			int end = questionDifficulty.indexOf(partsList.get(i))+partsList.get(i).length();
 	    			spannable.setSpan(new ForegroundColorSpan(0x93CCEA00),start ,end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 	    			clickable=true;
-	    			//overlapping search words
+	    			
+	    			//overlapping search words. dont touch muna haha.
 	    			//int overlap = overlap(partsList.get(i-1),partsList.get(i));
 	    			//if(overlap>0)
 	    			//	spannable.setSpan(new BackgroundColorSpan(0xFFFFFF00),start-overlap,end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
@@ -362,7 +378,7 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
     	try
     	{
 	    	partsList.clear();
-			definitions.clear();
+			definitionsSsb.clear();
 			// TODO Auto-generated method stub
 		    	String reply = "";
 		    	String url = "http://www.edrdg.org/cgi-bin/wwwjdic/wwwjdic?9U";
@@ -396,11 +412,14 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
 				for (String s : liList)
 				{	
 					System.out.println("S here" + s);
-					s = s.replace("<br>", "\n");
-		            //System.out.println("Text in li: "+tmp); 
-		            definitions.add(s);
-		            String[] parts = s.split(" ");
-	
+					String[] parts = s.split(" ");
+					s = s.replace(parts[1]+" ",parts[1]+"\n").replace("<br>", "\n").replace("Åy","\nÅy");
+					SpannableStringBuilder ssb = new SpannableStringBuilder(s);
+					ssb.setSpan(new RelativeSizeSpan(2f), s.indexOf(parts[1]),s.indexOf(parts[1])+parts[1].length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+					ssb.setSpan(new ForegroundColorSpan(0x93CCEA00), s.indexOf(parts[1]),s.indexOf(parts[1])+parts[1].length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+					//System.out.println("Text in li: "+tmp); 
+		            //definitions.add(s);
+		            definitionsSsb.add(ssb);
 		            if(parts[1].equals("Possible"))
 		            {
 		            	partsList.add(fontList.get(fontListIndex));
@@ -414,6 +433,72 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
 				}
     	}catch(Exception e){System.out.println("THE PROBLEEEM "+e);}
     }
+    
+    private void chineseExecute()
+	{
+		partsList.clear();
+		definitionsSsb.clear();
+		Log.i(translate1,"SADFSDFASDFASDFASFASDFASFASDFASDF");
+		searchPrefix(translate1,"");
+	}
+    private void searchPrefix(String word,String result)
+	{
+    	Log.i(translate1,"SADFSDFASDFASDFASFASDFASFASDFASDF");
+		for(int i=1;i<=word.length();i++)
+		{
+			String prefix = word.substring(0,i);
+			if (dictContains(prefix))
+			{
+				if(i==word.length())
+				{
+					result+=prefix;
+					Log.i(result,"RESUUUUUUUUUUUULT");
+					break;
+				}
+				searchPrefix(word.substring(i,word.length()),result+prefix+"   ");
+				}
+		}
+	}
+	private boolean dictContains(String word)
+	{
+		
+		//String[] dictionary = {"mobile","samsung","sam","sung","man","mango","icecream","and","go","i","love","ice","cream"};
+		//chinDict is not that small huhu ambagal.
+		for(String dict:chinDict)
+		{
+			if(!dict.contains("#"))
+			{
+			String splitDict[] = dict.split(" ");
+			if(word.equals(splitDict[1]))
+			{
+				Log.i(dict,"DIIIIIIIIIIIICCCTT");
+				//System.out.println(dict.substring(dict.indexOf(splitDict[2]),dict.length()));
+				return true;
+			}
+			}
+		}
+		return false;
+	}
+	private void addChineseDictionary()
+	{
+		 URL url;
+			final String src = "https://cdn.fbsbx.com/hphotos-xfp1/v/t59.2708-21/11654265_1137897029557826_920220815_n.u8/cedict_ts.u8?oh=da11d7f3b857e9e4b7bdaf69225d89c2&oe=55979A4A&dl=1";
+			 try
+				{
+				    url = new URL(src);
+					BufferedReader br = new BufferedReader(new InputStreamReader(url.openStream()));
+					//BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream("data/cedict_ts.u8"),StandardCharsets.UTF_8.displayName()));
+					String line;
+					while((line = br.readLine())!=null)
+					{
+						 //System.out.println(line);
+						chinDict.add(line);
+						//line = br.readLine();
+					}
+					//System.out.println(dictionary.get(0));
+				} catch(Exception e){System.out.println(e);}
+			 Log.i("added mandarin dictionary","SADFSDFASDFASDFASFASDFASFASDFASDF");
+	}
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu)
 	{
@@ -453,29 +538,6 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
 			default:
 				return super.onOptionsItemSelected(item);
 
-		}
-	}
-	private void chineseExecute()
-	{
-		partsList.clear();
-		definitions.clear();
-		URL url;
-		final String src = "https://dl-web.dropbox.com/get/SingkamasEdictFiles/cedict_ts.u8?_subject_uid=255783137&w=AAAvpUYhD6ab98HxxCkLObTMoKq4fgOLBV4Kaa1Odtyl3w";
-		try
-		{
-			url = new URL(src);
-			BufferedReader br = new BufferedReader(new InputStreamReader(url.openStream()));
-			
-			String stringBr;
-			String stringText = "";
-			while ((stringBr = br.readLine())!=null)
-			{
-				String[] parts = stringBr.split(" /");
-			}	
-			br.close();
-		}catch(Exception e)
-		{
-			System.out.println(e+"na-greatwall beh");
 		}
 	}
 
@@ -520,11 +582,11 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
         	//added by Brent Anonas, 28 June 2015
         	question.setText(questionDifficulty);
         	spannable = (Spannable)question.getText();
+        	translate1 = questionDifficulty;
         	if (language.equalsIgnoreCase("japanese"))
-        	{
-        		translate1 = questionDifficulty;
         		new DictionaryTask().execute();
-        	}
+        	else if (language.equalsIgnoreCase("mandarin"))
+    			new DictionaryTask().execute();
         	//if (language.equalsIgnoreCase("japanese"))
         		//japaneseDictionary(questionDifficulty);
     		//question.setText(newQues.getQuestionText());
