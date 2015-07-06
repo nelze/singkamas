@@ -185,7 +185,6 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
 		    		    	        	  if (offset-start >= 0 && offset-end < 0)
 		    		    	        	  {
 		    		    	        		  SpannableStringBuilder def  = definitionsSsb.get(i);
-		    		    	        		  QuickAction quickAction = new QuickAction(MainActivity.this);
 		    		    	        		  actionItem.setTitleSpan(def);
 		    		    	        		  quickAction.addActionItem(actionItem);
 		    		    	        		  quickAction.setOnActionItemClickListener(new QuickAction.OnActionItemClickListener() {
@@ -196,18 +195,15 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
 		    		    	        				     }
 		    		    	        				 }
 		    		    	        				});
-		    		    	        		  //start==0?1:
-		    		    	        		  quickAction.show(question,(start+1));
-		    		    	        		  
-		    		    	        		  //quickAction.setAnimStyle(QuickAction.ANIM_AUTO);
-		    		    	        		  //quickAction.setAnimationStyle(width,offset, true);
 		    		    	        		  System.out.println("def here" + def);
 		    		    	        		  spannable.setSpan(new ForegroundColorSpan(0xFFFFFFFF), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 		    		    	        		  spannable.setSpan(new BackgroundColorSpan(0xFFFF0000), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 		    		    	        		  //Toast.makeText(getApplicationContext(), def,  Toast.LENGTH_SHORT).show();
-		    		    	        		  break;
+		    		    	        		  if(i==partsList.size()-1)
+		    		    	        			  quickAction.show(question,(start+1));
 		    		    	        	  }
 		    		    	          }
+		    		    	          
 		    		    	    }
 		    		    	    return true;
 	    			    }
@@ -217,23 +213,25 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
 	    			    	spannable.setSpan(new BackgroundColorSpan(Color.TRANSPARENT), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 	    			    	return true;
 	    			    }
-	    			    if (event.getAction() == MotionEvent.ACTION_MOVE) {
+	    			    /*if (event.getAction() == MotionEvent.ACTION_MOVE) {
 					        //set to default color
+	    			    	
 	    			    	Layout layout = ((TextView) v).getLayout();
 	    			    		int x = (int)event.getX();
 	    			    		int y = (int)event.getY();
 	    			    		if (layout!=null){
 		    		    	         int line = layout.getLineForVertical(y);
 		    		    	         int offset = layout.getOffsetForHorizontal(line,x);
-		    			    		if (offset>overallOffset&&((ForegroundColorSpan) spannable).getForegroundColor()==0)
+		    			    		if (offset>overallOffset)
 		    			    		{
+		    			    			Spannable[] spanArray = spannable.getSpans(start,overallOffset,Spannable.class);
 		    			    			spannable.setSpan(new ForegroundColorSpan(0x93CCEA00),start ,end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 		    			    			spannable.setSpan(new BackgroundColorSpan(Color.TRANSPARENT), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 		    			    		}
 	    			    		}
 		    			    	return true;
 			    			    	
-		    			    }
+		    			    }*/
     			    /*else if (event.getAction() == MotionEvent.ACTION_UP) {
     			        // set to default color
     		    		question.setTextColor(Color.parseColor("#acacab"));		
@@ -488,6 +486,19 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
 		//Log.i(translate1,"SADFSDFASDFASDFASFASDFASFASDFASDF");
 		//searchPrefix(translate1,"");
 		searchPrefix(translate1,"");
+		for(int i = 0; i < partsList.size(); i++)
+		{
+			for (int j = i+1; j < partsList.size();)
+			{
+				if (partsList.get(i).equals(partsList.get(j)))
+					partsList.remove(i);
+				else
+				{
+					j++;
+				}
+					
+			}
+		}
 	}
     private void searchPrefix(String word,String result)
 	{
@@ -524,7 +535,9 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
 			if(word.equals(splitDict[1]))
 			{
 				Log.i(dict,"DIIIIIIIIIIIICCCTT");
-				//System.out.println(dict.substring(dict.indexOf(splitDict[2]),dict.length()));
+				partsList.add(splitDict[1]);
+				SpannableStringBuilder ssb = new SpannableStringBuilder(dict.substring(dict.indexOf(splitDict[2]),dict.length()));
+				definitionsSsb.add(ssb);
 				return true;
 			}
 			}
