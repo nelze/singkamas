@@ -159,8 +159,7 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
     		//added by Lev, edited by Brent, 28 June 2015
     		clickable = false;
     		question.setOnTouchListener(new OnTouchListener() {
-    			int start;
-    			int end;
+    			int start,end,overallLine,overallOffset;
     			@Override
     			public boolean onTouch(View v, MotionEvent event) {
     			try
@@ -175,6 +174,8 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
 		    		    	      if (layout!=null){
 		    		    	          int line = layout.getLineForVertical(y);
 		    		    	          int offset = layout.getOffsetForHorizontal(line,x);
+		    		    	          overallLine = line;
+		    		    	          overallOffset = offset;
 		    		    	          //for (int i = partsList.size()-1; i >=0 ; i--)
 		    		    	          Log.i(Integer.toString(offset),"OOOOOOFFSEETT");
 		    		    	          for(int i = 0; i<partsList.size();i++)
@@ -210,12 +211,29 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
 		    		    	    }
 		    		    	    return true;
 	    			    }
-	    			    else if (event.getAction() == MotionEvent.ACTION_UP) {
+	    			    if (event.getAction() == MotionEvent.ACTION_UP) {
 				        //set to default color
 	    			    	spannable.setSpan(new ForegroundColorSpan(0x93CCEA00),start ,end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 	    			    	spannable.setSpan(new BackgroundColorSpan(Color.TRANSPARENT), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 	    			    	return true;
 	    			    }
+	    			    if (event.getAction() == MotionEvent.ACTION_MOVE) {
+					        //set to default color
+	    			    	Layout layout = ((TextView) v).getLayout();
+	    			    		int x = (int)event.getX();
+	    			    		int y = (int)event.getY();
+	    			    		if (layout!=null){
+		    		    	         int line = layout.getLineForVertical(y);
+		    		    	         int offset = layout.getOffsetForHorizontal(line,x);
+		    			    		if (offset>overallOffset&&((ForegroundColorSpan) spannable).getForegroundColor()==0)
+		    			    		{
+		    			    			spannable.setSpan(new ForegroundColorSpan(0x93CCEA00),start ,end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+		    			    			spannable.setSpan(new BackgroundColorSpan(Color.TRANSPARENT), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+		    			    		}
+	    			    		}
+		    			    	return true;
+			    			    	
+		    			    }
     			    /*else if (event.getAction() == MotionEvent.ACTION_UP) {
     			        // set to default color
     		    		question.setTextColor(Color.parseColor("#acacab"));		
