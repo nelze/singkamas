@@ -88,7 +88,8 @@ public class SettingSelection extends Activity {
     public void easy(View view)
     {
     	
-    	Intent intent = new Intent(SettingSelection.this, MainActivity.class);
+    	//Intent intent = new Intent(SettingSelection.this, MainActivity.class);
+    	Intent intent = new Intent(SettingSelection.this, LoadingScreen.class);
     	intent.putExtra("difficulty", "easy");
     	intent.putExtra("song_title", songname);
     	intent.putExtra("language", language);
@@ -98,7 +99,8 @@ public class SettingSelection extends Activity {
     
     public void medium(View view)
     {
-    	Intent intent = new Intent(SettingSelection.this, MainActivity.class);
+    	//Intent intent = new Intent(SettingSelection.this, MainActivity.class);
+    	Intent intent = new Intent(SettingSelection.this, LoadingScreen.class);
     	intent.putExtra("difficulty", "medium");
     	intent.putExtra("song_title", songname);
     	intent.putExtra("language", language);

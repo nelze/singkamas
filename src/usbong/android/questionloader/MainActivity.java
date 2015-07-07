@@ -1,10 +1,12 @@
 package usbong.android.questionloader;
 
 import java.io.BufferedReader;
+import java.io.FileInputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,13 +22,14 @@ import org.apache.http.impl.client.DefaultHttpClient;
 
 import usbong.android.utils.UsbongUtils;
 import android.annotation.SuppressLint;
+import android.app.ActionBar;
 import android.app.AlertDialog;
-import android.content.ClipData;
-import android.content.ClipboardManager;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.Paint;
 import android.graphics.Point;
+import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.media.MediaPlayer;
 import android.net.Uri;
@@ -40,7 +43,6 @@ import android.text.SpannableStringBuilder;
 import android.text.style.BackgroundColorSpan;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.RelativeSizeSpan;
-import android.text.style.UnderlineSpan;
 import android.util.Log;
 import android.view.Display;
 import android.view.Menu;
@@ -50,6 +52,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
+import android.view.ViewGroup.MarginLayoutParams;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -57,6 +60,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.TextView.BufferType;
 import android.widget.Toast;
@@ -77,7 +81,9 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
 	ActionItem actionItem;
 	public static final String API_KEY = UsbongUtils.API_KEY;
 	//ActionItem ai = new ActionItem();
+	int screenWidth;
 	String VIDEO_ID ;
+	boolean addedDict = false;
 	boolean clickable;
 	Spannable spannable;
 	MediaPlayer mpSplash1;
@@ -124,6 +130,10 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
         super.onCreate(savedInstanceState);
         
         setContentView(R.layout.activity_main);
+	        //Display display = getWindowManager().getDefaultDisplay();
+			//Point size = new Point();
+			//display.getSize(size);
+			//screenWidth = size.x;
         	actionItem = new ActionItem();
         	quickAction = new QuickAction(this);
         	Bundle bundle = getIntent().getExtras();
@@ -132,6 +142,12 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
         	language = bundle.getString("language");
         	videosFound = (ListView)findViewById(R.id.videos_found); 
     		question   = (TextView)findViewById(R.id.questionView);
+    		//int qcoord[] = new int[2];
+    	    //question.getLocationOnScreen(qcoord);
+    		//float qy = question.getTop();
+    		//float qx = question.getLeft();
+
+    		
     		//added by Mike, 15 June 2015
     		//Reference: http://stackoverflow.com/questions/17945176/want-textview-to-change-color-with-click-just-like-on-a-button
     		//; last accessed: 15 June 2015; answer by Raghunandan
@@ -139,14 +155,11 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
     		//i put addChinDict here so that it does not have to run every time a user taps on next.
     		//I tested it, and it's slower to not put it in an arraylist. it's cleaner that way too.
     		//although if there's another solution without the arraylist that's more efficient, pls replace it in addChineseDictionary()
-    		if(language.equalsIgnoreCase("Mandarin"))
-    			addChineseDictionary();
     		
     		//added by Lev, edited by Brent, 28 June 2015
     		clickable = false;
     		question.setOnTouchListener(new OnTouchListener() {
-    			int start;
-    			int end;
+    			int start,end,overallLine,overallOffset;
     			@Override
     			public boolean onTouch(View v, MotionEvent event) {
     			try
@@ -161,6 +174,8 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
 		    		    	      if (layout!=null){
 		    		    	          int line = layout.getLineForVertical(y);
 		    		    	          int offset = layout.getOffsetForHorizontal(line,x);
+		    		    	          overallLine = line;
+		    		    	          overallOffset = offset;
 		    		    	          //for (int i = partsList.size()-1; i >=0 ; i--)
 		    		    	          Log.i(Integer.toString(offset),"OOOOOOFFSEETT");
 		    		    	          for(int i = 0; i<partsList.size();i++)
@@ -169,8 +184,7 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
 		    		    	        	  end = start+partsList.get(i).length();
 		    		    	        	  if (offset-start >= 0 && offset-end < 0)
 		    		    	        	  {
-		    		    	        		  SpannableStringBuilder def = definitionsSsb.get(i);
-		    		    	        		  QuickAction quickAction = new QuickAction(MainActivity.this);
+		    		    	        		  SpannableStringBuilder def  = definitionsSsb.get(i);
 		    		    	        		  actionItem.setTitleSpan(def);
 		    		    	        		  quickAction.addActionItem(actionItem);
 		    		    	        		  quickAction.setOnActionItemClickListener(new QuickAction.OnActionItemClickListener() {
@@ -181,27 +195,43 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
 		    		    	        				     }
 		    		    	        				 }
 		    		    	        				});
-		    		    	        		  
-		    		    	        		  quickAction.show(question,(offset+1)*60);
-		    		    	        		  
-		    		    	        		  quickAction.setAnimStyle(QuickAction.ANIM_AUTO);
-		    		    	        		  //quickAction.setAnimationStyle(width,offset, true);
 		    		    	        		  System.out.println("def here" + def);
 		    		    	        		  spannable.setSpan(new ForegroundColorSpan(0xFFFFFFFF), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 		    		    	        		  spannable.setSpan(new BackgroundColorSpan(0xFFFF0000), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 		    		    	        		  //Toast.makeText(getApplicationContext(), def,  Toast.LENGTH_SHORT).show();
-		    		    	        		  break;
+		    		    	        		  if(i==partsList.size()-1)
+		    		    	        			  quickAction.show(question,(start+1));
 		    		    	        	  }
 		    		    	          }
+		    		    	          
 		    		    	    }
 		    		    	    return true;
 	    			    }
-	    			    else if (event.getAction() == MotionEvent.ACTION_UP) {
+	    			    if (event.getAction() == MotionEvent.ACTION_UP) {
 				        //set to default color
 	    			    	spannable.setSpan(new ForegroundColorSpan(0x93CCEA00),start ,end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 	    			    	spannable.setSpan(new BackgroundColorSpan(Color.TRANSPARENT), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 	    			    	return true;
 	    			    }
+	    			    /*if (event.getAction() == MotionEvent.ACTION_MOVE) {
+					        //set to default color
+	    			    	
+	    			    	Layout layout = ((TextView) v).getLayout();
+	    			    		int x = (int)event.getX();
+	    			    		int y = (int)event.getY();
+	    			    		if (layout!=null){
+		    		    	         int line = layout.getLineForVertical(y);
+		    		    	         int offset = layout.getOffsetForHorizontal(line,x);
+		    			    		if (offset>overallOffset)
+		    			    		{
+		    			    			Spannable[] spanArray = spannable.getSpans(start,overallOffset,Spannable.class);
+		    			    			spannable.setSpan(new ForegroundColorSpan(0x93CCEA00),start ,end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+		    			    			spannable.setSpan(new BackgroundColorSpan(Color.TRANSPARENT), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+		    			    		}
+	    			    		}
+		    			    	return true;
+			    			    	
+		    			    }*/
     			    /*else if (event.getAction() == MotionEvent.ACTION_UP) {
     			        // set to default color
     		    		question.setTextColor(Color.parseColor("#acacab"));		
@@ -259,8 +289,9 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
         	translate1 = questionDifficulty;
         	//runs async task
     		new DictionaryTask().execute();
-        	
-        	//progress counter
+    		
+    		//question.setY(qy);
+    		//progress counter
         	//System.out.println(questionCounter +" " + total);
         	progress = questionCounter/total;
             mProgress.setProgress((int) (progress*100));
@@ -343,7 +374,15 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
         	if (language.equalsIgnoreCase("japanese"))
         		japExecute();
         	else if (language.equalsIgnoreCase("mandarin"))
-    			chineseExecute();
+        	{
+        		if(addedDict)
+        			chineseExecute();
+        		else
+        		{
+        			addChineseDictionary();
+        			chineseExecute();
+        		}
+        	}
         	//else if(language.equalsIgnoreCase("korean"))
         		
 			return null;
@@ -358,8 +397,8 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
 	    			int start = questionDifficulty.indexOf(partsList.get(i));
 	    			int end = questionDifficulty.indexOf(partsList.get(i))+partsList.get(i).length();
 	    			spannable.setSpan(new ForegroundColorSpan(0x93CCEA00),start ,end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+	    			//resizeQuestion();
 	    			clickable=true;
-	    			
 	    			//overlapping search words. dont touch muna haha.
 	    			//int overlap = overlap(partsList.get(i-1),partsList.get(i));
 	    			//if(overlap>0)
@@ -446,7 +485,20 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
 		definitionsSsb.clear();
 		//Log.i(translate1,"SADFSDFASDFASDFASFASDFASFASDFASDF");
 		//searchPrefix(translate1,"");
-		searchPrefix("混淆我想說的話","");
+		searchPrefix(translate1,"");
+		for(int i = 0; i < partsList.size(); i++)
+		{
+			for (int j = i+1; j < partsList.size();)
+			{
+				if (partsList.get(i).equals(partsList.get(j)))
+					partsList.remove(i);
+				else
+				{
+					j++;
+				}
+					
+			}
+		}
 	}
     private void searchPrefix(String word,String result)
 	{
@@ -483,18 +535,21 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
 			if(word.equals(splitDict[1]))
 			{
 				Log.i(dict,"DIIIIIIIIIIIICCCTT");
-				//System.out.println(dict.substring(dict.indexOf(splitDict[2]),dict.length()));
+				partsList.add(splitDict[1]);
+				SpannableStringBuilder ssb = new SpannableStringBuilder(dict.substring(dict.indexOf(splitDict[2]),dict.length()));
+				definitionsSsb.add(ssb);
 				return true;
 			}
 			}
 		}
 		return false;
 	}
+	@SuppressWarnings("resource")
 	private void addChineseDictionary()
 	{
 		 URL url;
-			final String src = "https://cdn.fbsbx.com/hphotos-xfp1/v/t59.2708-21/11654265_1137897029557826_920220815_n.u8/cedict_ts.u8?oh=da11d7f3b857e9e4b7bdaf69225d89c2&oe=55979A4A&dl=1";
-			 try
+		 final String src = "https://raw.githubusercontent.com/SkycladObserver/CEdictSingkamas/master/cedict_ts.u8";			 
+			try
 				{
 				    url = new URL(src);
 					BufferedReader br = new BufferedReader(new InputStreamReader(url.openStream()));
@@ -509,6 +564,7 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
 					//System.out.println(dictionary.get(0));
 				} catch(Exception e){System.out.println(e);}
 			 Log.i("added mandarin dictionary","SADFSDFASDFASDFASFASDFASFASDFASDF");
+			 addedDict = true;
 	}
 
 	@Override
