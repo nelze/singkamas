@@ -200,11 +200,7 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
 		    		    	        		  quickAction.show(question,(start+1));
 		    		    	        		  System.out.println("def here" + def);
 		    		    	        		  spannable.setSpan(new ForegroundColorSpan(0xFFFFFFFF), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-<<<<<<< HEAD
-		    		    	        		  spannable.setSpan(new BackgroundColorSpan(0xFFFF0000), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-		    		    	        		  break;
-		    		    	        		  //Toast.makeText(getApplicationContext(), def,  Toast.LENGTH_SHORT).show();
-=======
+
 		    		    	        		  if (language.equalsIgnoreCase("Chinese"))
 		    		    	        		  {
 		    		    	        			  spannable.setSpan(new BackgroundColorSpan(0xFFFF0000), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
@@ -214,7 +210,6 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
 		    		    	        		  }
 		    		    	        		  else
 		    		    	        			  quickAction.show(question,(i));
->>>>>>> master
 		    		    	        	  }
 		    		    	          }
 		    		    	    }
