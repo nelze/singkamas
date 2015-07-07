@@ -114,10 +114,10 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
 	double progress;
 	ArrayList<Integer> indices = new ArrayList<Integer>();
 	ArrayList<String> chinDict = new ArrayList<String>();
-	
+	ArrayList<DictionaryEntry> dictEntries = new ArrayList<DictionaryEntry>();
 	//this is the new definitions arraylist. uses SpannableStringBuilder instead of string to edit style in textview
 	ArrayList<SpannableStringBuilder> definitionsSsb = new ArrayList<SpannableStringBuilder>();
-	
+	ArrayList<ArrayList<String>> overlaps = new ArrayList<ArrayList<String>>();
 	ArrayList<String> partsList = new ArrayList<String>();
 	QuickAction quickAction;
 	String language;
@@ -168,6 +168,7 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
     			//bugs tend to happen when a user clicks on the textview without it loading yet.
     			if(clickable){
 	    			    if (event.getAction() == MotionEvent.ACTION_DOWN) {
+	    			    		QuickAction quickAction = new QuickAction(MainActivity.this);
 		    			    	Layout layout = ((TextView) v).getLayout();
 		    		    	      int x = (int)event.getX();
 		    		    	      int y = (int)event.getY();
@@ -187,6 +188,7 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
 		    		    	        		  SpannableStringBuilder def  = definitionsSsb.get(i);
 		    		    	        		  actionItem.setTitleSpan(def);
 		    		    	        		  quickAction.addActionItem(actionItem);
+		    		    	        		 
 		    		    	        		  quickAction.setOnActionItemClickListener(new QuickAction.OnActionItemClickListener() {
 		    		    	        			  @Override
 		    		    	        			  public void onItemClick(QuickAction source,int pos, int actionId) {
@@ -195,15 +197,14 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
 		    		    	        				     }
 		    		    	        				 }
 		    		    	        				});
+		    		    	        		  quickAction.show(question,(start+1));
 		    		    	        		  System.out.println("def here" + def);
 		    		    	        		  spannable.setSpan(new ForegroundColorSpan(0xFFFFFFFF), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 		    		    	        		  spannable.setSpan(new BackgroundColorSpan(0xFFFF0000), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+		    		    	        		  break;
 		    		    	        		  //Toast.makeText(getApplicationContext(), def,  Toast.LENGTH_SHORT).show();
-		    		    	        		  if(i==partsList.size()-1)
-		    		    	        			  quickAction.show(question,(start+1));
 		    		    	        	  }
 		    		    	          }
-		    		    	          
 		    		    	    }
 		    		    	    return true;
 	    			    }
@@ -486,19 +487,31 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
 		//Log.i(translate1,"SADFSDFASDFASDFASFASDFASFASDFASDF");
 		//searchPrefix(translate1,"");
 		searchPrefix(translate1,"");
-		for(int i = 0; i < partsList.size(); i++)
+		/*for(int i = 0; i < partsList.size(); i++)
 		{
 			for (int j = i+1; j < partsList.size();)
 			{
+				ArrayList<String> innerOverlap = new ArrayList<String>();
 				if (partsList.get(i).equals(partsList.get(j)))
 					partsList.remove(i);
 				else
 				{
+					if(partsList.get(i).length()<partsList.get(j).length())
+					{
+							String temp = partsList.get(j);
+							partsList.set(j, partsList.get(i));
+							partsList.set(i, temp);
+					}
+					if(partsList.get(i).contains(partsList.get(j)))
+					{
+						innerOverlap.add(partsList.get(j));
+						partsList.remove(j);
+					}
 					j++;
 				}
 					
 			}
-		}
+		}*/
 	}
     private void searchPrefix(String word,String result)
 	{
