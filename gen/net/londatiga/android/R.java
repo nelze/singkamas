@@ -41,23 +41,23 @@ public final class R {
 		public static final int popup = 0x7f02003c;
 	}
 	public static final class id {
-		public static final int arrow_down = 0x7f0b001c;
-		public static final int arrow_up = 0x7f0b001b;
-		public static final int btn1 = 0x7f0b0010;
-		public static final int btn2 = 0x7f0b0011;
-		public static final int btn3 = 0x7f0b0012;
-		public static final int iv_icon = 0x7f0b0000;
-		public static final int scroller = 0x7f0b0019;
-		public static final int tracks = 0x7f0b001a;
-		public static final int tv_title = 0x7f0b0001;
+		public static final int arrow_down = 0x7f0a001b;
+		public static final int arrow_up = 0x7f0a001a;
+		public static final int btn1 = 0x7f0a000e;
+		public static final int btn2 = 0x7f0a000f;
+		public static final int btn3 = 0x7f0a0010;
+		public static final int iv_icon = 0x7f0a0000;
+		public static final int scroller = 0x7f0a0018;
+		public static final int tracks = 0x7f0a0019;
+		public static final int tv_title = 0x7f0a0001;
 	}
 	public static final class layout {
 		public static final int action_item_horizontal = 0x7f030000;
 		public static final int action_item_vertical = 0x7f030001;
 		public static final int horiz_separator = 0x7f030003;
-		public static final int main = 0x7f030005;
-		public static final int popup_horizontal = 0x7f030007;
-		public static final int popup_vertical = 0x7f030008;
+		public static final int main = 0x7f030004;
+		public static final int popup_horizontal = 0x7f030006;
+		public static final int popup_vertical = 0x7f030007;
 	}
 	public static final class string {
 		public static final int app_name = 0x7f060001;
