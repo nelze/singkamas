@@ -160,7 +160,8 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
     		clickable = false;
     		question.setOnTouchListener(new OnTouchListener() {
     			int start,end,overallLine,overallOffset;
-    			@Override
+    			@SuppressLint("ClickableViewAccessibility")
+				@Override
     			public boolean onTouch(View v, MotionEvent event) {
     			try
     			{
@@ -197,10 +198,19 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
 		    		    	        				     }
 		    		    	        				 }
 		    		    	        				});
-		    		    	        		  quickAction.show(question,(start+1));
+		    		    	        		  quickAction.show(question,start,question.getLeft());
 		    		    	        		  System.out.println("def here" + def);
 		    		    	        		  spannable.setSpan(new ForegroundColorSpan(0xFFFFFFFF), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+<<<<<<< HEAD
 
+=======
+<<<<<<< HEAD
+		    		    	        		  spannable.setSpan(new BackgroundColorSpan(0xFFFF0000), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+		    		    	        		  if(language.equalsIgnoreCase("japanese"))
+		    		    	        			  break;
+		    		    	        		  //Toast.makeText(getApplicationContext(), def,  Toast.LENGTH_SHORT).show();
+=======
+>>>>>>> origin/master
 		    		    	        		  if (language.equalsIgnoreCase("Chinese"))
 		    		    	        		  {
 		    		    	        			  spannable.setSpan(new BackgroundColorSpan(0xFFFF0000), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
@@ -497,7 +507,7 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
 		//Log.i(translate1,"SADFSDFASDFASDFASFASDFASFASDFASDF");
 		//searchPrefix(translate1,"");
 		searchPrefix(translate1,"");
-		/*for(int i = 0; i < partsList.size(); i++)
+		for(int i = 0; i < partsList.size(); i++)
 		{
 			for (int j = i+1; j < partsList.size();)
 			{
@@ -521,7 +531,7 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
 				}
 					
 			}
-		}*/
+		}
 	}
     private void searchPrefix(String word,String result)
 	{
@@ -559,7 +569,7 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
 			{
 				Log.i(dict,"DIIIIIIIIIIIICCCTT");
 				partsList.add(splitDict[1]);
-				SpannableStringBuilder ssb = new SpannableStringBuilder(dict.substring(dict.indexOf(splitDict[2]),dict.length()));
+				SpannableStringBuilder ssb = new SpannableStringBuilder(dict);//.substring(dict.indexOf(splitDict[2]),dict.length()));
 				definitionsSsb.add(ssb);
 				return true;
 			}
