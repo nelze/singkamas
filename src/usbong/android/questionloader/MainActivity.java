@@ -1,4 +1,4 @@
-package usbong.android.questionloader;
+﻿package usbong.android.questionloader;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
@@ -59,6 +59,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.PopupWindow;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -125,6 +126,20 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
 	double accuracy; //added by Mike, 27 March 2015
     YouTubePlayer player;
 	
+    
+    abstract class MyPopUpDismissListener implements PopupWindow.OnDismissListener
+    {
+    	int start;
+    	int end;
+    	
+    	public MyPopUpDismissListener(int start, int end)
+    	{
+    		this.start = start;
+    		this.end = end;
+    	}
+    }
+    
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -179,10 +194,23 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
 		    		    	          //for (int i = partsList.size()-1; i >=0 ; i--)
 		    		    	          Log.i(Integer.toString(offset),"OOOOOOFFSEETT");
 		    		    	          for(int i = 0; i<partsList.size();i++)
+<<<<<<< HEAD
 		    		    	          {  
 		    		    	        	  int tempstart = questionDifficulty.indexOf(partsList.get(i));
 		    		    	        	  int tempend = tempstart+partsList.get(i).length();
 		    		    	        	  if (offset-tempstart >= 0 && offset-tempend < 0)
+=======
+		    		    	          {
+		    		    	        	  start = questionDifficulty.indexOf(partsList.get(i));
+		    		    	        	  
+		    		    	        	  if (start==-1)
+		    		    	        	  {
+		    		    	        		  Log.i("WARNING:", "start is -1 for part "+partsList.get(i));
+		    		    	        		  
+		    		    	        	  }
+		    		    	        	  end = start+partsList.get(i).length();
+		    		    	        	  if (offset-start >= 0 && offset-end < 0)
+>>>>>>> master
 		    		    	        	  {
 		    		    	        		  start = tempstart;
 		    		    	        		  end = tempend;
@@ -198,11 +226,27 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
 		    		    	        				     }
 		    		    	        				 }
 		    		    	        				});
+		    		    	        		  
+		    		    	        		  
+		    		    	        		  quickAction.setOnDismissListener(new MyPopUpDismissListener(start, end)
+											{
+		    		    	        			  
+												@Override
+												public void onDismiss()
+												{
+								    			    	spannable.setSpan(new ForegroundColorSpan(0x93CCEA00),this.start ,this.end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+								    			    	spannable.setSpan(new BackgroundColorSpan(Color.TRANSPARENT), this.start, this.end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+												}
+											});
 		    		    	        		  quickAction.show(question,start,question.getLeft());
+		    		    	        		  
 		    		    	        		  System.out.println("def here" + def);
 		    		    	        		  spannable.setSpan(new ForegroundColorSpan(0xFFFFFFFF), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 		    		    	        		  spannable.setSpan(new BackgroundColorSpan(0xFFFF0000), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+<<<<<<< HEAD
 		    		    	        		  
+=======
+>>>>>>> master
 		    		    	        		  //if(language.equalsIgnoreCase("japanese"))
 		    		    	        			//  break;
 		    		    	        		  //Toast.makeText(getApplicationContext(), def,  Toast.LENGTH_SHORT).show();
@@ -211,6 +255,7 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
 		    		    	    } 
 		    		    	    return true;
 	    			    }
+<<<<<<< HEAD
 	    			    if (event.getAction() == MotionEvent.ACTION_UP) {
 				        //set to default color
 	    			    	/*quickAction.setOnDismissListener(new QuickAction.OnDismissListener()
@@ -221,6 +266,14 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
 	    			    	spannable.setSpan(new BackgroundColorSpan(Color.TRANSPARENT), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 	    			    	return true;
 	    			    }
+=======
+//	    			    else if (event.getAction() == MotionEvent.ACTION_UP) {
+//				        //set to default color
+//	    			    	spannable.setSpan(new ForegroundColorSpan(0x93CCEA00),start ,end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+//	    			    	spannable.setSpan(new BackgroundColorSpan(Color.TRANSPARENT), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+//	    			    	return true;
+//	    			    }
+>>>>>>> master
 	    			    /*if (event.getAction() == MotionEvent.ACTION_MOVE) {
 					        //set to default color
 	    			    	
