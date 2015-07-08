@@ -1,4 +1,4 @@
-package usbong.android.questionloader;
+﻿package usbong.android.questionloader;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
@@ -59,6 +59,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.PopupWindow;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -125,6 +126,20 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
 	double accuracy; //added by Mike, 27 March 2015
     YouTubePlayer player;
 	
+    
+    abstract class MyPopUpDismissListener implements PopupWindow.OnDismissListener
+    {
+    	int start;
+    	int end;
+    	
+    	public MyPopUpDismissListener(int start, int end)
+    	{
+    		this.start = start;
+    		this.end = end;
+    	}
+    }
+    
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -183,6 +198,12 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
 		    		    	          for(int i = 0; i<partsList.size();i++)
 		    		    	          {
 		    		    	        	  start = questionDifficulty.indexOf(partsList.get(i));
+		    		    	        	  
+		    		    	        	  if (start==-1)
+		    		    	        	  {
+		    		    	        		  Log.i("WARNING:", "start is -1 for part "+partsList.get(i));
+		    		    	        		  
+		    		    	        	  }
 		    		    	        	  end = start+partsList.get(i).length();
 		    		    	        	  if (offset-start >= 0 && offset-end < 0)
 		    		    	        	  {
@@ -198,42 +219,37 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
 		    		    	        				     }
 		    		    	        				 }
 		    		    	        				});
+		    		    	        		  
+		    		    	        		  
+		    		    	        		  quickAction.setOnDismissListener(new MyPopUpDismissListener(start, end)
+											{
+		    		    	        			  
+												@Override
+												public void onDismiss()
+												{
+								    			    	spannable.setSpan(new ForegroundColorSpan(0x93CCEA00),this.start ,this.end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+								    			    	spannable.setSpan(new BackgroundColorSpan(Color.TRANSPARENT), this.start, this.end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+												}
+											});
 		    		    	        		  quickAction.show(question,start,question.getLeft());
+		    		    	        		  
 		    		    	        		  System.out.println("def here" + def);
 		    		    	        		  spannable.setSpan(new ForegroundColorSpan(0xFFFFFFFF), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-<<<<<<< HEAD
-
-=======
-<<<<<<< HEAD
 		    		    	        		  spannable.setSpan(new BackgroundColorSpan(0xFFFF0000), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-		    		    	        		  if(language.equalsIgnoreCase("japanese"))
-		    		    	        			  break;
+		    		    	        		  //if(language.equalsIgnoreCase("japanese"))
+		    		    	        			//  break;
 		    		    	        		  //Toast.makeText(getApplicationContext(), def,  Toast.LENGTH_SHORT).show();
-=======
->>>>>>> origin/master
-		    		    	        		  if (language.equalsIgnoreCase("Chinese"))
-		    		    	        		  {
-		    		    	        			  spannable.setSpan(new BackgroundColorSpan(0xFFFF0000), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-		    		    	        			  //Toast.makeText(getApplicationContext(), def,  Toast.LENGTH_SHORT).show();
-		    		    	        			  if(i==partsList.size()-1)
-		    		    	        				  quickAction.show(question,(start+1));
-		    		    	        		  }
-		    		    	        		  else
-		    		    	        			  quickAction.show(question,(i));
 		    		    	        	  }
 		    		    	          }
-		    		    	    }
+		    		    	    } 
 		    		    	    return true;
 	    			    }
-	    			    if (event.getAction() == MotionEvent.ACTION_UP) {
-				        //set to default color
-	    			    	spannable.setSpan(new ForegroundColorSpan(0x93CCEA00),start ,end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-	    			    	if (language.equalsIgnoreCase("Chinese"))
-	    	        		  {
-	    			    		spannable.setSpan(new BackgroundColorSpan(Color.TRANSPARENT), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-	    			    		return true;
-	    	        		  }
-	    			    }
+//	    			    else if (event.getAction() == MotionEvent.ACTION_UP) {
+//				        //set to default color
+//	    			    	spannable.setSpan(new ForegroundColorSpan(0x93CCEA00),start ,end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+//	    			    	spannable.setSpan(new BackgroundColorSpan(Color.TRANSPARENT), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+//	    			    	return true;
+//	    			    }
 	    			    /*if (event.getAction() == MotionEvent.ACTION_MOVE) {
 					        //set to default color
 	    			    	
@@ -599,81 +615,6 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
 			 Log.i("added mandarin dictionary","SADFSDFASDFASDFASFASDFASFASDFASDF");
 			 addedDict = true;
 	}
-	/*private void koreanExecute()
-	{
-		try
-    	{
-	    	partsList.clear();
-			definitionsSsb.clear();
-			// TODO Auto-generated method stub
-			//translate1 is the question
-				String[] koreanline = translate1.split(" ");
-				
-				for (int i = 0; i < koreanline.length; i++)
-				{
-					String reply = "";
-			    	String url = "http://endic.naver.com/search.nhn?sLn=kr&searchOption=entry_idiom&query="+ koreanline[i];
-				}
-		    	String data = "gloss_line="+ URLEncoder.encode(translate1,"UTF-8")+"&dicsel=9&glleng=60";
-				reply = postFormDataToUrl(url, data);
-		    	
-				// collect <li> stuff
-				ArrayList<String> liList = new ArrayList<String>();
-				int position = reply.indexOf("<li>", 0);
-				while(position>-1)
-				{
-					String s = reply.substring(position+4, reply.indexOf("</li>", position));
-					
-					if (s.toLowerCase().trim().startsWith("possible"))
-					{
-						s = s.substring(s.indexOf("<br>")+4);
-						System.out.println("FIXED: "+s);
-						
-						
-					}
-					
-					liList.add(s);
-					position = reply.indexOf("<li>", position+4);
-				}
-				
-				//collect all inflected verbs
-				ArrayList<String> fontList = new ArrayList<String>();
-				int positionFont = reply.indexOf("<font color=\"blue\">");
-				while(positionFont>-1)
-				{
-					String s = reply.substring(positionFont+19, reply.indexOf("</font>", positionFont));
-					System.out.println(s+"hahahahahahahahahahahah");
-					fontList.add(s);
-					System.out.println("added fontList "+s);
-					positionFont = reply.indexOf("<font color=\"blue\">", positionFont+19);
-				}
-				
-				// print the <li> stuff
-				int fontListIndex = 0;
-				for (String s : liList)
-				{	
-					System.out.println("S here" + s);
-					String[] parts = s.split(" ");
-					s = s.replace(parts[1]+" ",parts[1]+"\n").replace("<br>", "\n").replace("�y","\n�y");
-					SpannableStringBuilder ssb = new SpannableStringBuilder(s);
-					ssb.setSpan(new RelativeSizeSpan(2f), s.indexOf(parts[1]),s.indexOf(parts[1])+parts[1].length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-					ssb.setSpan(new ForegroundColorSpan(0x93CCEA00), s.indexOf(parts[1]),s.indexOf(parts[1])+parts[1].length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-					//System.out.println("Text in li: "+tmp); 
-		            //definitions.add(s);
-		            definitionsSsb.add(ssb);
-		            if(parts[1].equals("Possible"))
-		            {
-		            	partsList.add(fontList.get(fontListIndex));
-		            	System.out.println("fontList "+fontList.get(fontListIndex));
-		            	fontListIndex++;
-		            }
-		            else
-		            	partsList.add(parts[1]);
-		            System.out.println("parts"+parts[1]);
-		            
-				}
-    	}catch(Exception e){System.out.println("THE PROBLEEEM "+e);}
-	}*/
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu)

@@ -27,9 +27,20 @@ public final class R {
         public static final int shrink_from_topright_to_bottomleft=0x7f04000f;
     }
     public static final class array {
-        public static final int language_array=0x7f080000;
+        public static final int language_array=0x7f090000;
     }
     public static final class attr {
+    }
+    public static final class dimen {
+        /**  Default screen margins, per the Android Design guidelines. 
+
+         Example customization of dimensions originally defined in res/values/dimens.xml
+         (such as screen margins) for screens with more than 820dp of available width. This
+         would include 7" and 10" devices in landscape (~960dp and ~1280dp respectively).
+    
+         */
+        public static final int activity_horizontal_margin=0x7f080000;
+        public static final int activity_vertical_margin=0x7f080001;
     }
     public static final class drawable {
         public static final int action_item_btn=0x7f020000;
@@ -132,67 +143,68 @@ public final class R {
         public static final int youbymysidekimberleychen=0x7f020061;
     }
     public static final class id {
-        public static final int about=0x7f0a0028;
-        public static final int answerView=0x7f0a0004;
-        public static final int arrow_down=0x7f0a001b;
-        public static final int arrow_up=0x7f0a001a;
-        public static final int bottomButton=0x7f0a0023;
-        public static final int btn1=0x7f0a000e;
-        public static final int btn2=0x7f0a000f;
-        public static final int btn3=0x7f0a0010;
-        public static final int button=0x7f0a0020;
-        public static final int button1=0x7f0a0011;
-        public static final int button2=0x7f0a0012;
-        public static final int button3=0x7f0a0014;
-        public static final int button4=0x7f0a0016;
-        public static final int editText1=0x7f0a0002;
-        public static final int enterButton=0x7f0a0006;
-        public static final int exitButton=0x7f0a0009;
-        public static final int feedback=0x7f0a0029;
-        public static final int imageView1=0x7f0a001e;
-        public static final int imageView2=0x7f0a001f;
-        public static final int instructionsView=0x7f0a0007;
-        public static final int iv_icon=0x7f0a0000;
-        public static final int nextButton=0x7f0a0005;
-        public static final int numScore=0x7f0a001c;
-        public static final int powered_by_usbong_imageview=0x7f0a0017;
-        public static final int progressBar1=0x7f0a0008;
-        public static final int questionView=0x7f0a0003;
-        public static final int resultView=0x7f0a000a;
-        public static final int score=0x7f0a001d;
-        public static final int scroller=0x7f0a0018;
-        public static final int spinner1=0x7f0a0015;
-        public static final int textView1=0x7f0a0013;
-        public static final int textView2=0x7f0a0021;
-        public static final int textView3=0x7f0a000c;
-        public static final int textViewPlaceHolder=0x7f0a0024;
-        public static final int topButton=0x7f0a0022;
-        public static final int tracks=0x7f0a0019;
-        public static final int tv_title=0x7f0a0001;
-        public static final int video_description=0x7f0a0027;
-        public static final int video_thumbnail=0x7f0a0025;
-        public static final int video_title=0x7f0a0026;
-        public static final int videos_found=0x7f0a000d;
-        public static final int youtube_player=0x7f0a000b;
+        public static final int about=0x7f0b0028;
+        public static final int answerView=0x7f0b0004;
+        public static final int arrow_down=0x7f0b001c;
+        public static final int arrow_up=0x7f0b001b;
+        public static final int bottomButton=0x7f0b0023;
+        public static final int btn1=0x7f0b0010;
+        public static final int btn2=0x7f0b0011;
+        public static final int btn3=0x7f0b0012;
+        public static final int button=0x7f0b0021;
+        public static final int button1=0x7f0b0013;
+        public static final int button2=0x7f0b0014;
+        public static final int button3=0x7f0b0015;
+        public static final int button4=0x7f0b0017;
+        public static final int editText1=0x7f0b0002;
+        public static final int enterButton=0x7f0b0006;
+        public static final int exitButton=0x7f0b0009;
+        public static final int feedback=0x7f0b0029;
+        public static final int imageView1=0x7f0b001f;
+        public static final int imageView2=0x7f0b0020;
+        public static final int instructionsView=0x7f0b0007;
+        public static final int iv_icon=0x7f0b0000;
+        public static final int nextButton=0x7f0b0005;
+        public static final int numScore=0x7f0b001d;
+        public static final int powered_by_usbong_imageview=0x7f0b0018;
+        public static final int progressBar1=0x7f0b0008;
+        public static final int questionView=0x7f0b0003;
+        public static final int resultView=0x7f0b000a;
+        public static final int score=0x7f0b001e;
+        public static final int scroller=0x7f0b0019;
+        public static final int spinner1=0x7f0b0016;
+        public static final int textView1=0x7f0b000f;
+        public static final int textView2=0x7f0b000e;
+        public static final int textView3=0x7f0b000c;
+        public static final int textViewPlaceHolder=0x7f0b0024;
+        public static final int topButton=0x7f0b0022;
+        public static final int tracks=0x7f0b001a;
+        public static final int tv_title=0x7f0b0001;
+        public static final int video_description=0x7f0b0027;
+        public static final int video_thumbnail=0x7f0b0025;
+        public static final int video_title=0x7f0b0026;
+        public static final int videos_found=0x7f0b000d;
+        public static final int youtube_player=0x7f0b000b;
     }
     public static final class layout {
         public static final int action_item_horizontal=0x7f030000;
         public static final int action_item_vertical=0x7f030001;
         public static final int activity_main=0x7f030002;
         public static final int horiz_separator=0x7f030003;
-        public static final int main=0x7f030004;
-        public static final int main_game=0x7f030005;
-        public static final int popup_horizontal=0x7f030006;
-        public static final int popup_vertical=0x7f030007;
-        public static final int result_page=0x7f030008;
-        public static final int review_page=0x7f030009;
-        public static final int setting_selection_japanese=0x7f03000a;
-        public static final int setting_selection_mandarin=0x7f03000b;
-        public static final int song_selection=0x7f03000c;
-        public static final int video_item=0x7f03000d;
+        public static final int loading_screen=0x7f030004;
+        public static final int main=0x7f030005;
+        public static final int main_game=0x7f030006;
+        public static final int popup_horizontal=0x7f030007;
+        public static final int popup_vertical=0x7f030008;
+        public static final int result_page=0x7f030009;
+        public static final int review_page=0x7f03000a;
+        public static final int setting_selection_japanese=0x7f03000b;
+        public static final int setting_selection_mandarin=0x7f03000c;
+        public static final int song_selection=0x7f03000d;
+        public static final int video_item=0x7f03000e;
     }
     public static final class menu {
-        public static final int about_and_feedback_menu=0x7f090000;
+        public static final int about_and_feedback_menu=0x7f0a0000;
     }
     public static final class raw {
         public static final int correct=0x7f050000;
