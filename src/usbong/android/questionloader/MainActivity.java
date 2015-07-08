@@ -174,7 +174,7 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
     		//added by Lev, edited by Brent, 28 June 2015
     		clickable = false;
     		question.setOnTouchListener(new OnTouchListener() {
-    			int start,end,overallLine,overallOffset;
+    			int start,end;
     			@SuppressLint("ClickableViewAccessibility")
 				@Override
     			public boolean onTouch(View v, MotionEvent event) {
@@ -191,11 +191,15 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
 		    		    	      if (layout!=null){
 		    		    	          int line = layout.getLineForVertical(y);
 		    		    	          int offset = layout.getOffsetForHorizontal(line,x);
-		    		    	          overallLine = line;
-		    		    	          overallOffset = offset;
 		    		    	          //for (int i = partsList.size()-1; i >=0 ; i--)
 		    		    	          Log.i(Integer.toString(offset),"OOOOOOFFSEETT");
 		    		    	          for(int i = 0; i<partsList.size();i++)
+<<<<<<< HEAD
+		    		    	          {  
+		    		    	        	  int tempstart = questionDifficulty.indexOf(partsList.get(i));
+		    		    	        	  int tempend = tempstart+partsList.get(i).length();
+		    		    	        	  if (offset-tempstart >= 0 && offset-tempend < 0)
+=======
 		    		    	          {
 		    		    	        	  start = questionDifficulty.indexOf(partsList.get(i));
 		    		    	        	  
@@ -206,7 +210,10 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
 		    		    	        	  }
 		    		    	        	  end = start+partsList.get(i).length();
 		    		    	        	  if (offset-start >= 0 && offset-end < 0)
+>>>>>>> master
 		    		    	        	  {
+		    		    	        		  start = tempstart;
+		    		    	        		  end = tempend;
 		    		    	        		  SpannableStringBuilder def  = definitionsSsb.get(i);
 		    		    	        		  actionItem.setTitleSpan(def);
 		    		    	        		  quickAction.addActionItem(actionItem);
@@ -236,6 +243,10 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
 		    		    	        		  System.out.println("def here" + def);
 		    		    	        		  spannable.setSpan(new ForegroundColorSpan(0xFFFFFFFF), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 		    		    	        		  spannable.setSpan(new BackgroundColorSpan(0xFFFF0000), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+<<<<<<< HEAD
+		    		    	        		  
+=======
+>>>>>>> master
 		    		    	        		  //if(language.equalsIgnoreCase("japanese"))
 		    		    	        			//  break;
 		    		    	        		  //Toast.makeText(getApplicationContext(), def,  Toast.LENGTH_SHORT).show();
@@ -244,12 +255,25 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
 		    		    	    } 
 		    		    	    return true;
 	    			    }
+<<<<<<< HEAD
+	    			    if (event.getAction() == MotionEvent.ACTION_UP) {
+				        //set to default color
+	    			    	/*quickAction.setOnDismissListener(new QuickAction.OnDismissListener()
+	    	        		  {n(new BackgroundColorSpan(Color.TRANSPARENT), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+	    	        			  }
+	    	        		  });*/
+	    			    	spannable.setSpan(new ForegroundColorSpan(0x93CCEA00),start ,end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+	    			    	spannable.setSpan(new BackgroundColorSpan(Color.TRANSPARENT), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+	    			    	return true;
+	    			    }
+=======
 //	    			    else if (event.getAction() == MotionEvent.ACTION_UP) {
 //				        //set to default color
 //	    			    	spannable.setSpan(new ForegroundColorSpan(0x93CCEA00),start ,end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 //	    			    	spannable.setSpan(new BackgroundColorSpan(Color.TRANSPARENT), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 //	    			    	return true;
 //	    			    }
+>>>>>>> master
 	    			    /*if (event.getAction() == MotionEvent.ACTION_MOVE) {
 					        //set to default color
 	    			    	
@@ -527,22 +551,24 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
 		{
 			for (int j = i+1; j < partsList.size();)
 			{
-				ArrayList<String> innerOverlap = new ArrayList<String>();
 				if (partsList.get(i).equals(partsList.get(j)))
-					partsList.remove(i);
+				{
+					partsList.remove(j);
+					definitionsSsb.remove(j);
+				}
 				else
 				{
-					if(partsList.get(i).length()<partsList.get(j).length())
+					/*if(partsList.get(i).length()<partsList.get(j).length())
 					{
 							String temp = partsList.get(j);
 							partsList.set(j, partsList.get(i));
 							partsList.set(i, temp);
-					}
-					if(partsList.get(i).contains(partsList.get(j)))
+					}*/
+					/*if(partsList.get(i).contains(partsList.get(j)))
 					{
 						innerOverlap.add(partsList.get(j));
 						partsList.remove(j);
-					}
+					}*/
 					j++;
 				}
 					
@@ -563,7 +589,6 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
 					System.out.println("Result here" + result);
 					//Log.i(result,"RESUUUUUUUUUUUULT");
 					//definitionsSsb.add(result);
-					
 					break;
 				}
 				searchPrefix(word.substring(i,word.length()),result+prefix+"   ");
@@ -581,11 +606,17 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
 			if(!dict.contains("#"))
 			{
 			String splitDict[] = dict.split(" ");
-			if(word.equals(splitDict[1]))
+			int index = difficulty.equalsIgnoreCase("easy") ? 1 : 0;
+			int opposite = difficulty.equalsIgnoreCase("easy") ? 0 : 1;
+			String diff = difficulty.equalsIgnoreCase("easy") ? "\nTraditional: " : "\nSimplified: ";
+			String s = splitDict[index]+diff+splitDict[opposite]+"\n"+dict.substring(dict.indexOf(splitDict[2]),dict.length());
+			if(word.equals(splitDict[index]))
 			{
 				Log.i(dict,"DIIIIIIIIIIIICCCTT");
-				partsList.add(splitDict[1]);
-				SpannableStringBuilder ssb = new SpannableStringBuilder(dict);//.substring(dict.indexOf(splitDict[2]),dict.length()));
+				partsList.add(splitDict[index]);
+				SpannableStringBuilder ssb = new SpannableStringBuilder(s);
+				ssb.setSpan(new RelativeSizeSpan(2f), s.indexOf(splitDict[index]), s.indexOf(splitDict[index])+splitDict[index].length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+				ssb.setSpan(new ForegroundColorSpan(0x93CCEA00), s.indexOf(splitDict[index]), s.indexOf(splitDict[index])+splitDict[index].length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 				definitionsSsb.add(ssb);
 				return true;
 			}
@@ -593,6 +624,7 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
 		}
 		return false;
 	}
+	@SuppressLint("NewApi")
 	@SuppressWarnings("resource")
 	private void addChineseDictionary()
 	{
@@ -602,7 +634,9 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
 				{
 				    url = new URL(src);
 					BufferedReader br = new BufferedReader(new InputStreamReader(url.openStream()));
-					//BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream("data/cedict_ts.u8"),StandardCharsets.UTF_8.displayName()));
+					//BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream("cedict_ts.u8"),StandardCharsets.UTF_8.displayName()));
+					//BufferedReader br = new BufferedReader(new InputStreamReader(getResources().getAssets().open("cedict_ts.u8")));
+					
 					String line;
 					while((line = br.readLine())!=null)
 					{
