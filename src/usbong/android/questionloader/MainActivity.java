@@ -202,10 +202,6 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
 		    		    	        		  System.out.println("def here" + def);
 		    		    	        		  spannable.setSpan(new ForegroundColorSpan(0xFFFFFFFF), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 		    		    	        		  spannable.setSpan(new BackgroundColorSpan(0xFFFF0000), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-		    		    	        		  
-		    		    	        		  //if(language.equalsIgnoreCase("japanese"))
-		    		    	        			//  break;
-		    		    	        		  //Toast.makeText(getApplicationContext(), def,  Toast.LENGTH_SHORT).show();
 		    		    	        	  }
 		    		    	          }
 		    		    	    } 
@@ -213,33 +209,16 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
 	    			    }
 	    			    if (event.getAction() == MotionEvent.ACTION_UP) {
 				        //set to default color
-	    			    	/*quickAction.setOnDismissListener(new QuickAction.OnDismissListener()
-	    	        		  {n(new BackgroundColorSpan(Color.TRANSPARENT), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-	    	        			  }
-	    	        		  });*/
 	    			    	spannable.setSpan(new ForegroundColorSpan(0x93CCEA00),start ,end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 	    			    	spannable.setSpan(new BackgroundColorSpan(Color.TRANSPARENT), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 	    			    	return true;
 	    			    }
-	    			    /*if (event.getAction() == MotionEvent.ACTION_MOVE) {
+	    			    if (event.getAction() == MotionEvent.ACTION_MOVE) {
 					        //set to default color
-	    			    	
-	    			    	Layout layout = ((TextView) v).getLayout();
-	    			    		int x = (int)event.getX();
-	    			    		int y = (int)event.getY();
-	    			    		if (layout!=null){
-		    		    	         int line = layout.getLineForVertical(y);
-		    		    	         int offset = layout.getOffsetForHorizontal(line,x);
-		    			    		if (offset>overallOffset)
-		    			    		{
-		    			    			Spannable[] spanArray = spannable.getSpans(start,overallOffset,Spannable.class);
-		    			    			spannable.setSpan(new ForegroundColorSpan(0x93CCEA00),start ,end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-		    			    			spannable.setSpan(new BackgroundColorSpan(Color.TRANSPARENT), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-		    			    		}
-	    			    		}
+		    			    	spannable.setSpan(new ForegroundColorSpan(0x93CCEA00),start ,end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+		    			    	spannable.setSpan(new BackgroundColorSpan(Color.TRANSPARENT), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 		    			    	return true;
-			    			    	
-		    			    }*/
+	    			    }
     			    /*else if (event.getAction() == MotionEvent.ACTION_UP) {
     			        // set to default color
     		    		question.setTextColor(Color.parseColor("#acacab"));		
@@ -250,7 +229,7 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
     		    		Toast.makeText(getApplicationContext(), "Text Copied to Clipboard", Toast.LENGTH_SHORT).show();
     		    		
     			    }*/
-    			}
+    				}
     				}catch(Exception e){System.out.println("huehuehuehueahaue "+e);}    			
     				return true;
     				}
@@ -485,8 +464,8 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
 					String s = reply.substring(positionFont+19, reply.indexOf("</font>", positionFont));
 					System.out.println(s+"hahahahahahahahahahahah");
 					fontList.add(s);
-					System.out.println("added fontList "+s);
-					positionFont 	 = reply.indexOf("<font color=\"blue\">", positionFont+19);
+					System.out.println("added fontList"+s+"huehue");
+					positionFont = reply.indexOf("<font color=\"blue\">", positionFont+19);
 				}
 				
 				// print the <li> stuff
@@ -494,6 +473,8 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
 				for (String s : liList)
 				{	
 					System.out.println("S here" + s);
+					String[] parts = s.split(" ");
+					System.out.println("parts[] asjfdkdaskfjh"+parts[0]+parts[1]);
 					if(difficulty.equalsIgnoreCase("easy"))
 					{
 						int kanaIndex = s.indexOf("【");
@@ -512,12 +493,13 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
 							String kanaParts[] = kana.split(";");
 							for(String subpart : kanaParts)
 							{
+								subpart = subpart.replace(" ", "");
 								System.out.println(subpart+"huehuehuesubpparthaskjdfhaskd");
 								if(inQuestion(subpart,s))
 									break outerloop;
 								else if(dictCode.contains("v"))
 								{
-									if (dictCode.contains("v5k-s")||dictCode.contains("v5aru")||dictCode.contains("v5uru")||dictCode.contains("vz")||dictCode.contains("vs-i")||dictCode.contains("vs-s"))
+									if (dictCode.contains("v5aru")||dictCode.contains("v5uru")||dictCode.contains("vz"))
 									{
 										if(inQuestion(subpart.substring(0,subpart.length()-2),s))
 											break outerloop;
@@ -529,12 +511,26 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
 							kanaIndex = s.indexOf("【",endKana);
 						}
 					}
-					String[] parts = s.split(" ");
-		            if(parts[1].equals("Possible"))
+					else if(difficulty.equalsIgnoreCase("medium")&&parts[0].equals(""))
+					{
+						if(s.contains("v5aru")||s.contains("v5uru")||s.contains("vz")||s.contains("v-unspec"))
+						{
+							if(inQuestion(parts[1].substring(0,parts[1].length()-2),s))
+								System.out.println("succeeeeeeeeess-2");
+						}
+						else if (s.contains("v5k-s")||s.contains("v1")||s.contains("v2")||s.contains("v4")||s.contains("v5")||s.contains("vn")||s.contains("vr")||s.contains("vs")||s.contains("vs-c"))
+						{
+							if(inQuestion(parts[1].substring(0,parts[1].length()-1),s))
+								System.out.println("succeeeeeeeeess-1");
+						}
+					}
+		            if(!parts[0].equals(""))
 		            {
+		            	System.out.println("POSSIBLEEEEEEEEEEEEEEEEE");
 		            	partsList.add(fontList.get(fontListIndex));
-		            	System.out.println("fontList "+fontList.get(fontListIndex));
-		            	String s2 = s.replace(fontList.get(fontListIndex)+" ",fontList.get(fontListIndex)+"\n").replace("<br>", "\n").replace("�y","\n�y");
+		            	System.out.println("POSSIBLEEEEEEEEEEEEEEEEE"+fontList.get(fontListIndex));
+		            	System.out.println("fontList"+fontList.get(fontListIndex)+"huehuehuehue");
+		            	String s2 = fontList.get(fontListIndex)+ "\n"+ s.replace("<br>", "\n").replace("�y","\n�y");
 						SpannableStringBuilder ssb = new SpannableStringBuilder(s2);
 						ssb.setSpan(new RelativeSizeSpan(2f), s2.indexOf(fontList.get(fontListIndex)),s2.indexOf(fontList.get(fontListIndex))+fontList.get(fontListIndex).length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 						ssb.setSpan(new ForegroundColorSpan(0x93CCEA00), s2.indexOf(fontList.get(fontListIndex)),s2.indexOf(fontList.get(fontListIndex))+fontList.get(fontListIndex).length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
@@ -561,8 +557,6 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
 	{
 		partsList.clear();
 		definitionsSsb.clear();
-		//Log.i(translate1,"SADFSDFASDFASDFASFASDFASFASDFASDF");
-		//searchPrefix(translate1,"");
 		searchPrefix(translate1,"");
 		for(int i = 0; i < partsList.size(); i++)
 		{
@@ -583,7 +577,6 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
 	}
     private void searchPrefix(String word,String result)
 	{
-    	//Log.i(translate1,"SADFSDFASDFASDFASFASDFASFASDFASDF");
 		for(int i=1;i<=word.length();i++)
 		{
 			String prefix = word.substring(0,i);
@@ -593,8 +586,6 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
 				{
 					result+=prefix;
 					System.out.println("Result here" + result);
-					//Log.i(result,"RESUUUUUUUUUUUULT");
-					//definitionsSsb.add(result);
 					break;
 				}
 				searchPrefix(word.substring(i,word.length()),result+prefix+"   ");
@@ -603,10 +594,6 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
 	}
 	private boolean dictContains(String word)
 	{
-		
-
-		//String[] dictionary = {"mobile","samsung","sam","sung","man","mango","icecream","and","go","i","love","ice","cream"};
-		//chinDict is not that small huhu ambagal.
 		for(String dict:chinDict)
 		{
 			if(!dict.contains("#"))
@@ -645,12 +632,7 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
 					
 					String line;
 					while((line = br.readLine())!=null)
-					{
-						 //System.out.println(line);
 						chinDict.add(line);
-						//line = br.readLine();
-					}
-					//System.out.println(dictionary.get(0));
 				} catch(Exception e){System.out.println(e);}
 			 Log.i("added mandarin dictionary","SADFSDFASDFASDFASFASDFASFASDFASDF");
 			 addedDict = true;
