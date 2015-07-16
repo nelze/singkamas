@@ -115,6 +115,7 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
 	double score;
 	double total;
 	String link;
+	int color;
 	private ProgressBar mProgress;
 	double progress;
 	ArrayList<Integer> indices = new ArrayList<Integer>();
@@ -178,13 +179,13 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
 		    		    	        		  SpannableStringBuilder def  = dictEntries.get(i).getSpannableString();
 		    		    	        		  actionItem.setTitleSpan(def);
 		    		    	        		  quickAction.addActionItem(actionItem);
-		    		    	        		 
+		    		    	        		  color = i%2==0 ? 0xFFD7FF77 : 0x93CCEA00;
 		    		    	        		  quickAction.setOnActionItemClickListener(new QuickAction.OnActionItemClickListener() {
 		    		    	        			  @Override
 		    		    	        			  public void onItemClick(QuickAction source,int pos, int actionId) {
-		    		    	        				     if (pos == 0) { //Add item selected
-		    		    	        				          Toast.makeText(MainActivity.this, "Word copied to clipboard.", Toast.LENGTH_SHORT).show();
-		    		    	        				     }
+		    		    	        				  spannable.setSpan(new ForegroundColorSpan(color),start ,end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+								    			      spannable.setSpan(new BackgroundColorSpan(Color.TRANSPARENT), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);	    		    	        				   
+		    		    	        				  Toast.makeText(MainActivity.this, "Word copied to clipboard.", Toast.LENGTH_SHORT).show();
 		    		    	        				 }
 		    		    	        				});
 		    		    	        		  quickAction.show(question,start,question.getLeft());
@@ -194,7 +195,7 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
 		    		    	        		  quickAction.setOnDismissListener(new QuickAction.OnDismissListener() {
 												@Override
 												public void onDismiss() {
-													spannable.setSpan(new ForegroundColorSpan(0x93CCEA00),start ,end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+													spannable.setSpan(new ForegroundColorSpan(color),start ,end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 							    			    	spannable.setSpan(new BackgroundColorSpan(Color.TRANSPARENT), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 												} 
 		    		    	        		  });
@@ -372,7 +373,10 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
 	    		int end = questionDifficultyFinal.indexOf(dictEntries.get(i).getWord())+dictEntries.get(i).getWord().length();
 	    		if(start != -1)
 	    		{
-	    			spannable.setSpan(new ForegroundColorSpan(0x93CCEA00),start ,end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+	    			if(i%2==0)
+	    				spannable.setSpan(new ForegroundColorSpan(0xFFD7FF77),start ,end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+	    			else
+	    				spannable.setSpan(new ForegroundColorSpan(0x93CCEA00),start ,end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 	    				i++;
 	    		}
 	    		else
@@ -753,7 +757,6 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
 */	
 	public void enterAnswer(View view)
     {
-    	
     	user_answer = input_ans.getText().toString();
     	//edited by Mike, 27 March 2015
     	double temp_accuracy = compareAnswer(user_answer.replaceAll("\\s+",""),newQues.getCorrectAnswer().replaceAll("\\s+",""));
