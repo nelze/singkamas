@@ -8,15 +8,10 @@ import android.text.style.RelativeSizeSpan;
 public class DictionaryEntry {
 	private String definition;
 	private String word;
-	private int start;
-	private int end;
-	private int color;
-	public DictionaryEntry(String definition, String word, int start, int end)
+	public DictionaryEntry(String word, String definition)
 	{
 		this.definition = definition;
 		this.word = word;
-		this.start = start;
-		this.end = end;
 	}
 	public String getDefinition()
 	{
@@ -25,14 +20,6 @@ public class DictionaryEntry {
 	public String getWord()
 	{
 		return word;
-	}
-	public int start()
-	{
-		return start;
-	}
-	public int end()
-	{
-		return end;
 	}
 	public SpannableStringBuilder getSpannableString()
 	{
