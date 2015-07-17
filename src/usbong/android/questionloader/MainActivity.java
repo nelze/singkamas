@@ -129,7 +129,6 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        
         setContentView(R.layout.activity_main);
         	actionItem = new ActionItem();
         	Bundle bundle = getIntent().getExtras();
@@ -170,8 +169,10 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
 		    		    	          Log.i(Integer.toString(offset),"OOOOOOFFSEETT");
 		    		    	          for(int i = 0; i<dictEntries.size();i++)
 		    		    	          {  
-		    		    	        	  int tempstart = questionDifficultyFinal.indexOf(dictEntries.get(i).getWord());
-		    		    	        	  int tempend = tempstart+dictEntries.get(i).getWord().length();
+		    		    	        	 // int tempstart = questionDifficultyFinal.indexOf(dictEntries.get(i).getWord());
+		    		    	        	 // int tempend = tempstart+dictEntries.get(i).getWord().length();
+		    		    	        	  int tempstart = dictEntries.get(i).start();
+		    		    	        	  int tempend = dictEntries.get(i).end();
 		    		    	        	  if (offset-tempstart >= 0 && offset-tempend < 0)
 		    		    	        	  {
 		    		    	        		  start = tempstart;
@@ -179,7 +180,7 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
 		    		    	        		  SpannableStringBuilder def  = dictEntries.get(i).getSpannableString();
 		    		    	        		  actionItem.setTitleSpan(def);
 		    		    	        		  quickAction.addActionItem(actionItem);
-		    		    	        		  color = i%2==0 ? 0xFFD7FF77 : 0x93CCEA00;
+		    		    	        		  color = dictEntries.get(i).getColor();
 		    		    	        		  quickAction.setOnActionItemClickListener(new QuickAction.OnActionItemClickListener() {
 		    		    	        			  @Override
 		    		    	        			  public void onItemClick(QuickAction source,int pos, int actionId) {
@@ -188,17 +189,17 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
 		    		    	        				  Toast.makeText(MainActivity.this, "Word copied to clipboard.", Toast.LENGTH_SHORT).show();
 		    		    	        				 }
 		    		    	        				});
+		    		    	        		  quickAction.setOnDismissListener(new QuickAction.OnDismissListener() {
+													@Override
+													public void onDismiss() {
+														spannable.setSpan(new ForegroundColorSpan(color),start ,end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+								    			    	spannable.setSpan(new BackgroundColorSpan(Color.TRANSPARENT), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+													} 
+			    		    	        		  });
 		    		    	        		  quickAction.show(question,start,question.getLeft());
 		    		    	        		  System.out.println("def here" + def);
 		    		    	        		  spannable.setSpan(new ForegroundColorSpan(0xFFFFFFFF), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 		    		    	        		  spannable.setSpan(new BackgroundColorSpan(0xFFFF0000), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-		    		    	        		  quickAction.setOnDismissListener(new QuickAction.OnDismissListener() {
-												@Override
-												public void onDismiss() {
-													spannable.setSpan(new ForegroundColorSpan(color),start ,end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-							    			    	spannable.setSpan(new BackgroundColorSpan(Color.TRANSPARENT), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-												} 
-		    		    	        		  });
 		    		    	        	  }
 		    		    	          }
 		    		    	    } 
@@ -244,13 +245,13 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
         	if (difficulty.equalsIgnoreCase("easy"))
         	{
         		questionDifficultyFinal = parts[0].replace("　","").replace(" ", "");
-        		questionDifficulty = parts[0];
-        		translate1 = language.equalsIgnoreCase("japanese")? parts[1]:parts[0];
+        		questionDifficulty = parts[0].replace(" ", "　");
+        		translate1 = language.equalsIgnoreCase("japanese") ? parts[1].replace(" ", "　"):parts[0].replace(" ", "　");
         	}
         	else
         	{
         		questionDifficultyFinal = parts[1].replace("　", "").replace(" ", "");
-        		questionDifficulty = parts[1];	
+        		questionDifficulty = parts[1].replace(" ", "　");
         		translate1 = questionDifficulty;
         	}
         	total = qm.getCount();//-1;//do a -1 because questionCounter starts at 0; added by Mike, 31 March 2015
@@ -369,15 +370,25 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
     	{
 	    	for(int i = 0; i < dictEntries.size();)
 	    	{
-	    		int start = questionDifficultyFinal.indexOf(dictEntries.get(i).getWord());
-	    		int end = questionDifficultyFinal.indexOf(dictEntries.get(i).getWord())+dictEntries.get(i).getWord().length();
+	    		int start = dictEntries.get(i).start();
+	    		int end = dictEntries.get(i).end();
 	    		if(start != -1)
 	    		{
-	    			if(i%2==0)
+	    			if(i%2==0&&dictEntries.get(i).getColor()==-1)
+	    			{
 	    				spannable.setSpan(new ForegroundColorSpan(0xFFD7FF77),start ,end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-	    			else
+	    				dictEntries.get(i).setColor(0xFFD7FF77);
+	    			}
+	    			else if(dictEntries.get(i).getColor()==-1)
+	    			{
+	    				dictEntries.get(i).setColor(0x93CCEA00);
 	    				spannable.setSpan(new ForegroundColorSpan(0x93CCEA00),start ,end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-	    				i++;
+	    			}
+	    			else
+	    			{
+	    				spannable.setSpan(new ForegroundColorSpan(dictEntries.get(i).getColor()),start ,end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+	    			}
+	    			i++;
 	    		}
 	    		else
 	    		{
@@ -387,21 +398,79 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
     		clickable=true;
     	}
     }
+    private boolean inQuestion(String query,String def,int color)
+    {
+    	
+    	if(questionDifficulty.contains(query))
+		{
+    		int position = questionDifficulty.indexOf(query);
+    		System.out.println(position+"position of coloooooooooor");
+    		while(position!=-1)
+    		{
+    			Log.i(query,"added huehuehuheuue");
+    			Log.i(def,"thisistoSsbhuehuehuheuue");
+    			String s = questionDifficulty.substring(0,position);
+    			int spaces = s.length() - s.replace("　", "").length();
+    			dictEntries.add(new DictionaryEntry(query.replace("　",""),def,color,position-spaces,position+query.replace("　","").length()-spaces));
+    			position = questionDifficulty.indexOf(query, position+query.length());
+    		}
+			return true;
+		}
+    	return false;
+    }
     private boolean inQuestion(String query,String def)
     {
     	if(questionDifficulty.contains(query))
 		{
-			Log.i(query,"added huehuehuheuue");
-			Log.i(def,"thisistoSsbhuehuehuheuue");
-			String wholeWord = "";
-			if(questionDifficulty.indexOf("　",questionDifficulty.indexOf(query))!=-1)
-				wholeWord = questionDifficulty.substring(questionDifficulty.indexOf(query),questionDifficulty.indexOf("　",questionDifficulty.indexOf(query)));
-			else
-				wholeWord = questionDifficulty.substring(questionDifficulty.indexOf(query),questionDifficulty.indexOf(query)+query.length());
-			dictEntries.add(new DictionaryEntry(wholeWord,def));
+    		int position = questionDifficultyFinal.indexOf(query);
+    		System.out.println(position+"positioooooooooooooon");
+    		while(position!=-1)
+    		{
+    			Log.i(query,"added huehuehuheuue");
+    			Log.i(def,"thisistoSsbhuehuehuheuue");
+    			String wholeWord = "";
+    			if(questionDifficulty.indexOf("　",questionDifficulty.indexOf(query))!=-1)
+    				wholeWord = questionDifficulty.substring(questionDifficulty.indexOf(query),questionDifficulty.indexOf("　",questionDifficulty.indexOf(query)));
+    			else
+    				wholeWord = questionDifficulty.substring(questionDifficulty.indexOf(query),questionDifficulty.indexOf(query)+query.length());
+    			dictEntries.add(new DictionaryEntry(wholeWord,def,position,position+wholeWord.length()));
+    			position = questionDifficultyFinal.indexOf(query, position+wholeWord.length());
+    		}			
 			return true;
 		}
     	return false;
+    }
+    private void colorJapParticles()
+    {
+    	ArrayList<DictionaryEntry> particles = new ArrayList<DictionaryEntry>();
+    	particles.add(new DictionaryEntry("　の　","Particle; Functions as: possession indicator, noun link, topic marker (subordinate clauses), nominalization"));
+    	particles.add(new DictionaryEntry("　だけ　","Particle; Translates to: \"only\"; limit. だけ functions as a noun. Kanji form 丈 is less commonly used."));
+    	particles.add(new DictionaryEntry("　だの　","Particle;　and, things like. This particle is used far less frequently than とか. Often has negative connotations."));
+    	particles.add(new DictionaryEntry("　で　","Particle; で can be used as \"at\" or \"by means of\". When serving as the continuative て form of a subordinate clause, de substitutes for da/desu, carries the meaning \"is, and so...\", and takes on the tense of the final verb of the sentence."));
+    	particles.add(new DictionaryEntry("　でも　","Particle;　even; or; but, however; also in"));
+    	particles.add(new DictionaryEntry("　へ　","Particle;　to, in; direction"));
+    	particles.add(new DictionaryEntry("　が　","Particle;　identifier (identifies something unspecified), conjunction (\"but\")"));
+    	particles.add(new DictionaryEntry("　まで　","Particle;　up to, until, as far as;　Indicates a time or place as a limit."));
+    	particles.add(new DictionaryEntry("　か　","Particle;　Functions as: question denominator, alternative item conjunction, quotation expressing doubt; \"whether\", especially when used with dō ka (\"or not\")."));
+    	particles.add(new DictionaryEntry("　かい　","Particle; かい is a gentler and masculine variant of the question marker ka."));
+    	particles.add(new DictionaryEntry("　かな　","Particle;　I wonder"));
+    	particles.add(new DictionaryEntry("　から　","Particle; from, after, because; may be followed by の to link two nouns."));
+    	particles.add(new DictionaryEntry("　けど　","Particle;　although, but"));
+    	particles.add(new DictionaryEntry("　きり　","Particle;　just, only"));
+    	particles.add(new DictionaryEntry("　ころ　","Particle;　around, about, approximately"));
+    	particles.add(new DictionaryEntry("　こそ　","Particle;　emphasis marker; roughly analogous to \"precisely\" or \"exactly\"."));
+    	particles.add(new DictionaryEntry(" まで　","Particle;　up to, until, as far as; Indicates a time or place as a limit."));
+    	particles.add(new DictionaryEntry("　め　","Particle; ordinal particle"));
+    	particles.add(new DictionaryEntry("　も　","Particle;"));
+    	//particles.add(new DictionaryEntry("","Particle;"));
+    	//particles.add(new DictionaryEntry("","Particle;"));
+    	//particles.add(new DictionaryEntry("","Particle;"));
+    	for(int i = 0;particles.size()!=0;)
+    	{
+    		if(inQuestion(particles.get(i).getWord(),particles.get(i).getDefinition(),0xFFAEEEEE))
+    			System.out.println("added"+particles.get(i).getWord());
+    		particles.remove(i);
+    	}
     }
     private void japExecute()
     {
@@ -413,7 +482,7 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
 		    	String url = "http://www.edrdg.org/cgi-bin/wwwjdic/wwwjdic?9U";
 		    	String data = "gloss_line="+ URLEncoder.encode(translate1,"UTF-8")+"&dicsel=9&glleng=60";
 				reply = postFormDataToUrl(url, data);
-		    	
+		    	colorJapParticles();
 				// collect <li> stuff
 				ArrayList<String> liList = new ArrayList<String>();
 				int position = reply.indexOf("<li>", 0);
@@ -673,13 +742,13 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
         	if (difficulty.equalsIgnoreCase("easy"))
         	{
         		questionDifficultyFinal = parts[0].replace("　", "").replace(" ", "");
-        		questionDifficulty = parts[0];
-        		translate1 = language.equalsIgnoreCase("japanese")? parts[1]:parts[0];
+        		questionDifficulty = parts[0].replace(" ","　");
+        		translate1 = language.equalsIgnoreCase("japanese")? parts[1].replace(" ","　"):parts[0].replace(" ","　");
         	}
         	else
         	{
-        		questionDifficultyFinal = parts[1].replace("　", "").replace(" ", "");;
-        		questionDifficulty = parts[1];	
+        		questionDifficultyFinal = parts[1].replace("　", "").replace(" ", "");
+        		questionDifficulty = parts[1].replace(" ","　");	
         		translate1 = questionDifficulty;
         	}
         	//question.setText("Hello");
