@@ -2,6 +2,7 @@ package usbong.android.questionloader;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
@@ -400,7 +401,7 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
     }
     private boolean inQuestion(String query,String def,int color)
     {
-    	
+    	Log.i("query"+query+"huehue",def);
     	if(questionDifficulty.contains(query))
 		{
     		int position = questionDifficulty.indexOf(query);
@@ -416,6 +417,7 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
     		}
 			return true;
 		}
+    	System.out.println("gg po kayo hahahahaha"+query+"huehue");
     	return false;
     }
     private boolean inQuestion(String query,String def)
@@ -442,7 +444,24 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
     }
     private void colorJapParticles()
     {
-    	ArrayList<DictionaryEntry> particles = new ArrayList<DictionaryEntry>();
+		try {
+			BufferedReader br = new BufferedReader(new InputStreamReader(getResources().getAssets().open("particles.txt")));
+			System.out.println("NANDITONAAAAAAAAAAAAAAAAAAAAA");
+			String line;
+			while((line = br.readLine())!=null)
+			{
+				System.out.println(line);
+				String[] parts = line.split("~");
+				if(inQuestion("　"+parts[0]+"　",parts[1],0xFFAEEEEE))
+		    		System.out.println("added"+parts[0]);
+			}	
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				Log.i("CANT FIND FILE DAMMT","asdfasdf");
+				e.printStackTrace();
+			}
+		/*
+    	
     	particles.add(new DictionaryEntry("　の　","Particle; Functions as: possession indicator, noun link, topic marker (subordinate clauses), nominalization"));
     	particles.add(new DictionaryEntry("　だけ　","Particle; Translates to: \"only\"; limit. だけ functions as a noun. Kanji form 丈 is less commonly used."));
     	particles.add(new DictionaryEntry("　だの　","Particle;　and, things like. This particle is used far less frequently than とか. Often has negative connotations."));
@@ -470,7 +489,7 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
     		if(inQuestion(particles.get(i).getWord(),particles.get(i).getDefinition(),0xFFAEEEEE))
     			System.out.println("added"+particles.get(i).getWord());
     		particles.remove(i);
-    	}
+    	}*/
     }
     private void japExecute()
     {

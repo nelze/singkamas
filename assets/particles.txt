@@ -1,0 +1,19 @@
+﻿だけ~Particle; Translates to: \"only\"; limit. だけ　functions as a noun.
+の~Particle; Functions as: possession indicator, noun link, topic marker (subordinate clauses), nominalization.
+だの~Particle;　and, things like. This particle is used far less frequently than とか. Often has negative connotations.
+で~Particle; can be used as \"at\" or \"by means of\". When serving as the continuative で form of a subordinate clause, で substitutes for だ/です, carries the meaning \"is, and so...\", and takes on the tense of the final verb of the sentence.
+でも~Particle; even; or; but, however; also in.
+へ~Particle; to, in; direction.
+が~Particle; identifier (identifies something unspecified), conjunction (\"but\").
+もで~Particle; up to, until, as far as; Indicates a time or place as a limit.
+か~Particle; Functions as: question denominator, alternative item conjunction, quotation expressing doubt; \"whether\", especially when used with d? ka (\"or not\").
+かい~Particle; a gentler and masculine variant of the question marker か.
+かな~Particle; I wonder
+から~Particle; from, after, because; may be followed by の to link two nouns."
+けど~Particle; although, but
+きり~Particle; just, only
+ころ~Particle; around, about, approximately
+こそ~Particle; emphasis marker; roughly analogous to \"precisely\" or \"exactly\".
+まで~Particle; up to, until, as far as; Indicates a time or place as a limit.
+め~Particle; ordinal particle.
+も~Particle; 
