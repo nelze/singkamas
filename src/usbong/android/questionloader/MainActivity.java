@@ -460,36 +460,6 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
 				Log.i("CANT FIND FILE DAMMT","asdfasdf");
 				e.printStackTrace();
 			}
-		/*
-    	
-    	particles.add(new DictionaryEntry("　の　","Particle; Functions as: possession indicator, noun link, topic marker (subordinate clauses), nominalization"));
-    	particles.add(new DictionaryEntry("　だけ　","Particle; Translates to: \"only\"; limit. だけ functions as a noun. Kanji form 丈 is less commonly used."));
-    	particles.add(new DictionaryEntry("　だの　","Particle;　and, things like. This particle is used far less frequently than とか. Often has negative connotations."));
-    	particles.add(new DictionaryEntry("　で　","Particle; で can be used as \"at\" or \"by means of\". When serving as the continuative て form of a subordinate clause, de substitutes for da/desu, carries the meaning \"is, and so...\", and takes on the tense of the final verb of the sentence."));
-    	particles.add(new DictionaryEntry("　でも　","Particle;　even; or; but, however; also in"));
-    	particles.add(new DictionaryEntry("　へ　","Particle;　to, in; direction"));
-    	particles.add(new DictionaryEntry("　が　","Particle;　identifier (identifies something unspecified), conjunction (\"but\")"));
-    	particles.add(new DictionaryEntry("　まで　","Particle;　up to, until, as far as;　Indicates a time or place as a limit."));
-    	particles.add(new DictionaryEntry("　か　","Particle;　Functions as: question denominator, alternative item conjunction, quotation expressing doubt; \"whether\", especially when used with dō ka (\"or not\")."));
-    	particles.add(new DictionaryEntry("　かい　","Particle; かい is a gentler and masculine variant of the question marker ka."));
-    	particles.add(new DictionaryEntry("　かな　","Particle;　I wonder"));
-    	particles.add(new DictionaryEntry("　から　","Particle; from, after, because; may be followed by の to link two nouns."));
-    	particles.add(new DictionaryEntry("　けど　","Particle;　although, but"));
-    	particles.add(new DictionaryEntry("　きり　","Particle;　just, only"));
-    	particles.add(new DictionaryEntry("　ころ　","Particle;　around, about, approximately"));
-    	particles.add(new DictionaryEntry("　こそ　","Particle;　emphasis marker; roughly analogous to \"precisely\" or \"exactly\"."));
-    	particles.add(new DictionaryEntry(" まで　","Particle;　up to, until, as far as; Indicates a time or place as a limit."));
-    	particles.add(new DictionaryEntry("　め　","Particle; ordinal particle"));
-    	particles.add(new DictionaryEntry("　も　","Particle;"));
-    	//particles.add(new DictionaryEntry("","Particle;"));
-    	//particles.add(new DictionaryEntry("","Particle;"));
-    	//particles.add(new DictionaryEntry("","Particle;"));
-    	for(int i = 0;particles.size()!=0;)
-    	{
-    		if(inQuestion(particles.get(i).getWord(),particles.get(i).getDefinition(),0xFFAEEEEE))
-    			System.out.println("added"+particles.get(i).getWord());
-    		particles.remove(i);
-    	}*/
     }
     private void japExecute()
     {
