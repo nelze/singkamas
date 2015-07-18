@@ -246,13 +246,13 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
         	if (difficulty.equalsIgnoreCase("easy"))
         	{
         		questionDifficultyFinal = parts[0].replace("　","").replace(" ", "");
-        		questionDifficulty = parts[0].replace(" ", "　");
-        		translate1 = language.equalsIgnoreCase("japanese") ? parts[1].replace(" ", "　"):parts[0].replace(" ", "　");
+        		questionDifficulty = "　"+parts[0].replace(" ", "　");
+        		translate1 = language.equalsIgnoreCase("japanese") ? "　"+parts[1].replace(" ", "　"):"　"+parts[0].replace(" ", "　");
         	}
         	else
         	{
         		questionDifficultyFinal = parts[1].replace("　", "").replace(" ", "");
-        		questionDifficulty = parts[1].replace(" ", "　");
+        		questionDifficulty = "　"+parts[1].replace(" ", "　");
         		translate1 = questionDifficulty;
         	}
         	total = qm.getCount();//-1;//do a -1 because questionCounter starts at 0; added by Mike, 31 March 2015
@@ -344,7 +344,7 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
     }
     
     //added by Brent and Lev, 28 June 2015
-    private class DictionaryTask extends AsyncTask<Void,Void,Void>
+    private static class DictionaryTask extends AsyncTask<Void,Void,Void>
     {
 		@Override
 		protected Void doInBackground(Void... params) {
@@ -405,7 +405,6 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
     	if(questionDifficulty.contains(query))
 		{
     		int position = questionDifficulty.indexOf(query);
-    		System.out.println(position+"position of coloooooooooor");
     		while(position!=-1)
     		{
     			Log.i(query,"added huehuehuheuue");
@@ -417,7 +416,6 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
     		}
 			return true;
 		}
-    	System.out.println("gg po kayo hahahahaha"+query+"huehue");
     	return false;
     }
     private boolean inQuestion(String query,String def)
@@ -446,18 +444,18 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
     {
 		try {
 			BufferedReader br = new BufferedReader(new InputStreamReader(getResources().getAssets().open("particles.txt")));
-			System.out.println("NANDITONAAAAAAAAAAAAAAAAAAAAA");
 			String line;
 			while((line = br.readLine())!=null)
 			{
 				System.out.println(line);
 				String[] parts = line.split("~");
-				if(inQuestion("　"+parts[0]+"　",parts[1],0xFFAEEEEE))
+				int color = line.length()-line.replace("~","").length()==2 ? -1 : 0xFFAEEEEE;
+				if(inQuestion("　"+parts[0]+"　",parts[1],color))
 		    		System.out.println("added"+parts[0]);
-			}	
+			}
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
-				Log.i("CANT FIND FILE DAMMT","asdfasdf");
+				Log.i("CANT FIND FILE","asdfasdf");
 				e.printStackTrace();
 			}
     }
@@ -731,13 +729,13 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
         	if (difficulty.equalsIgnoreCase("easy"))
         	{
         		questionDifficultyFinal = parts[0].replace("　", "").replace(" ", "");
-        		questionDifficulty = parts[0].replace(" ","　");
-        		translate1 = language.equalsIgnoreCase("japanese")? parts[1].replace(" ","　"):parts[0].replace(" ","　");
+        		questionDifficulty = "　"+parts[0].replace(" ","　");
+        		translate1 = language.equalsIgnoreCase("japanese")? "　"+parts[1].replace(" ","　"):"　"+parts[0].replace(" ","　");
         	}
         	else
         	{
         		questionDifficultyFinal = parts[1].replace("　", "").replace(" ", "");
-        		questionDifficulty = parts[1].replace(" ","　");	
+        		questionDifficulty = "　"+parts[1].replace(" ","　");	
         		translate1 = questionDifficulty;
         	}
         	//question.setText("Hello");

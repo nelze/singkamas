@@ -50,3 +50,14 @@
 ぜ~Particle; Indicates assertion. Used mostly by men, it is never considered polite.
 ぞ~Particle;　Indicates assertion. Used mainly by men, it is considered somewhat less forceful and more positive than ぜ.
 ずつ~Particle; Denotes an equal or gradual distribution of quantity like "at a time" in "one at a time", "by" in "one by one", or "each" in "one each". It usually follows counted nouns.
+これ~Pointer; This.~
+それ~Pointer; That.~
+あれ~Pointer; That one (over there).~
+どれ~Pointer; Which one.~
+あの~Pointer; That... (over there) followed by a noun.~
+その~Pointer; That... followed by a noun.~
+この~Pointer; This... followed by a noun.~
+どの~Pointer; Which... followed by a noun.~
+あそこ~Pointer; Over there.~
+どこ~Pointer; Where.~
+だれ~Pointer; Who.~
