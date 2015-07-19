@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.ANDROID_FRAMEWORK/NewQuickAction3D"/>
 	<classpathentry kind="src" path="gen"/>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.ANDROID_FRAMEWORK"/>
@@ -13,6 +12,6 @@
 	<classpathentry exported="true" kind="lib" path="httpclient-cache-4.2.5.jar"/>
 	<classpathentry exported="true" kind="lib" path="httpcore-4.2.4.jar"/>
 	<classpathentry exported="true" kind="lib" path="httpmime-4.2.5.jar"/>
-	<classpathentry combineaccessrules="false" exported="true" kind="src" path="/NewQuickAction3D"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/NewQuickAction3D"/>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>

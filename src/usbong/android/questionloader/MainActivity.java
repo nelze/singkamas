@@ -170,8 +170,6 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
 		    		    	          Log.i(Integer.toString(offset),"OOOOOOFFSEETT");
 		    		    	          for(int i = 0; i<dictEntries.size();i++)
 		    		    	          {  
-		    		    	        	 // int tempstart = questionDifficultyFinal.indexOf(dictEntries.get(i).getWord());
-		    		    	        	 // int tempend = tempstart+dictEntries.get(i).getWord().length();
 		    		    	        	  int tempstart = dictEntries.get(i).start();
 		    		    	        	  int tempend = dictEntries.get(i).end();
 		    		    	        	  if (offset-tempstart >= 0 && offset-tempend < 0)
@@ -185,25 +183,25 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
 		    		    	        		  quickAction.setOnActionItemClickListener(new QuickAction.OnActionItemClickListener() {
 		    		    	        			  @Override
 		    		    	        			  public void onItemClick(QuickAction source,int pos, int actionId) {
-		    		    	        				  spannable.setSpan(new ForegroundColorSpan(color),start ,end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-								    			      spannable.setSpan(new BackgroundColorSpan(Color.TRANSPARENT), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);	    		    	        				   
+		    		    	        				  //spannable.setSpan(new ForegroundColorSpan(color),start ,end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+								    			      //spannable.setSpan(new BackgroundColorSpan(Color.TRANSPARENT), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);	    		    	        				   
 		    		    	        				  Toast.makeText(MainActivity.this, "Word copied to clipboard.", Toast.LENGTH_SHORT).show();
 		    		    	        				 }
 		    		    	        				});
 		    		    	        		  quickAction.setOnDismissListener(new QuickAction.OnDismissListener() {
 													@Override
 													public void onDismiss() {
-														spannable.setSpan(new ForegroundColorSpan(color),start ,end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-								    			    	spannable.setSpan(new BackgroundColorSpan(Color.TRANSPARENT), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+														//spannable.setSpan(new ForegroundColorSpan(color),start ,end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+								    			    	//spannable.setSpan(new BackgroundColorSpan(Color.TRANSPARENT), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 													} 
 			    		    	        		  });
 		    		    	        		  quickAction.show(question,start,question.getLeft());
 		    		    	        		  System.out.println("def here" + def);
-		    		    	        		  spannable.setSpan(new ForegroundColorSpan(0xFFFFFFFF), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-		    		    	        		  spannable.setSpan(new BackgroundColorSpan(0xFFFF0000), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+		    		    	        		 // spannable.setSpan(new ForegroundColorSpan(0xFFFFFFFF), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+		    		    	        		 // spannable.setSpan(new BackgroundColorSpan(0xFFFF0000), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 		    		    	        	  }
 		    		    	          }
-		    		    	    } 
+		    		    	    }  
 		    		    	    return true;
 	    			    }
     			    /*else if (event.getAction() == MotionEvent.ACTION_UP) {
@@ -246,13 +244,13 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
         	if (difficulty.equalsIgnoreCase("easy"))
         	{
         		questionDifficultyFinal = parts[0].replace("　","").replace(" ", "");
-        		questionDifficulty = "　"+parts[0].replace(" ", "　");
-        		translate1 = language.equalsIgnoreCase("japanese") ? "　"+parts[1].replace(" ", "　"):"　"+parts[0].replace(" ", "　");
+        		questionDifficulty = "　"+parts[0].replace(" ", "　")+"　";
+        		translate1 = language.equalsIgnoreCase("japanese") ? "　"+parts[1].replace(" ", "　")+"　":"　"+parts[0].replace(" ", "　")+"　";
         	}
         	else
         	{
         		questionDifficultyFinal = parts[1].replace("　", "").replace(" ", "");
-        		questionDifficulty = "　"+parts[1].replace(" ", "　");
+        		questionDifficulty = "　"+parts[1].replace(" ", "　")+"　";
         		translate1 = questionDifficulty;
         	}
         	total = qm.getCount();//-1;//do a -1 because questionCounter starts at 0; added by Mike, 31 March 2015
@@ -344,7 +342,7 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
     }
     
     //added by Brent and Lev, 28 June 2015
-    private static class DictionaryTask extends AsyncTask<Void,Void,Void>
+    private class DictionaryTask extends AsyncTask<Void,Void,Void>
     {
 		@Override
 		protected Void doInBackground(Void... params) {
@@ -443,7 +441,7 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
     private void colorJapParticles()
     {
 		try {
-			BufferedReader br = new BufferedReader(new InputStreamReader(getResources().getAssets().open("particles.txt")));
+			BufferedReader br = new BufferedReader(new InputStreamReader(getResources().getAssets().open("localJapaneseDictionary.txt")));
 			String line;
 			while((line = br.readLine())!=null)
 			{
@@ -729,13 +727,13 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
         	if (difficulty.equalsIgnoreCase("easy"))
         	{
         		questionDifficultyFinal = parts[0].replace("　", "").replace(" ", "");
-        		questionDifficulty = "　"+parts[0].replace(" ","　");
-        		translate1 = language.equalsIgnoreCase("japanese")? "　"+parts[1].replace(" ","　"):"　"+parts[0].replace(" ","　");
+        		questionDifficulty = "　"+parts[0].replace(" ","　")+"　";
+        		translate1 = language.equalsIgnoreCase("japanese")? "　"+parts[1].replace(" ","　")+"　":"　"+parts[0].replace(" ","　")+"　";
         	}
         	else
         	{
         		questionDifficultyFinal = parts[1].replace("　", "").replace(" ", "");
-        		questionDifficulty = "　"+parts[1].replace(" ","　");	
+        		questionDifficulty = "　"+parts[1].replace(" ","　")+"　";	
         		translate1 = questionDifficulty;
         	}
         	//question.setText("Hello");

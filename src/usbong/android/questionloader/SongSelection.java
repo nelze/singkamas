@@ -183,8 +183,6 @@ public class SongSelection extends ListActivity {
 
 		}
 	}
-    
-    
     private class MyListAdapter extends BaseAdapter
     {
     	private String[] fileList;

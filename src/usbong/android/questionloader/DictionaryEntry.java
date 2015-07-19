@@ -1,11 +1,17 @@
 package usbong.android.questionloader;
 
+import java.io.Serializable;
+
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.RelativeSizeSpan;
 
-public class DictionaryEntry {
+public class DictionaryEntry implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private String definition;
 	private String word;
 	private int color;

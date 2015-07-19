@@ -22,5 +22,6 @@
         android:layout_alignBottom ="@+id/textView1"
         android:text="textViewPlaceHolder" 
         android:visibility="invisible"/>
+
     
 </RelativeLayout>
