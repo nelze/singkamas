@@ -1,4 +1,4 @@
-の~Particle; Functions as: possession indicator, noun link, topic marker (subordinate clauses), nominalization.
+の~Particle; Functions as: possession indicator, noun link, topic marker (subordinate clauses), nominalization. (at sentence-end, falling tone) Indicates a confident conclusion (often ん); (fem) (at sentence-end) indicates emotional emphasis; (at sentence-end, rising tone) indicates question.
 だけ~Particle; Translates to: "only"; limit. だけ　functions as a noun.
 で~Particle; Can be used as "at" or "by means of". When serving as the continuative で form of a subordinate clause.
 でも~Particle; Even; or; but, however.
@@ -46,20 +46,23 @@
 ぜ~Particle; Indicates assertion, like よ, but stronger. Used mostly by men, it is never considered polite.
 ぞ~Particle;　Indicates assertion, like よ, but stronger.. Used mainly by men, it is considered somewhat less forceful and more positive than ぜ.
 ずつ~Particle; Denotes an equal or gradual distribution of quantity like "at a time" in "one at a time", "by" in "one by one", or "each" in "one each". It usually follows counted nouns.
-これ~Pointer; This.~
-それ~Pointer; That.~
-あれ~Pointer; That one (over there).~
-どれ~Pointer; Which one.~
-あの~Pointer; That... (over there) followed by a noun.~
-その~Pointer; That... followed by a noun.~
-この~Pointer; This... followed by a noun.~
-どの~Pointer; Which... followed by a noun.~
-ここ~Pointer; Here.~
-そこ~Pointer; There.~
-あそこ~Pointer; Over there.~
-どこ~Pointer; Where.~
-こちら~Pointer; Here. Can also be used to politely mean "I"~
-そちら~Pointer; There. Can also be used to politely mean "you"~
-あちら~Pointer; Over there. Can also be used to politely mean "they"~
-どこ~Pointer; Where.~
-だれ~Pointer; Who.~
+これ~; This.~
+それ~; That.~
+あれ~; That one (over there).~
+どれ~; Which one.~
+あの~; That... (over there) followed by a noun.~
+その~; That... followed by a noun.~
+この~; This... followed by a noun.~
+どの~; Which... followed by a noun.~
+ここ~; Here.~
+そこ~; There.~
+あそこ~; Over there.~
+どこ~; Where.~
+こちら~; Here. Can also be used to politely mean "I"~
+そちら~; There. Can also be used to politely mean "you"~
+あちら~; Over there. Can also be used to politely mean "they"~
+どこ~; Where.~
+だれ~; Who.~
+ある~;There is. There exists (for non-living things)
+いる~;There is. There exists (for living things)
+だ~;Casual form of です (linking verb at the end of the sentence which means is/are).
