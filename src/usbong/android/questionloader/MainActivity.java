@@ -592,7 +592,10 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
 				}
     	}catch(Exception e){System.out.println("THE PROBLEEEM "+e);}
     }
-    
+    /**
+     * chineseExecute uses dynamic programming. If it were to be put in the server side of the code, 
+     * searchPrefix and dictContains need to be added there.
+     */
     private void chineseExecute()
 	{
     	dictEntries.clear();
@@ -635,9 +638,11 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
 			if(!dict.contains("#"))
 			{
 			String splitDict[] = dict.split(" ");
+			//To show traditional and simplified versions of the character
 			int index = difficulty.equalsIgnoreCase("easy") ? 1 : 0;
 			int opposite = difficulty.equalsIgnoreCase("easy") ? 0 : 1;
 			String diff = difficulty.equalsIgnoreCase("easy") ? "\nTraditional: " : "\nSimplified: ";
+			
 			String s = splitDict[index]+diff+splitDict[opposite]+"\n"+dict.substring(dict.indexOf(splitDict[2]),dict.length());
 			if(word.equals(splitDict[index]))
 			{
@@ -673,13 +678,18 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
 	{
 		dictEntries.clear();
 		String parts[] = questionDifficultyFinal.split(" ");
-		//search array parts(the sentence) in server side; server side returns String array definition.
+		//search array parts(the sentence) in server side; send parts[] or questionDifficultyFinal to server side.
+		//server returns String array definition.
+		//If definition found, add to array. if not found, return "no def in dict"
 		
 		//this is where the definitions get added to dictEntries;
 		for (String part:parts)
 		{
-			//if(inQuestion(part,def))
-				//System.out.println("added");
+			//if (!def.equals("no def in dict"))
+			//{
+				//if(inQuestion(part,def))
+					//System.out.println("added");
+			//}
 		}
 	}
 	@Override
