@@ -247,7 +247,7 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
     		youTubePlayerView.initialize(API_KEY, this);
         	if (difficulty.equalsIgnoreCase("easy"))
         	{
-        		questionDifficultyFinal = parts[0].replace("　","").replace(" ", "").replace("\\", " ");
+        		questionDifficultyFinal = language.equalsIgnoreCase("japanese") ? parts[0].replace("　","").replace(" ", "").replace("\\", " "):parts[0];
         		questionDifficulty = "　"+parts[0].replace(" ", "　")+"　";
         		translate1 = language.equalsIgnoreCase("japanese") ? "　"+parts[1].replace(" ", "　")+"　":"　"+parts[0].replace(" ", "　")+"　";
         	}
@@ -363,6 +363,8 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
         			chineseExecute();
         		}
         	}
+        	else if(language.equalsIgnoreCase("korean"))
+        		koreanExecute();
         	//else if(language.equalsIgnoreCase("korean"))
         		
 			return null;
@@ -401,6 +403,13 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
     		clickable=true;
     	}
     }
+    /**
+     * Used mainly for the japanese particles.
+     * @param 
+     * @param 
+     * @param color 
+     * @return if it is in question or not
+     */
     private boolean inQuestion(String query,String def,int color)
     {
     	Log.i("query"+query+"huehue",def);
@@ -420,6 +429,12 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
 		}
     	return false;
     }
+    /**
+     * Automatically searches the word in the sentence and adds it to dictEntries; Used for all languages.
+     * @param query
+     * @param def
+     * @return if it is in question or not
+     */
     private boolean inQuestion(String query,String def)
     {
     	if(questionDifficulty.contains(query))
@@ -582,7 +597,7 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
 	{
     	dictEntries.clear();
 		searchPrefix(translate1,"");
-		/*for(int i = 0; i < dictEntries.size(); i++)
+		for(int i = 0; i < dictEntries.size(); i++)
 		{
 			for (int j = i+1; j < dictEntries.size();)
 			{
@@ -594,7 +609,7 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
 				else
 					j++;
 			}
-		}*/
+		}
 	}
     private void searchPrefix(String word,String result)
 	{
@@ -654,7 +669,19 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
 			 Log.i("added mandarin dictionary","SADFSDFASDFASDFASFASDFASFASDFASDF");
 			 addedDict = true;
 	}
-
+	private void koreanExecute()
+	{
+		dictEntries.clear();
+		String parts[] = questionDifficultyFinal.split(" ");
+		//search array parts(the sentence) in server side; server side returns String array definition.
+		
+		//this is where the definitions get added to dictEntries;
+		for (String part:parts)
+		{
+			//if(inQuestion(part,def))
+				//System.out.println("added");
+		}
+	}
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu)
 	{
