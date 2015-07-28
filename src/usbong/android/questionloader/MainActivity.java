@@ -10,6 +10,7 @@ import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import net.londatiga.android.ActionItem;
@@ -66,6 +67,7 @@ import android.widget.TextView;
 import android.widget.TextView.BufferType;
 import android.widget.Toast;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.android.youtube.player.YouTubeBaseActivity;
 import com.google.android.youtube.player.YouTubeInitializationResult;
 import com.google.android.youtube.player.YouTubePlayer;
@@ -100,6 +102,7 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
 	String translate1;
 	String questionDifficultyFinal;
     Handler handler;
+    String koreanwithspace;
 	EditText input_ans;
 	int questionCounter = 0;
 	QuestionManager qm;
@@ -243,18 +246,19 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
         	link = newQues.getLink();
         	String string = newQues.getQuestionText();
         	String[] parts = string.split("~"); //changed "-" to "~" by Mike, 2 June 2015
+        	koreanwithspace = parts[0];
         	youTubePlayerView = (YouTubePlayerView) findViewById(R.id.youtube_player);
     		youTubePlayerView.initialize(API_KEY, this);
         	if (difficulty.equalsIgnoreCase("easy"))
         	{
         		questionDifficultyFinal = language.equalsIgnoreCase("japanese") ? parts[0].replace("　","").replace(" ", "").replace("\\", " "):parts[0];
-        		questionDifficulty = "　"+parts[0].replace(" ", "　")+"　";
-        		translate1 = language.equalsIgnoreCase("japanese") ? "　"+parts[1].replace(" ", "　")+"　":"　"+parts[0].replace(" ", "　")+"　";
+        		questionDifficulty = language.equalsIgnoreCase("japanese")? "　"+parts[0].replace(" ", "　")+"　": parts[0];
+        		translate1 = language.equalsIgnoreCase("japanese") ? "　"+parts[1].replace(" ", "　")+"　":questionDifficulty;
         	}
         	else
         	{
-        		questionDifficultyFinal = parts[1].replace("　", "").replace(" ", "").replace("\\", " ");
-        		questionDifficulty = "　"+parts[1].replace(" ", "　")+"　";
+        		questionDifficultyFinal =language.equalsIgnoreCase("japanese") ? parts[1].replace("　","").replace(" ", "").replace("\\", " "):parts[1];
+        		questionDifficulty = language.equalsIgnoreCase("japanese")?"　"+parts[1].replace(" ", "　")+"　":parts[1];
         		translate1 = questionDifficulty;
         	}
         	total = qm.getCount();//-1;//do a -1 because questionCounter starts at 0; added by Mike, 31 March 2015
@@ -364,7 +368,12 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
         		}
         	}
         	else if(language.equalsIgnoreCase("korean"))
-        		koreanExecute();
+				try {
+					koreanExecute();
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					System.out.println("Error " + e);
+				}
         	//else if(language.equalsIgnoreCase("korean"))
         		
 			return null;
@@ -674,15 +683,36 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
 			 Log.i("added mandarin dictionary","SADFSDFASDFASDFASFASDFASFASDFASDF");
 			 addedDict = true;
 	}
-	private void koreanExecute()
+	private void koreanExecute() 
 	{
+		
 		dictEntries.clear();
 		String parts[] = questionDifficultyFinal.split(" ");
+		System.out.println("Korean " + parts.length);
+		for (int i = 0; i < parts.length; i++)
+		{
+			System.out.println("Hello" + parts[i]);
+		}
 		//search array parts(the sentence) in server side; send parts[] or questionDifficultyFinal to server side.
 		//server returns String array definition.
 		//If definition found, add to array. if not found, return "no def in dict"
-		
-		//this is where the definitions are added to dictEntries;
+		for (int i = 0; i < parts.length; i++)
+		{
+			String url = "http://moscpas.dyndns.biz:80/getDefinition.php?word='" + parts[i]+"'";
+			String readUrlContentAsString;
+			try {
+				readUrlContentAsString = NetUtil.readUrlContentAsString(url);
+				ObjectMapper mapper = new ObjectMapper();
+				HashMap map = mapper.readValue(readUrlContentAsString, HashMap.class);
+				System.out.println("Korean here" + map.get("DEF").toString());
+				inQuestion(parts[i], map.get("DEF").toString());
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				System.out.println("error: " + e);
+			}
+			
+		}
+		//this is where the definitions get added to dictEntries;
 		for (String part:parts)
 		{
 			//if (!def.equals("no def in dict"))
@@ -767,14 +797,14 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
         	String[] parts = string.split("~"); //changed "-" to "~" by Mike, 2 June 2015
         	if (difficulty.equalsIgnoreCase("easy"))
         	{
-        		questionDifficultyFinal = parts[0].replace("　", "").replace(" ", "").replace("\\", " ");
-        		questionDifficulty = "　"+parts[0].replace(" ","　")+"　";
-        		translate1 = language.equalsIgnoreCase("japanese")? "　"+parts[1].replace(" ","　")+"　":"　"+parts[0].replace(" ","　")+"　";
+        		questionDifficultyFinal = language.equalsIgnoreCase("japanese") ? parts[0].replace("　","").replace(" ", "").replace("\\", " "):parts[0];
+        		questionDifficulty = language.equalsIgnoreCase("japanese")? "　"+parts[0].replace(" ", "　")+"　": parts[0];
+        		translate1 = language.equalsIgnoreCase("japanese") ? "　"+parts[1].replace(" ", "　")+"　":questionDifficulty;
         	}
         	else
         	{
-        		questionDifficultyFinal = parts[1].replace("　", "").replace(" ", "").replace("\\", " ");
-        		questionDifficulty = "　"+parts[1].replace(" ","　")+"　";	
+        		questionDifficultyFinal =language.equalsIgnoreCase("japanese") ? parts[1].replace("　","").replace(" ", "").replace("\\", " "):parts[1];
+        		questionDifficulty = language.equalsIgnoreCase("japanese")?"　"+parts[1].replace(" ", "　")+"　":parts[1];
         		translate1 = questionDifficulty;
         	}
         	//question.setText("Hello");
@@ -787,6 +817,8 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
         		new DictionaryTask().execute();
         	else if (language.equalsIgnoreCase("mandarin"))
     			new DictionaryTask().execute();
+        	else if (language.equalsIgnoreCase("korean"))
+        		new DictionaryTask().execute();
         	//if (language.equalsIgnoreCase("japanese"))
         		//japaneseDictionary(questionDifficulty);
     		//question.setText(newQues.getQuestionText());
