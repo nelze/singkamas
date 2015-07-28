@@ -682,7 +682,7 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
 		//server returns String array definition.
 		//If definition found, add to array. if not found, return "no def in dict"
 		
-		//this is where the definitions get added to dictEntries;
+		//this is where the definitions are added to dictEntries;
 		for (String part:parts)
 		{
 			//if (!def.equals("no def in dict"))
