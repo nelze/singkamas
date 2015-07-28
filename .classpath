@@ -1,18 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry kind="con" path="com.android.ide.eclipse.adt.ANDROID_FRAMEWORK/NewQuickAction3D"/>
 	<classpathentry kind="src" path="gen"/>
 	<classpathentry kind="src" path="src"/>
-	<classpathentry kind="con" path="com.android.ide.eclipse.adt.ANDROID_FRAMEWORK"/>
+	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.ANDROID_FRAMEWORK"/>
 	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.LIBRARIES"/>
 	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.DEPENDENCIES"/>
-	<classpathentry kind="lib" path="libs/YouTubeAndroidPlayerApi.jar"/>
+	<classpathentry exported="true" kind="lib" path="libs/YouTubeAndroidPlayerApi.jar"/>
 	<classpathentry exported="true" kind="lib" path="commons-codec-1.9.jar"/>
 	<classpathentry exported="true" kind="lib" path="commons-logging-1.1.1.jar"/>
 	<classpathentry exported="true" kind="lib" path="httpclient-4.2.5.jar"/>
 	<classpathentry exported="true" kind="lib" path="httpclient-cache-4.2.5.jar"/>
 	<classpathentry exported="true" kind="lib" path="httpcore-4.2.4.jar"/>
 	<classpathentry exported="true" kind="lib" path="httpmime-4.2.5.jar"/>
-	<classpathentry combineaccessrules="false" exported="true" kind="src" path="/NewQuickAction3D"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/NewQuickAction3D"/>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>

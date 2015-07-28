@@ -13,27 +13,24 @@ public class QuestionManager
 	{
 		QuestionParser parser = new QuestionParser();
     	List<Question> questionList = parser.parse(is, difficulty);
-    	
     	//System.out.println(questionList);    	
-    	
+    	System.out.println("loading..."+difficulty+questionList);
     	questionMap.put(difficulty, questionList);
 	}
-	
-	
 	public Question getQuestion(int difficulty, int index)
 	{
 		list = questionMap.get(difficulty);
 		
 		//int randomIndex = (int) (Math.random() * list.size());
 		
-		return list.get(index);
-		
+		return list.get(index);	
 	}
-	
 	public int getCount()
 	{
 		return list.size();
 	}
-	
-	
+	public int getCountMap()
+	{
+		return questionMap.size();
+	}
 }

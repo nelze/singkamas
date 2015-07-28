@@ -106,7 +106,7 @@ public class SongSelection extends ListActivity {
 						intent.putExtra("language", language);
 						//System.out.println("LAnguage"+language);
 						startActivity(intent);
-						SongSelection.this.finish();
+						//SongSelection.this.finish();
 					}
 					else if (language.equalsIgnoreCase("Mandarin"))
 					{
@@ -115,7 +115,7 @@ public class SongSelection extends ListActivity {
 						intent.putExtra("language", language);
 						//System.out.println("LAnguage"+language);
 						startActivity(intent);
-						SongSelection.this.finish();
+						//SongSelection.this.finish();
 					}
 					else
 					{
@@ -124,7 +124,7 @@ public class SongSelection extends ListActivity {
 				    	intent.putExtra("song_title", textPlaceHolder.getText());
 				    	intent.putExtra("language", language);
 				    	startActivity(intent);
-				    	SongSelection.this.finish();
+				    	//SongSelection.this.finish();
 				    	
 					}
 					
@@ -183,8 +183,6 @@ public class SongSelection extends ListActivity {
 
 		}
 	}
-    
-    
     private class MyListAdapter extends BaseAdapter
     {
     	private String[] fileList;

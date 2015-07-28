@@ -1,7 +1,8 @@
-﻿package usbong.android.questionloader;
+package usbong.android.questionloader;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
@@ -59,7 +60,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.PopupWindow;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -76,7 +76,11 @@ import com.google.android.youtube.player.YouTubePlayer.Provider;
 import com.google.android.youtube.player.YouTubePlayerFragment;
 import com.google.android.youtube.player.YouTubePlayerView;
 import com.squareup.picasso.Picasso;
-
+/**
+ * QuickAction dialog in Android taken from http://www.londatiga.net/it/how-to-create-quickaction-dialog-in-android/
+ * by Lorensius Londa. Some modifications were made as well.
+ *
+ */
 public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.OnInitializedListener{
 	//http://youtu.be/<VIDEO_ID>
 	ActionItem actionItem;
@@ -94,6 +98,7 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
 	TextView result;
 	ListView videosFound;
 	String translate1;
+	String questionDifficultyFinal;
     Handler handler;
 	EditText input_ans;
 	int questionCounter = 0;
@@ -111,57 +116,28 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
 	double score;
 	double total;
 	String link;
+	int color;
 	private ProgressBar mProgress;
 	double progress;
 	ArrayList<Integer> indices = new ArrayList<Integer>();
 	ArrayList<String> chinDict = new ArrayList<String>();
 	ArrayList<DictionaryEntry> dictEntries = new ArrayList<DictionaryEntry>();
-	//this is the new definitions arraylist. uses SpannableStringBuilder instead of string to edit style in textview
-	ArrayList<SpannableStringBuilder> definitionsSsb = new ArrayList<SpannableStringBuilder>();
-	ArrayList<ArrayList<String>> overlaps = new ArrayList<ArrayList<String>>();
-	ArrayList<String> partsList = new ArrayList<String>();
-	QuickAction quickAction;
 	String language;
 	List<VideoItem> searchResults;
 	double accuracy; //added by Mike, 27 March 2015
     YouTubePlayer player;
 	
-    
-    abstract class MyPopUpDismissListener implements PopupWindow.OnDismissListener
-    {
-    	int start;
-    	int end;
-    	
-    	public MyPopUpDismissListener(int start, int end)
-    	{
-    		this.start = start;
-    		this.end = end;
-    	}
-    }
-    
-    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        
         setContentView(R.layout.activity_main);
-	        //Display display = getWindowManager().getDefaultDisplay();
-			//Point size = new Point();
-			//display.getSize(size);
-			//screenWidth = size.x;
         	actionItem = new ActionItem();
-        	quickAction = new QuickAction(this);
         	Bundle bundle = getIntent().getExtras();
         	difficulty = bundle.getString("difficulty");
         	songname = bundle.getString("song_title");
         	language = bundle.getString("language");
         	videosFound = (ListView)findViewById(R.id.videos_found); 
     		question   = (TextView)findViewById(R.id.questionView);
-    		//int qcoord[] = new int[2];
-    	    //question.getLocationOnScreen(qcoord);
-    		//float qy = question.getTop();
-    		//float qx = question.getLeft();
-
     		
     		//added by Mike, 15 June 2015
     		//Reference: http://stackoverflow.com/questions/17945176/want-textview-to-change-color-with-click-just-like-on-a-button
@@ -191,108 +167,47 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
 		    		    	      if (layout!=null){
 		    		    	          int line = layout.getLineForVertical(y);
 		    		    	          int offset = layout.getOffsetForHorizontal(line,x);
-		    		    	          //for (int i = partsList.size()-1; i >=0 ; i--)
 		    		    	          Log.i(Integer.toString(offset),"OOOOOOFFSEETT");
-		    		    	          for(int i = 0; i<partsList.size();i++)
-<<<<<<< HEAD
+		    		    	          for(int i = 0; i<dictEntries.size();i++)
 		    		    	          {  
-		    		    	        	  int tempstart = questionDifficulty.indexOf(partsList.get(i));
-		    		    	        	  int tempend = tempstart+partsList.get(i).length();
+		    		    	        	  int tempstart = dictEntries.get(i).start();
+		    		    	        	  int tempend = dictEntries.get(i).end();
 		    		    	        	  if (offset-tempstart >= 0 && offset-tempend < 0)
-=======
-		    		    	          {
-		    		    	        	  start = questionDifficulty.indexOf(partsList.get(i));
-		    		    	        	  
-		    		    	        	  if (start==-1)
-		    		    	        	  {
-		    		    	        		  Log.i("WARNING:", "start is -1 for part "+partsList.get(i));
-		    		    	        		  
-		    		    	        	  }
-		    		    	        	  end = start+partsList.get(i).length();
-		    		    	        	  if (offset-start >= 0 && offset-end < 0)
->>>>>>> master
 		    		    	        	  {
 		    		    	        		  start = tempstart;
 		    		    	        		  end = tempend;
-		    		    	        		  SpannableStringBuilder def  = definitionsSsb.get(i);
+		    		    	        		  SpannableStringBuilder def  = dictEntries.get(i).getSpannableString();
 		    		    	        		  actionItem.setTitleSpan(def);
 		    		    	        		  quickAction.addActionItem(actionItem);
-		    		    	        		 
+		    		    	        		  color = dictEntries.get(i).getColor();
 		    		    	        		  quickAction.setOnActionItemClickListener(new QuickAction.OnActionItemClickListener() {
 		    		    	        			  @Override
 		    		    	        			  public void onItemClick(QuickAction source,int pos, int actionId) {
-		    		    	        				     if (pos == 0) { //Add item selected
-		    		    	        				          Toast.makeText(MainActivity.this, "Word copied to clipboard.", Toast.LENGTH_SHORT).show();
-		    		    	        				     }
+		    		    	        				  for(DictionaryEntry entry: dictEntries)
+		    		    	        					  spannable.setSpan(new ForegroundColorSpan(entry.getColor()),entry.start(),entry.end(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+								    			      spannable.setSpan(new BackgroundColorSpan(Color.TRANSPARENT), 0, questionDifficultyFinal.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);	    		    	        				   
+		    		    	        				  Toast.makeText(MainActivity.this, "Word copied to clipboard.", Toast.LENGTH_SHORT).show();
 		    		    	        				 }
 		    		    	        				});
-		    		    	        		  
-		    		    	        		  
-		    		    	        		  quickAction.setOnDismissListener(new MyPopUpDismissListener(start, end)
-											{
-		    		    	        			  
-												@Override
-												public void onDismiss()
-												{
-								    			    	spannable.setSpan(new ForegroundColorSpan(0x93CCEA00),this.start ,this.end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-								    			    	spannable.setSpan(new BackgroundColorSpan(Color.TRANSPARENT), this.start, this.end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-												}
-											});
+		    		    	        		  quickAction.setOnDismissListener(new QuickAction.OnDismissListener() {
+													@Override
+													public void onDismiss() {
+														for(DictionaryEntry entry: dictEntries)
+			    		    	        					  spannable.setSpan(new ForegroundColorSpan(entry.getColor()),entry.start(),entry.end(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+									    			      spannable.setSpan(new BackgroundColorSpan(Color.TRANSPARENT), 0, questionDifficultyFinal.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);	
+														//spannable.setSpan(new ForegroundColorSpan(color),start ,end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+								    			    	//spannable.setSpan(new BackgroundColorSpan(Color.TRANSPARENT), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+													} 
+			    		    	        		  });
 		    		    	        		  quickAction.show(question,start,question.getLeft());
-		    		    	        		  
 		    		    	        		  System.out.println("def here" + def);
-		    		    	        		  spannable.setSpan(new ForegroundColorSpan(0xFFFFFFFF), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-		    		    	        		  spannable.setSpan(new BackgroundColorSpan(0xFFFF0000), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-<<<<<<< HEAD
-		    		    	        		  
-=======
->>>>>>> master
-		    		    	        		  //if(language.equalsIgnoreCase("japanese"))
-		    		    	        			//  break;
-		    		    	        		  //Toast.makeText(getApplicationContext(), def,  Toast.LENGTH_SHORT).show();
+		    		    	        		 spannable.setSpan(new ForegroundColorSpan(0xFFFFFFFF), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+		    		    	        		 spannable.setSpan(new BackgroundColorSpan(0xFFFF0000), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 		    		    	        	  }
 		    		    	          }
-		    		    	    } 
+		    		    	    }  
 		    		    	    return true;
 	    			    }
-<<<<<<< HEAD
-	    			    if (event.getAction() == MotionEvent.ACTION_UP) {
-				        //set to default color
-	    			    	/*quickAction.setOnDismissListener(new QuickAction.OnDismissListener()
-	    	        		  {n(new BackgroundColorSpan(Color.TRANSPARENT), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-	    	        			  }
-	    	        		  });*/
-	    			    	spannable.setSpan(new ForegroundColorSpan(0x93CCEA00),start ,end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-	    			    	spannable.setSpan(new BackgroundColorSpan(Color.TRANSPARENT), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-	    			    	return true;
-	    			    }
-=======
-//	    			    else if (event.getAction() == MotionEvent.ACTION_UP) {
-//				        //set to default color
-//	    			    	spannable.setSpan(new ForegroundColorSpan(0x93CCEA00),start ,end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-//	    			    	spannable.setSpan(new BackgroundColorSpan(Color.TRANSPARENT), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-//	    			    	return true;
-//	    			    }
->>>>>>> master
-	    			    /*if (event.getAction() == MotionEvent.ACTION_MOVE) {
-					        //set to default color
-	    			    	
-	    			    	Layout layout = ((TextView) v).getLayout();
-	    			    		int x = (int)event.getX();
-	    			    		int y = (int)event.getY();
-	    			    		if (layout!=null){
-		    		    	         int line = layout.getLineForVertical(y);
-		    		    	         int offset = layout.getOffsetForHorizontal(line,x);
-		    			    		if (offset>overallOffset)
-		    			    		{
-		    			    			Spannable[] spanArray = spannable.getSpans(start,overallOffset,Spannable.class);
-		    			    			spannable.setSpan(new ForegroundColorSpan(0x93CCEA00),start ,end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-		    			    			spannable.setSpan(new BackgroundColorSpan(Color.TRANSPARENT), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-		    			    		}
-	    			    		}
-		    			    	return true;
-			    			    	
-		    			    }*/
     			    /*else if (event.getAction() == MotionEvent.ACTION_UP) {
     			        // set to default color
     		    		question.setTextColor(Color.parseColor("#acacab"));		
@@ -303,13 +218,11 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
     		    		Toast.makeText(getApplicationContext(), "Text Copied to Clipboard", Toast.LENGTH_SHORT).show();
     		    		
     			    }*/
-    			}
+    				}
     				}catch(Exception e){System.out.println("huehuehuehueahaue "+e);}    			
     				return true;
     				}
     			});
-    		
-    		
     		result   = (TextView)findViewById(R.id.resultView);
     		answer   = (TextView)findViewById(R.id.answerView);
     		input_ans   = (EditText)findViewById(R.id.editText1);
@@ -321,7 +234,6 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
     		button2.setVisibility(View.INVISIBLE);
         try
         {
-        	
         	InputStream isE = getResources().getAssets().open(language+"/" + songname);        	
 //        	Log.d(">>>language : songname", language+" : "+songname);
         	qm = new QuestionManager();
@@ -334,20 +246,27 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
         	youTubePlayerView = (YouTubePlayerView) findViewById(R.id.youtube_player);
     		youTubePlayerView.initialize(API_KEY, this);
         	if (difficulty.equalsIgnoreCase("easy"))
-        		questionDifficulty = parts[0];
+        	{
+        		questionDifficultyFinal = language.equalsIgnoreCase("japanese") ? parts[0].replace("　","").replace(" ", "").replace("\\", " "):parts[0];
+        		questionDifficulty = "　"+parts[0].replace(" ", "　")+"　";
+        		translate1 = language.equalsIgnoreCase("japanese") ? "　"+parts[1].replace(" ", "　")+"　":"　"+parts[0].replace(" ", "　")+"　";
+        	}
         	else
-        		questionDifficulty = parts[1];	
+        	{
+        		questionDifficultyFinal = parts[1].replace("　", "").replace(" ", "").replace("\\", " ");
+        		questionDifficulty = "　"+parts[1].replace(" ", "　")+"　";
+        		translate1 = questionDifficulty;
+        	}
         	total = qm.getCount();//-1;//do a -1 because questionCounter starts at 0; added by Mike, 31 March 2015
         	System.out.println(">>>>TOTAL: "+total);
-        	
 //        	result.setText(""); //commented out by Mike, 27 March 2015
         	//answer.setText("Correct answer: "+ newQues.getCorrectAnswer());
         	
         	//added by Brent Anonas 28 June 2015
-        	question.setText(questionDifficulty,BufferType.SPANNABLE);
+        	question.setText(questionDifficultyFinal,BufferType.SPANNABLE);
         	spannable = (Spannable)question.getText();
         	answer.setText("");
-        	translate1 = questionDifficulty;
+        	
         	//runs async task
     		new DictionaryTask().execute();
     		
@@ -444,6 +363,8 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
         			chineseExecute();
         		}
         	}
+        	else if(language.equalsIgnoreCase("korean"))
+        		koreanExecute();
         	//else if(language.equalsIgnoreCase("korean"))
         		
 			return null;
@@ -452,49 +373,130 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
     	@Override
     	protected void onPostExecute(Void result)
     	{
-    		try{
-	    		for(int i = 0; i < partsList.size();i++)
+	    	for(int i = 0; i < dictEntries.size();)
+	    	{
+	    		int start = dictEntries.get(i).start();
+	    		int end = dictEntries.get(i).end();
+	    		if(start != -1)
 	    		{
-	    			int start = questionDifficulty.indexOf(partsList.get(i));
-	    			int end = questionDifficulty.indexOf(partsList.get(i))+partsList.get(i).length();
-	    			spannable.setSpan(new ForegroundColorSpan(0x93CCEA00),start ,end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-	    			//resizeQuestion();
-	    			clickable=true;
-	    			//overlapping search words. dont touch muna haha.
-	    			//int overlap = overlap(partsList.get(i-1),partsList.get(i));
-	    			//if(overlap>0)
-	    			//	spannable.setSpan(new BackgroundColorSpan(0xFFFFFF00),start-overlap,end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-	    			//spannable.setSpan(new UnderlineSpan(), start, end-1, 0);
-	    			//question.setText(spannable);
+	    			if(i%2==0&&dictEntries.get(i).getColor()==-1)
+	    			{
+	    				spannable.setSpan(new ForegroundColorSpan(0xFFD7FF77),start ,end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+	    				dictEntries.get(i).setColor(0xFFD7FF77);
+	    			}
+	    			else if(dictEntries.get(i).getColor()==-1)
+	    			{
+	    				dictEntries.get(i).setColor(0x93CCEA00);
+	    				spannable.setSpan(new ForegroundColorSpan(0x93CCEA00),start ,end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+	    			}
+	    			else
+	    			{
+	    				spannable.setSpan(new ForegroundColorSpan(dictEntries.get(i).getColor()),start ,end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+	    			}
+	    			i++;
 	    		}
-    		}catch(Exception e){System.out.println("problem in post execute "+e);}
+	    		else
+	    		{
+	    			dictEntries.remove(i);
+	    		}
+	    	}
+    		clickable=true;
     	}
+    }
+    /**
+     * Used mainly for the japanese particles.
+     * @param 
+     * @param 
+     * @param color 
+     * @return if it is in question or not
+     */
+    private boolean inQuestion(String query,String def,int color)
+    {
+    	Log.i("query"+query+"huehue",def);
+    	if(questionDifficulty.contains(query))
+		{
+    		int position = questionDifficulty.indexOf(query);
+    		while(position!=-1)
+    		{
+    			Log.i(query,"added huehuehuheuue");
+    			Log.i(def,"thisistoSsbhuehuehuheuue");
+    			String s = questionDifficulty.substring(0,position);
+    			int spaces = s.length() - s.replace("　", "").length();
+    			dictEntries.add(new DictionaryEntry(query.replace("　",""),def,color,position-spaces,position+query.replace("　","").length()-spaces));
+    			position = questionDifficulty.indexOf(query, position+query.length());
+    		}
+			return true;
+		}
+    	return false;
+    }
+    /**
+     * Automatically searches the word in the sentence and adds it to dictEntries; Used for all languages.
+     * @param query
+     * @param def
+     * @return if it is in question or not
+     */
+    private boolean inQuestion(String query,String def)
+    {
+    	if(questionDifficulty.contains(query))
+		{
+    		int position = questionDifficultyFinal.indexOf(query);
+    		System.out.println(position+"positioooooooooooooon");
+    		while(position!=-1)
+    		{
+    			Log.i(query,"added huehuehuheuue");
+    			Log.i(def,"thisistoSsbhuehuehuheuue");
+    			String wholeWord = "";
+    			if(questionDifficulty.indexOf("　",questionDifficulty.indexOf(query))!=-1)
+    				wholeWord = questionDifficulty.substring(questionDifficulty.indexOf(query),questionDifficulty.indexOf("　",questionDifficulty.indexOf(query)));
+    			else
+    				wholeWord = questionDifficulty.substring(questionDifficulty.indexOf(query),questionDifficulty.indexOf(query)+query.length());
+    			dictEntries.add(new DictionaryEntry(wholeWord,def,position,position+wholeWord.length()));
+    			position = questionDifficultyFinal.indexOf(query, position+wholeWord.length());
+    		}			
+			return true;
+		}
+    	return false;
+    }
+    private void colorJapParticles()
+    {
+		try {
+			BufferedReader br = new BufferedReader(new InputStreamReader(getResources().getAssets().open("localJapaneseDictionary.txt")));
+			String line;
+			while((line = br.readLine())!=null)
+			{
+				System.out.println(line);
+				String[] parts = line.split("~");
+				int color = line.length()-line.replace("~","").length()==2 ? -1 : 0xFFAEEEEE;
+				if(inQuestion("　"+parts[0]+"　",parts[1],color))
+		    		System.out.println("added"+parts[0]);
+			}
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				Log.i("CANT FIND FILE","asdfasdf");
+				e.printStackTrace();
+			}
     }
     private void japExecute()
     {
     	try
     	{
-	    	partsList.clear();
-			definitionsSsb.clear();
+    		dictEntries.clear();
 			// TODO Auto-generated method stub
 		    	String reply = "";
 		    	String url = "http://www.edrdg.org/cgi-bin/wwwjdic/wwwjdic?9U";
 		    	String data = "gloss_line="+ URLEncoder.encode(translate1,"UTF-8")+"&dicsel=9&glleng=60";
 				reply = postFormDataToUrl(url, data);
-		    	
+		    	colorJapParticles();
 				// collect <li> stuff
 				ArrayList<String> liList = new ArrayList<String>();
 				int position = reply.indexOf("<li>", 0);
 				while(position>-1)
 				{
 					String s = reply.substring(position+4, reply.indexOf("</li>", position));
-					
 					if (s.toLowerCase().trim().startsWith("possible"))
 					{
 						s = s.substring(s.indexOf("<br>")+4);
 						System.out.println("FIXED: "+s);
-						
-						
 					}
 					
 					liList.add(s);
@@ -509,7 +511,7 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
 					String s = reply.substring(positionFont+19, reply.indexOf("</font>", positionFont));
 					System.out.println(s+"hahahahahahahahahahahah");
 					fontList.add(s);
-					System.out.println("added fontList "+s);
+					System.out.println("added fontList"+s+"huehue");
 					positionFont = reply.indexOf("<font color=\"blue\">", positionFont+19);
 				}
 				
@@ -517,67 +519,103 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
 				int fontListIndex = 0;
 				for (String s : liList)
 				{	
+					boolean done = false;
 					System.out.println("S here" + s);
 					String[] parts = s.split(" ");
-					s = s.replace(parts[1]+" ",parts[1]+"\n").replace("<br>", "\n").replace("�y","\n�y");
-					SpannableStringBuilder ssb = new SpannableStringBuilder(s);
-					ssb.setSpan(new RelativeSizeSpan(2f), s.indexOf(parts[1]),s.indexOf(parts[1])+parts[1].length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-					ssb.setSpan(new ForegroundColorSpan(0x93CCEA00), s.indexOf(parts[1]),s.indexOf(parts[1])+parts[1].length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-					//System.out.println("Text in li: "+tmp); 
-		            //definitions.add(s);
-		            definitionsSsb.add(ssb);
-		            if(parts[1].equals("Possible"))
+					System.out.println("parts[] asjfdkdaskfjh"+parts[0]+parts[1]);
+					if(difficulty.equalsIgnoreCase("easy"))
+					{
+						int kanaIndex = s.indexOf("【");
+						outerloop:
+						while(kanaIndex!=-1)
+						{
+							int endKana = s.indexOf("】", kanaIndex+1);
+							String kana = s.substring(kanaIndex+1, endKana);
+							System.out.println(kana+"kanaahahahahahahahahahahahah");
+							if(inQuestion(kana,s))
+								break outerloop;
+							String dictCode = s.substring(s.indexOf("(",endKana)+1,s.indexOf(")",endKana));
+							System.out.println(dictCode+"hahahahahahahahahahahah");
+							if(kana.contains("("))
+									kana = kana.replace(kana.substring(kana.indexOf("("),kana.indexOf(")")+1),"");
+							String kanaParts[] = kana.split(";");
+							for(String subpart : kanaParts)
+							{
+								subpart = subpart.replace(" ", "");
+								System.out.println(subpart+"huehuehuesubpparthaskjdfhaskd");
+								if(inQuestion(subpart,s))
+									break outerloop;
+								else if(dictCode.contains("v"))
+								{
+									if (dictCode.contains("v5aru")||dictCode.contains("v5uru")||dictCode.contains("vz"))
+									{
+										if(inQuestion(subpart.substring(0,subpart.length()-2),s))
+											break outerloop;
+									}
+									else if(inQuestion(subpart.substring(0,subpart.length()-1),s))
+										break outerloop;
+								}
+							}
+							kanaIndex = s.indexOf("【",endKana);
+						}
+					}
+					else if(difficulty.equalsIgnoreCase("medium")&&parts[0].equals(""))
+					{
+						if(s.contains("v5aru")||s.contains("v5uru")||s.contains("vz")||s.contains("v-unspec"))
+						{
+							if(inQuestion(parts[1].substring(0,parts[1].length()-2),s))
+							{
+								System.out.println("succeeeeeeeeess-2");
+								done = true;
+							}
+						}
+						else if (s.contains("v5k-s")||s.contains("v1")||s.contains("v2")||s.contains("v4")||s.contains("v5")||s.contains("vn")||s.contains("vr")||s.contains("vs")||s.contains("vs-c"))
+						{
+							if(inQuestion(parts[1].substring(0,parts[1].length()-1),s))
+							{
+								System.out.println("succeeeeeeeeess-1");
+								done = true;
+							}
+						}
+					}
+		            if(!parts[0].equals("")&&!done)
 		            {
-		            	partsList.add(fontList.get(fontListIndex));
-		            	System.out.println("fontList "+fontList.get(fontListIndex));
-		            	fontListIndex++;
+		            	if(inQuestion(fontList.get(fontListIndex),s))
+		            		fontListIndex++;
 		            }
-		            else
-		            	partsList.add(parts[1]);
+		            else if(s.indexOf(parts[1])!=-1&&!done)
+		            {
+		            	if(inQuestion(parts[1],s))
+		            		System.out.println("added in last case");
+		            }
 		            System.out.println("parts"+parts[1]);
-		            
 				}
     	}catch(Exception e){System.out.println("THE PROBLEEEM "+e);}
     }
-    
+    /**
+     * chineseExecute uses dynamic programming. If it were to be put in the server side of the code, 
+     * searchPrefix and dictContains need to be added there.
+     */
     private void chineseExecute()
 	{
-		partsList.clear();
-		definitionsSsb.clear();
-		//Log.i(translate1,"SADFSDFASDFASDFASFASDFASFASDFASDF");
-		//searchPrefix(translate1,"");
+    	dictEntries.clear();
 		searchPrefix(translate1,"");
-		for(int i = 0; i < partsList.size(); i++)
+		for(int i = 0; i < dictEntries.size(); i++)
 		{
-			for (int j = i+1; j < partsList.size();)
+			for (int j = i+1; j < dictEntries.size();)
 			{
-				if (partsList.get(i).equals(partsList.get(j)))
+				if (dictEntries.get(i).getWord().equals(dictEntries.get(j).getWord()))
 				{
-					partsList.remove(j);
-					definitionsSsb.remove(j);
+					System.out.println("removed"+dictEntries.get(j).getWord());
+					dictEntries.remove(j);
 				}
 				else
-				{
-					/*if(partsList.get(i).length()<partsList.get(j).length())
-					{
-							String temp = partsList.get(j);
-							partsList.set(j, partsList.get(i));
-							partsList.set(i, temp);
-					}*/
-					/*if(partsList.get(i).contains(partsList.get(j)))
-					{
-						innerOverlap.add(partsList.get(j));
-						partsList.remove(j);
-					}*/
 					j++;
-				}
-					
 			}
 		}
 	}
     private void searchPrefix(String word,String result)
 	{
-    	//Log.i(translate1,"SADFSDFASDFASDFASFASDFASFASDFASDF");
 		for(int i=1;i<=word.length();i++)
 		{
 			String prefix = word.substring(0,i);
@@ -587,8 +625,6 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
 				{
 					result+=prefix;
 					System.out.println("Result here" + result);
-					//Log.i(result,"RESUUUUUUUUUUUULT");
-					//definitionsSsb.add(result);
 					break;
 				}
 				searchPrefix(word.substring(i,word.length()),result+prefix+"   ");
@@ -597,27 +633,21 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
 	}
 	private boolean dictContains(String word)
 	{
-		
-
-		//String[] dictionary = {"mobile","samsung","sam","sung","man","mango","icecream","and","go","i","love","ice","cream"};
-		//chinDict is not that small huhu ambagal.
 		for(String dict:chinDict)
 		{
 			if(!dict.contains("#"))
 			{
 			String splitDict[] = dict.split(" ");
+			//To show traditional and simplified versions of the character
 			int index = difficulty.equalsIgnoreCase("easy") ? 1 : 0;
 			int opposite = difficulty.equalsIgnoreCase("easy") ? 0 : 1;
 			String diff = difficulty.equalsIgnoreCase("easy") ? "\nTraditional: " : "\nSimplified: ";
+			
 			String s = splitDict[index]+diff+splitDict[opposite]+"\n"+dict.substring(dict.indexOf(splitDict[2]),dict.length());
 			if(word.equals(splitDict[index]))
 			{
-				Log.i(dict,"DIIIIIIIIIIIICCCTT");
-				partsList.add(splitDict[index]);
-				SpannableStringBuilder ssb = new SpannableStringBuilder(s);
-				ssb.setSpan(new RelativeSizeSpan(2f), s.indexOf(splitDict[index]), s.indexOf(splitDict[index])+splitDict[index].length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-				ssb.setSpan(new ForegroundColorSpan(0x93CCEA00), s.indexOf(splitDict[index]), s.indexOf(splitDict[index])+splitDict[index].length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-				definitionsSsb.add(ssb);
+				if(inQuestion(splitDict[index],s))
+					Log.i(dict,"DIIIIIIIIIIIICCCTT ADDED");
 				return true;
 			}
 			}
@@ -639,17 +669,29 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
 					
 					String line;
 					while((line = br.readLine())!=null)
-					{
-						 //System.out.println(line);
 						chinDict.add(line);
-						//line = br.readLine();
-					}
-					//System.out.println(dictionary.get(0));
 				} catch(Exception e){System.out.println(e);}
 			 Log.i("added mandarin dictionary","SADFSDFASDFASDFASFASDFASFASDFASDF");
 			 addedDict = true;
 	}
-
+	private void koreanExecute()
+	{
+		dictEntries.clear();
+		String parts[] = questionDifficultyFinal.split(" ");
+		//search array parts(the sentence) in server side; send parts[] or questionDifficultyFinal to server side.
+		//server returns String array definition.
+		//If definition found, add to array. if not found, return "no def in dict"
+		
+		//this is where the definitions get added to dictEntries;
+		for (String part:parts)
+		{
+			//if (!def.equals("no def in dict"))
+			//{
+				//if(inQuestion(part,def))
+					//System.out.println("added");
+			//}
+		}
+	}
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu)
 	{
@@ -724,16 +766,23 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
     		String string = newQues.getQuestionText();
         	String[] parts = string.split("~"); //changed "-" to "~" by Mike, 2 June 2015
         	if (difficulty.equalsIgnoreCase("easy"))
-        		questionDifficulty = parts[0];
+        	{
+        		questionDifficultyFinal = parts[0].replace("　", "").replace(" ", "").replace("\\", " ");
+        		questionDifficulty = "　"+parts[0].replace(" ","　")+"　";
+        		translate1 = language.equalsIgnoreCase("japanese")? "　"+parts[1].replace(" ","　")+"　":"　"+parts[0].replace(" ","　")+"　";
+        	}
         	else
-        		questionDifficulty = parts[1];	
+        	{
+        		questionDifficultyFinal = parts[1].replace("　", "").replace(" ", "").replace("\\", " ");
+        		questionDifficulty = "　"+parts[1].replace(" ","　")+"　";	
+        		translate1 = questionDifficulty;
+        	}
         	//question.setText("Hello");
         	//answer.setText("World");
         	
         	//added by Brent Anonas, 28 June 2015
-        	question.setText(questionDifficulty);
+        	question.setText(questionDifficultyFinal);
         	spannable = (Spannable)question.getText();
-        	translate1 = questionDifficulty;
         	if (language.equalsIgnoreCase("japanese"))
         		new DictionaryTask().execute();
         	else if (language.equalsIgnoreCase("mandarin"))
@@ -803,7 +852,6 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
 */	
 	public void enterAnswer(View view)
     {
-    	
     	user_answer = input_ans.getText().toString();
     	//edited by Mike, 27 March 2015
     	double temp_accuracy = compareAnswer(user_answer.replaceAll("\\s+",""),newQues.getCorrectAnswer().replaceAll("\\s+",""));

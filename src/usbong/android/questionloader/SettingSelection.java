@@ -134,4 +134,12 @@ public class SettingSelection extends Activity {
 		alert.show();
     }
 
+    public void loadingScreen(View view)
+	{
+   		Intent intent = new Intent(SettingSelection.this,LoadingScreen.class);
+   		intent.putExtra("difficulty", "medium");
+       	intent.putExtra("song_title", songname);
+       	intent.putExtra("language", language);
+       	startActivity(intent);
+	}
 }
