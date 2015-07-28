@@ -252,13 +252,13 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
         	if (difficulty.equalsIgnoreCase("easy"))
         	{
         		questionDifficultyFinal = language.equalsIgnoreCase("japanese") ? parts[0].replace("　","").replace(" ", "").replace("\\", " "):parts[0];
-        		questionDifficulty = "　"+parts[0].replace(" ", "　")+"　";
-        		translate1 = language.equalsIgnoreCase("japanese") ? "　"+parts[1].replace(" ", "　")+"　":"　"+parts[0].replace(" ", "　")+"　";
+        		questionDifficulty = language.equalsIgnoreCase("japanese")? "　"+parts[0].replace(" ", "　")+"　": parts[0];
+        		translate1 = language.equalsIgnoreCase("japanese") ? "　"+parts[1].replace(" ", "　")+"　":questionDifficulty;
         	}
         	else
         	{
-        		questionDifficultyFinal = parts[1].replace("　", "").replace(" ", "").replace("\\", " ");
-        		questionDifficulty = "　"+parts[1].replace(" ", "　")+"　";
+        		questionDifficultyFinal =language.equalsIgnoreCase("japanese") ? parts[1].replace("　","").replace(" ", "").replace("\\", " "):parts[1];
+        		questionDifficulty = language.equalsIgnoreCase("japanese")?"　"+parts[1].replace(" ", "　")+"　":parts[1];
         		translate1 = questionDifficulty;
         	}
         	total = qm.getCount();//-1;//do a -1 because questionCounter starts at 0; added by Mike, 31 March 2015
@@ -797,14 +797,14 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
         	String[] parts = string.split("~"); //changed "-" to "~" by Mike, 2 June 2015
         	if (difficulty.equalsIgnoreCase("easy"))
         	{
-        		questionDifficultyFinal = parts[0].replace("　", "").replace(" ", "").replace("\\", " ");
-        		questionDifficulty = "　"+parts[0].replace(" ","　")+"　";
-        		translate1 = language.equalsIgnoreCase("japanese")? "　"+parts[1].replace(" ","　")+"　":"　"+parts[0].replace(" ","　")+"　";
+        		questionDifficultyFinal = language.equalsIgnoreCase("japanese") ? parts[0].replace("　","").replace(" ", "").replace("\\", " "):parts[0];
+        		questionDifficulty = language.equalsIgnoreCase("japanese")? "　"+parts[0].replace(" ", "　")+"　": parts[0];
+        		translate1 = language.equalsIgnoreCase("japanese") ? "　"+parts[1].replace(" ", "　")+"　":questionDifficulty;
         	}
         	else
         	{
-        		questionDifficultyFinal = parts[1].replace("　", "").replace(" ", "").replace("\\", " ");
-        		questionDifficulty = "　"+parts[1].replace(" ","　")+"　";	
+        		questionDifficultyFinal =language.equalsIgnoreCase("japanese") ? parts[1].replace("　","").replace(" ", "").replace("\\", " "):parts[1];
+        		questionDifficulty = language.equalsIgnoreCase("japanese")?"　"+parts[1].replace(" ", "　")+"　":parts[1];
         		translate1 = questionDifficulty;
         	}
         	//question.setText("Hello");
