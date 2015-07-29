@@ -11,6 +11,7 @@ import java.nio.charset.StandardCharsets;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 import net.londatiga.android.ActionItem;
@@ -701,11 +702,13 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
 			String url = "http://moscpas.dyndns.biz:80/getDefinition.php?word='" + parts[i]+"'";
 			String readUrlContentAsString;
 			try {
+				
+				
 				readUrlContentAsString = NetUtil.readUrlContentAsString(url);
 				ObjectMapper mapper = new ObjectMapper();
-				HashMap map = mapper.readValue(readUrlContentAsString, HashMap.class);
-				System.out.println("Korean here" + map.get("DEF").toString());
-				inQuestion(parts[i], map.get("DEF").toString());
+				List<LinkedHashMap> map = mapper.readValue(readUrlContentAsString, List.class);
+				System.out.println("Korean here" + map.get(0).get("DEF").toString());
+				inQuestion(parts[i], map.get(0).get("DEF").toString());
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				System.out.println("error: " + e);
