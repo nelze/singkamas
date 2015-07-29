@@ -12,6 +12,9 @@
 	<classpathentry exported="true" kind="lib" path="httpclient-cache-4.2.5.jar"/>
 	<classpathentry exported="true" kind="lib" path="httpcore-4.2.4.jar"/>
 	<classpathentry exported="true" kind="lib" path="httpmime-4.2.5.jar"/>
+	<classpathentry exported="true" kind="lib" path="jackson-annotations-2.2.0.jar"/>
+	<classpathentry exported="true" kind="lib" path="jackson-core-2.2.0.jar"/>
+	<classpathentry exported="true" kind="lib" path="jackson-databind-2.2.0.jar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/NewQuickAction3D"/>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>
