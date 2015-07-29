@@ -699,7 +699,7 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
 		//If definition found, add to array. if not found, return "no def in dict"
 		for (int i = 0; i < parts.length; i++)
 		{
-			String url = "http://moscpas.dyndns.biz:80/getDefinition.php?word='" + parts[i]+"'";
+			String url = "http://moscpas.dyndns.biz/getDefinitionKorean.php?word='" + parts[i]+"'";
 			String readUrlContentAsString;
 			try {
 				
@@ -707,9 +707,11 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
 				readUrlContentAsString = NetUtil.readUrlContentAsString(url);
 				ObjectMapper mapper = new ObjectMapper();
 				List<LinkedHashMap> map = mapper.readValue(readUrlContentAsString, List.class);
-				System.out.println("Korean here" + map.get(0).get("DEF").toString());
+				System.out.println("Korean here " + map.get(0).get("DEF").toString());
 				inQuestion(parts[i], map.get(0).get("DEF").toString());
-			} catch (Exception e) {
+			} 
+			//this means no definition
+			catch (Exception e) {
 				// TODO Auto-generated catch block
 				System.out.println("error: " + e);
 			}
