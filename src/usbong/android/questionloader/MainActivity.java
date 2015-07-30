@@ -86,7 +86,7 @@ import com.squareup.picasso.Picasso;
  */
 public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.OnInitializedListener{
 	//http://youtu.be/<VIDEO_ID>
-	ActionItem actionItem;
+	//ActionItem actionItem;
 	public static final String API_KEY = UsbongUtils.API_KEY;
 	//ActionItem ai = new ActionItem();
 	int screenWidth;
@@ -135,7 +135,6 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        	actionItem = new ActionItem();
         	Bundle bundle = getIntent().getExtras();
         	difficulty = bundle.getString("difficulty");
         	songname = bundle.getString("song_title");
@@ -181,9 +180,27 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
 		    		    	        		  start = tempstart;
 		    		    	        		  end = tempend;
 		    		    	        		  SpannableStringBuilder def  = dictEntries.get(i).getSpannableString();
-		    		    	        		  actionItem.setTitleSpan(def);
-		    		    	        		  quickAction.addActionItem(actionItem);
-		    		    	        		  color = dictEntries.get(i).getColor();
+		    		    	        		  if(quickAction.size()>0)
+		    		    	        		  {
+			    		    	        		  for(int j = 0; j<quickAction.size();j++)
+			    		    	        		  {
+			    		    	        			  if(!dictEntries.get(i).getDefinition().equals(quickAction.getActionItem(j).getTitle()))
+			    		    	        			  {
+			    		    	        				  ActionItem actionItem = new ActionItem(dictEntries.get(i).getDefinition());
+					    		    	        		  actionItem.setTitleSpan(def);
+					    		    	        		  quickAction.addActionItem(actionItem);
+					    		    	        		  color = dictEntries.get(i).getColor();
+			    		    	        			  }
+			    		    	        		  }
+		    		    	        		  }
+		    		    	        		  else
+		    		    	        		  {
+		    		    	        			  ActionItem actionItem = new ActionItem(dictEntries.get(i).getDefinition());
+			    		    	        		  actionItem.setTitleSpan(def);
+			    		    	        		  quickAction.addActionItem(actionItem);
+			    		    	        		  color = dictEntries.get(i).getColor();
+		    		    	        		  }
+		    		    	        		  quickAction.show(question,start,question.getLeft());
 		    		    	        		  quickAction.setOnActionItemClickListener(new QuickAction.OnActionItemClickListener() {
 		    		    	        			  @Override
 		    		    	        			  public void onItemClick(QuickAction source,int pos, int actionId) {
@@ -203,7 +220,6 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
 								    			    	//spannable.setSpan(new BackgroundColorSpan(Color.TRANSPARENT), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 													} 
 			    		    	        		  });
-		    		    	        		  quickAction.show(question,start,question.getLeft());
 		    		    	        		  System.out.println("def here" + def);
 		    		    	        		 spannable.setSpan(new ForegroundColorSpan(0xFFFFFFFF), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 		    		    	        		 spannable.setSpan(new BackgroundColorSpan(0xFFFF0000), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
@@ -360,13 +376,13 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
         		japExecute();
         	else if (language.equalsIgnoreCase("mandarin"))
         	{
-        		if(addedDict)
+        		//if(addedDict)
         			chineseExecute();
-        		else
-        		{
-        			addChineseDictionary();
-        			chineseExecute();
-        		}
+        		//else
+        		//{
+        		//	addChineseDictionary();
+        			//chineseExecute();
+        		//}
         	}
         	else if(language.equalsIgnoreCase("korean"))
 				try {
@@ -610,7 +626,7 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
 	{
     	dictEntries.clear();
 		searchPrefix(translate1,"");
-		for(int i = 0; i < dictEntries.size(); i++)
+		/*for(int i = 0; i < dictEntries.size(); i++)
 		{
 			for (int j = i+1; j < dictEntries.size();)
 			{
@@ -622,7 +638,7 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
 				else
 					j++;
 			}
-		}
+		}*/
 	}
     private void searchPrefix(String word,String result)
 	{
@@ -643,46 +659,41 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
 	}
 	private boolean dictContains(String word)
 	{
-		for(String dict:chinDict)
+		String url = "http://moscpas.dyndns.biz/getDefinitionMandarin.php?word='" + word+"'";
+		String readUrlContentAsString;
+		try {
+			readUrlContentAsString = NetUtil.readUrlContentAsString(url);
+			ObjectMapper mapper = new ObjectMapper();
+			List<LinkedHashMap> map = mapper.readValue(readUrlContentAsString, List.class);
+			System.out.println("Korean here " + map.get(0).get("DEF").toString());
+			if (inQuestion(word, map.get(0).get("DEF").toString()))
+				return true;
+		} 
+		//this means no definition
+		catch (Exception e) {
+			// TODO Auto-generated catch block
+			System.out.println("error: " + e);
+		}
+		
+		/*for(String dict:chinDict)
 		{
 			if(!dict.contains("#"))
 			{
 			String splitDict[] = dict.split(" ");
 			//To show traditional and simplified versions of the character
 			int index = difficulty.equalsIgnoreCase("easy") ? 1 : 0;
-			int opposite = difficulty.equalsIgnoreCase("easy") ? 0 : 1;
-			String diff = difficulty.equalsIgnoreCase("easy") ? "\nTraditional: " : "\nSimplified: ";
-			
-			String s = splitDict[index]+diff+splitDict[opposite]+"\n"+dict.substring(dict.indexOf(splitDict[2]),dict.length());
 			if(word.equals(splitDict[index]))
 			{
+				int opposite = difficulty.equalsIgnoreCase("easy") ? 0 : 1;
+				String diff = difficulty.equalsIgnoreCase("easy") ? "\nTraditional: " : "\nSimplified: ";
+				String s = splitDict[index]+diff+splitDict[opposite]+"\n"+dict.substring(dict.indexOf(splitDict[2]),dict.length());
 				if(inQuestion(splitDict[index],s))
 					Log.i(dict,"DIIIIIIIIIIIICCCTT ADDED");
 				return true;
 			}
 			}
-		}
+		}*/
 		return false;
-	}
-	@SuppressLint("NewApi")
-	@SuppressWarnings("resource")
-	private void addChineseDictionary()
-	{
-		 URL url;
-		 final String src = "https://raw.githubusercontent.com/SkycladObserver/CEdictSingkamas/master/cedict_ts.u8";			 
-			try
-				{
-				    url = new URL(src);
-					BufferedReader br = new BufferedReader(new InputStreamReader(url.openStream()));
-					//BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream("cedict_ts.u8"),StandardCharsets.UTF_8.displayName()));
-					//BufferedReader br = new BufferedReader(new InputStreamReader(getResources().getAssets().open("cedict_ts.u8")));
-					
-					String line;
-					while((line = br.readLine())!=null)
-						chinDict.add(line);
-				} catch(Exception e){System.out.println(e);}
-			 Log.i("added mandarin dictionary","SADFSDFASDFASDFASFASDFASFASDFASDF");
-			 addedDict = true;
 	}
 	private void koreanExecute() 
 	{
@@ -715,18 +726,28 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
 				// TODO Auto-generated catch block
 				System.out.println("error: " + e);
 			}
-			
-		}
-		//this is where the definitions get added to dictEntries;
-		for (String part:parts)
-		{
-			//if (!def.equals("no def in dict"))
-			//{
-				//if(inQuestion(part,def))
-					//System.out.println("added");
-			//}
 		}
 	}
+	@SuppressLint("NewApi")
+	@SuppressWarnings("resource")
+	private void addChineseDictionary()
+	{
+		 URL url;
+		 final String src = "https://raw.githubusercontent.com/SkycladObserver/CEdictSingkamas/master/cedict_ts.u8";			 
+			try
+				{
+				    url = new URL(src);
+					BufferedReader br = new BufferedReader(new InputStreamReader(url.openStream()));
+					//BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream("cedict_ts.u8"),StandardCharsets.UTF_8.displayName()));
+					//BufferedReader br = new BufferedReader(new InputStreamReader(getResources().getAssets().open("cedict_ts.u8")));
+					
+					String line;
+					while((line = br.readLine())!=null)
+						chinDict.add(line);
+				} catch(Exception e){System.out.println(e);}
+			 Log.i("added mandarin dictionary","SADFSDFASDFASDFASFASDFASFASDFASDF");
+			 addedDict = true;
+	}	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu)
 	{
