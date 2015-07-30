@@ -2,73 +2,80 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity" 
-    android:background="#36342a">
+    android:background="@drawable/challenge_bg"
+    tools:context=".MainActivity" >
 
     <Button
         android:id="@+id/exitButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
-        android:textColor="#f6361d"
-        android:text="X"
-        android:background="#36342a"
-        android:textSize="20sp"
+        android:background="@drawable/exit_idle"
+        android:onClick="exitSettingSelection"
         android:paddingLeft="8dp"
-        android:onClick="exitSettingSelection"/>    
-    
-    <TextView
-        android:id="@+id/textView1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@+id/exitButton"
-        android:layout_marginTop="16dp"
-        android:text="Select Challenge"
-        android:textSize="28sp"
-        android:textColor="#6290f8"/>        
+        android:textColor="#f6361d"
+        android:textSize="20sp"
+        android:layout_marginTop="5dp"
+          android:layout_marginRight="15dp"
+         />
+
+    <Button
+        android:id="@+id/topButton"
+        android:layout_width="238dp"
+        android:layout_height="51dp"
+        android:layout_below="@+id/textView1"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="40dp"
+        android:background="@drawable/simplified_selector"
+        android:onClick="easy" />
 
     <TextView
         android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="8dp"
-        android:layout_below="@+id/textView1"        
-        android:textSize="20sp"        
-        android:text="This setting is for those who want to pratice reading Simplified Chinese characters" />
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/topButton"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:text="For those who want to practice reading Simplified Chinese characters"
+        android:textColor="#000000"
+        android:textSize="16sp" 
+        />
 
-        <Button
-        android:id="@+id/topButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-    	android:layout_marginTop="8dp"
-        android:layout_below="@+id/textView2"        
-        android:background="@drawable/simplified_selector"
-        android:onClick="easy"
-         />
-    
+    <Button
+        android:id="@+id/bottomButton"
+        android:layout_width="238dp"
+        android:layout_height="51dp"
+        android:layout_alignLeft="@+id/topButton"
+        android:layout_below="@+id/textView2"
+        android:layout_marginTop="30dp"
+        android:background="@drawable/traditional_selector"
+        android:onClick="medium" />
+
     <TextView
         android:id="@+id/textView3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_marginTop="8dp"
-        android:layout_below="@+id/topButton"        
-        android:textSize="20sp"        
-        android:text="This setting is for those who want to practice reading Traditional Chinese characters" />
-    
-    <Button
-        android:id="@+id/bottomButton"
+        android:layout_below="@+id/bottomButton"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:text="For those who want to practice reading Traditional Chinese characters"
+        android:textColor="#000000"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/textView1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:layout_below="@+id/textView3"        
+        android:layout_below="@+id/exitButton"
         android:layout_centerHorizontal="true"
-        android:background="@drawable/traditional_selector"
-        android:onClick="medium"
-         />
+        android:layout_marginTop="40dp"
+        android:text="SELECT CHALLENGE"
+        android:textColor="#99ca3d"
+        android:textSize="28sp" />
 
 </RelativeLayout>

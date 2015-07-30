@@ -3,69 +3,81 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:background="@drawable/title_bg"
-    tools:context=".MainActivity">
+    android:gravity="top"
+    tools:context=".MainActivity" >
 
-    <Button
-        android:id="@+id/button1"
+    <ImageView
+        android:id="@+id/powered_by_usbong_imageview"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_above="@+id/button2"
-        android:background="@drawable/start_selector"
-        android:onClick="startRecord"/>
-
-    <Button
-        android:id="@+id/button2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignRight="@+id/button1"
-        android:layout_above="@+id/textView1"
-        android:layout_marginTop="4dp"
-        android:layout_marginBottom="4dp"        
-        android:background="@drawable/exit_selector"
-        android:onClick="exit" />
+        android:layout_marginBottom="4dp"
+        android:background="@drawable/powered_by_usbong_logov3" />
 
     <Button
         android:id="@+id/button3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/button1"
+        android:layout_above="@+id/button2"
         android:layout_centerHorizontal="true"
-        android:text="Conversation (coming soon)" 
-        android:visibility="invisible"/>
+        android:layout_marginBottom="77dp"
+        android:text="Conversation (coming soon)"
+        android:visibility="invisible" />
 
-    <Spinner
-        android:id="@+id/spinner1"
+    <Button
+        android:id="@+id/button2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:layout_marginBottom="36dp" />
+        android:layout_alignParentTop="true"
+        android:layout_alignRight="@+id/textView1"
+        android:layout_marginTop="5dp"
+        android:background="@drawable/exit_idle"
+        android:onClick="exit" />
 
     <TextView
         android:id="@+id/textView1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/spinner1"
-        android:layout_alignParentLeft="true"
+        android:layout_above="@+id/powered_by_usbong_imageview"
+        android:layout_centerHorizontal="true"
         android:text="*Multiple language support still in development" />
+
+    <Spinner
+        android:id="@+id/spinner1"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:visibility="invisible" />
+
+    <Button
+        android:id="@+id/button1"
+        android:layout_width="160dp"
+        android:layout_height="54dp"
+        android:layout_above="@+id/button5"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="10dp"
+        android:background="@drawable/start_selector"
+        android:onClick="startRecord"/>
+
+    <Button
+        android:id="@+id/button5"
+        android:layout_width="160dp"
+        android:layout_height="54dp"
+        android:layout_above="@+id/button4"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="10dp"
+        android:background="@drawable/languagebutton_idle" />
 
     <Button
         android:id="@+id/button4"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_alignTop="@+id/spinner1"
+        android:layout_width="160dp"
+        android:layout_height="54dp"
+        android:layout_above="@+id/textView1"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/reviewbutton_default"
         android:onClick="review"
-        android:text="Review Basic Characters" />
-   	
-   	<ImageView
-   	    android:id="@+id/powered_by_usbong_imageview"
-   	    android:layout_width="wrap_content"
-   	    android:layout_height="wrap_content"
-        android:background="@drawable/powered_by_usbong_logov3"
-   	    android:layout_alignParentBottom="true"
-   	    android:layout_centerHorizontal="true"
-   	    android:layout_marginBottom="4dp"
-   	    />    
+        android:visibility="invisible" />
+
 </RelativeLayout>

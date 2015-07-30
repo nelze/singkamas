@@ -407,13 +407,17 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
 	    		{
 	    			if(i%2==0&&dictEntries.get(i).getColor()==-1)
 	    			{
-	    				spannable.setSpan(new ForegroundColorSpan(0xFFD7FF77),start ,end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-	    				dictEntries.get(i).setColor(0xFFD7FF77);
+	    				spannable.setSpan(new ForegroundColorSpan(0xFF668d3c),start ,end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+	    				dictEntries.get(i).setColor(0xFF668d3c);
+	    				//spannable.setSpan(new ForegroundColorSpan(0xFFD7FF77),start ,end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+	    				//dictEntries.get(i).setColor(0xFFD7FF77);
 	    			}
 	    			else if(dictEntries.get(i).getColor()==-1)
 	    			{
-	    				dictEntries.get(i).setColor(0x93CCEA00);
-	    				spannable.setSpan(new ForegroundColorSpan(0x93CCEA00),start ,end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+	    				//dictEntries.get(i).setColor(0x93CCEA00);
+	    				//spannable.setSpan(new ForegroundColorSpan(0x93CCEA00),start ,end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+	    				dictEntries.get(i).setColor(0xFF99ca3d);
+	    				spannable.setSpan(new ForegroundColorSpan(0xFF99ca3d),start ,end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 	    			}
 	    			else
 	    			{
@@ -492,7 +496,7 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
 			{
 				System.out.println(line);
 				String[] parts = line.split("~");
-				int color = line.length()-line.replace("~","").length()==2 ? -1 : 0xFFAEEEEE;
+				int color = line.length()-line.replace("~","").length()==2 ? -1 : 0xFFd37627;
 				if(inQuestion("　"+parts[0]+"　",parts[1],color))
 		    		System.out.println("added"+parts[0]);
 			}

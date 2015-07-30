@@ -16,6 +16,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
@@ -27,13 +28,48 @@ public class MainMenuActivity extends Activity {
 	String language;
 	Spinner spinner;
 	Button review;
-
+	Button spinOpen;
+	@Override
+	protected void onStart()
+	{
+		try
+		{
+			super.onStart();
+			spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+	    	    @Override
+	    	    public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+	    	    	if(position==0)
+	    	    	{
+	    	    		review.setVisibility(View.VISIBLE);
+	    	    		spinOpen.setBackgroundResource(R.drawable.japanbutton_idle);
+	    	    	}
+	    	    	else if(position==1)
+	    	    	{
+	    	    		review.setVisibility(View.INVISIBLE);
+	    	    		spinOpen.setBackgroundResource(R.drawable.mandarinbutton_idle);
+	    	    	}
+	    	    	else if(position==2)
+	    	    	{
+	    	    		review.setVisibility(View.VISIBLE);
+	    	    		spinOpen.setBackgroundResource(R.drawable.koreanbutton_idle);
+	    	    	}
+	    	    }
+	
+	    	    @Override
+	    	    public void onNothingSelected(AdapterView<?> parentView) {
+	    	    }
+	    	});
+		}
+		catch(NullPointerException e)
+		{
+			e.printStackTrace();
+		}
+	}
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-    	review = (Button)findViewById(R.id.button4);
         setContentView(R.layout.main_game);
-        
+        review = (Button)findViewById(R.id.button4);
         spinner = (Spinner) findViewById(R.id.spinner1);
 	     // Create an ArrayAdapter using the string array and a default spinner layout
 	     ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
@@ -42,8 +78,16 @@ public class MainMenuActivity extends Activity {
 	     adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 	     // Apply the adapter to the spinner
 	     spinner.setAdapter(adapter);
-
-/*
+	     spinner.setVisibility(View.INVISIBLE);
+	     
+	     spinOpen = (Button) findViewById(R.id.button5);
+	     spinOpen.setOnClickListener(new View.OnClickListener() {
+	    	    @Override
+	    	    public void onClick(View v) {
+	    	        spinner.performClick();
+	    	    }
+	    	});
+/*		
 	     Display display = getWindowManager().getDefaultDisplay();
 	     Point size = new Point();
 	     display.getSize(size);
@@ -137,7 +181,5 @@ public class MainMenuActivity extends Activity {
     	Intent intent = new Intent(MainMenuActivity.this, ReviewPage.class);
     	intent.putExtra("language", language);
     	startActivity(intent);
-    	
-    	
     }
 }

@@ -87,47 +87,49 @@ public class SongSelection extends ListActivity {
         	}
 			
             list.addHeaderView(v);
-        	list.setBackgroundColor(Color.parseColor("#36342a")); //6f5c44
+        	list.setBackgroundColor(Color.parseColor("#FFFFFF")); //6f5c44 36342a
 
             list.setOnItemClickListener(new OnItemClickListener() {
 
 				@Override
 				public void onItemClick(AdapterView<?> arg0, View arg1,
 						int position, long id) {
-					arg1.setBackgroundColor(Color.parseColor("#4e4b3c"));
-					
-					// TODO Auto-generated method stub
-					TextView textPlaceHolder = (TextView) arg1.findViewById(R.id.textViewPlaceHolder);
-					//System.out.println(text.getText());
-					if (language.equalsIgnoreCase("Japanese"))
+					if(position!=0)
 					{
-						Intent intent = new Intent(SongSelection.this, SettingSelection.class);
-						intent.putExtra("song_title", textPlaceHolder.getText());
-						intent.putExtra("language", language);
-						//System.out.println("LAnguage"+language);
-						startActivity(intent);
-						//SongSelection.this.finish();
+						//arg1.setBackgroundColor(Color.parseColor("#4e4b3c"));
+						
+						// TODO Auto-generated method stub
+						TextView textPlaceHolder = (TextView) arg1.findViewById(R.id.textViewPlaceHolder);
+						//System.out.println(text.getText());
+						if (language.equalsIgnoreCase("Japanese"))
+						{
+							Intent intent = new Intent(SongSelection.this, SettingSelection.class);
+							intent.putExtra("song_title", textPlaceHolder.getText());
+							intent.putExtra("language", language);
+							//System.out.println("LAnguage"+language);
+							startActivity(intent);
+							//SongSelection.this.finish();
+						}
+						else if (language.equalsIgnoreCase("Mandarin"))
+						{
+							Intent intent = new Intent(SongSelection.this, SettingSelection.class);
+							intent.putExtra("song_title", textPlaceHolder.getText());
+							intent.putExtra("language", language);
+							//System.out.println("LAnguage"+language);
+							startActivity(intent);
+							//SongSelection.this.finish();
+						}
+						else
+						{
+							Intent intent = new Intent(SongSelection.this, MainActivity.class);
+					    	intent.putExtra("difficulty", "easy");
+					    	intent.putExtra("song_title", textPlaceHolder.getText());
+					    	intent.putExtra("language", language);
+					    	startActivity(intent);
+					    	//SongSelection.this.finish();
+					    	
+						}
 					}
-					else if (language.equalsIgnoreCase("Mandarin"))
-					{
-						Intent intent = new Intent(SongSelection.this, SettingSelection.class);
-						intent.putExtra("song_title", textPlaceHolder.getText());
-						intent.putExtra("language", language);
-						//System.out.println("LAnguage"+language);
-						startActivity(intent);
-						//SongSelection.this.finish();
-					}
-					else
-					{
-						Intent intent = new Intent(SongSelection.this, MainActivity.class);
-				    	intent.putExtra("difficulty", "easy");
-				    	intent.putExtra("song_title", textPlaceHolder.getText());
-				    	intent.putExtra("language", language);
-				    	startActivity(intent);
-				    	//SongSelection.this.finish();
-				    	
-					}
-					
 				}
 			});
 
