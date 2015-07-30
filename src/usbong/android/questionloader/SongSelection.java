@@ -14,6 +14,7 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.Point;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -88,7 +89,8 @@ public class SongSelection extends ListActivity {
 			
             list.addHeaderView(v);
         	list.setBackgroundColor(Color.parseColor("#FFFFFF")); //6f5c44 36342a
-
+        	list.setDividerHeight(1);
+        	list.setDivider(new ColorDrawable(0xFF613318));
             list.setOnItemClickListener(new OnItemClickListener() {
 
 				@Override
