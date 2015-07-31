@@ -30,26 +30,26 @@ public final class R {
 		public static final int action_item_selected = 0x7f020001;
 		public static final int arrow_down = 0x7f020004;
 		public static final int arrow_up = 0x7f020005;
-		public static final int icon = 0x7f020022;
-		public static final int menu_cancel = 0x7f020031;
-		public static final int menu_down_arrow = 0x7f020032;
-		public static final int menu_eraser = 0x7f020033;
-		public static final int menu_info = 0x7f020034;
-		public static final int menu_ok = 0x7f020035;
-		public static final int menu_search = 0x7f020036;
-		public static final int menu_up_arrow = 0x7f020037;
-		public static final int popup = 0x7f02003c;
+		public static final int icon = 0x7f020023;
+		public static final int menu_cancel = 0x7f02003b;
+		public static final int menu_down_arrow = 0x7f02003c;
+		public static final int menu_eraser = 0x7f02003d;
+		public static final int menu_info = 0x7f02003e;
+		public static final int menu_ok = 0x7f02003f;
+		public static final int menu_search = 0x7f020040;
+		public static final int menu_up_arrow = 0x7f020041;
+		public static final int popup = 0x7f020046;
 	}
 	public static final class id {
-		public static final int arrow_down = 0x7f0b001c;
-		public static final int arrow_up = 0x7f0b001b;
-		public static final int btn1 = 0x7f0b0010;
-		public static final int btn2 = 0x7f0b0011;
-		public static final int btn3 = 0x7f0b0012;
-		public static final int iv_icon = 0x7f0b0000;
-		public static final int scroller = 0x7f0b0019;
-		public static final int tracks = 0x7f0b001a;
-		public static final int tv_title = 0x7f0b0001;
+		public static final int arrow_down = 0x7f0c001d;
+		public static final int arrow_up = 0x7f0c001c;
+		public static final int btn1 = 0x7f0c0010;
+		public static final int btn2 = 0x7f0c0011;
+		public static final int btn3 = 0x7f0c0012;
+		public static final int iv_icon = 0x7f0c0000;
+		public static final int scroller = 0x7f0c001a;
+		public static final int tracks = 0x7f0c001b;
+		public static final int tv_title = 0x7f0c0001;
 	}
 	public static final class layout {
 		public static final int action_item_horizontal = 0x7f030000;
@@ -60,20 +60,20 @@ public final class R {
 		public static final int popup_vertical = 0x7f030008;
 	}
 	public static final class string {
-		public static final int app_name = 0x7f060001;
-		public static final int hello = 0x7f060000;
+		public static final int app_name = 0x7f070001;
+		public static final int hello = 0x7f070000;
 	}
 	public static final class style {
-		public static final int Animations = 0x7f070000;
-		public static final int Animations_PopDownMenu = 0x7f070001;
-		public static final int Animations_PopDownMenu_Center = 0x7f070002;
-		public static final int Animations_PopDownMenu_Left = 0x7f070003;
-		public static final int Animations_PopDownMenu_Reflect = 0x7f070005;
-		public static final int Animations_PopDownMenu_Right = 0x7f070004;
-		public static final int Animations_PopUpMenu = 0x7f070006;
-		public static final int Animations_PopUpMenu_Center = 0x7f070007;
-		public static final int Animations_PopUpMenu_Left = 0x7f070008;
-		public static final int Animations_PopUpMenu_Reflect = 0x7f07000a;
-		public static final int Animations_PopUpMenu_Right = 0x7f070009;
+		public static final int Animations = 0x7f080000;
+		public static final int Animations_PopDownMenu = 0x7f080001;
+		public static final int Animations_PopDownMenu_Center = 0x7f080002;
+		public static final int Animations_PopDownMenu_Left = 0x7f080003;
+		public static final int Animations_PopDownMenu_Reflect = 0x7f080005;
+		public static final int Animations_PopDownMenu_Right = 0x7f080004;
+		public static final int Animations_PopUpMenu = 0x7f080006;
+		public static final int Animations_PopUpMenu_Center = 0x7f080007;
+		public static final int Animations_PopUpMenu_Left = 0x7f080008;
+		public static final int Animations_PopUpMenu_Reflect = 0x7f08000a;
+		public static final int Animations_PopUpMenu_Right = 0x7f080009;
 	}
 }

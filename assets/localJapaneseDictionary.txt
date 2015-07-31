@@ -20,7 +20,7 @@
 なあ~Particle; Emphasis marker. Expresses hope or want when placed after verb stem + たい; (fam) hey; say; look; used to get someone's attention or press one's point
 など~Particle; For example, things like, such as, etc., and so on. Functions as a noun and may be followed by no.
 なら~Particle; Translates to: "if"; conditional
-ね~Particle; Translates to: "rigth?", "isn't it?", "eh?"; hey; say; look; used to get someone's attention or press one's point
+ね~Particle; Translates to: "right?", "isn't it?", "eh?"; hey; say; look; used to get someone's attention or press one's point
 に~Particle; Functions as: pointer to the preceding indirect object, direction; Translates to: "to, in, at, by"; following a na-adjective, it creates an adverb.
 にて~Particle; Formal version of de, functions in exactly the same way, i.e. can be used as "at" or "by means of".
 には~Particle; For; in, to; in order to.
@@ -63,6 +63,6 @@
 あちら~; Over there. Can also be used to politely mean "they"~
 どこ~; Where.~
 だれ~; Who.~
-ある~;There is. There exists (for non-living things)
-いる~;There is. There exists (for living things)
-だ~;Casual form of です (linking verb at the end of the sentence which means is/are).
+ある~;There is. There exists (for non-living things)~
+いる~;There is. There exists (for living things)~
+だ~;Casual form of です (linking verb at the end of the sentence which means is/are).~
