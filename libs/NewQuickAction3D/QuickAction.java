@@ -248,7 +248,7 @@ public class QuickAction extends PopupWindows implements OnDismissListener {
 
 		//mRootView.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
 		
-		mRootView.measure(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
+		mRootView.measure(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
 	
 		int rootHeight 		= mRootView.getMeasuredHeight();
 		
@@ -259,27 +259,22 @@ public class QuickAction extends PopupWindows implements OnDismissListener {
 		int screenWidth 	= mWindowManager.getDefaultDisplay().getWidth();
 		int screenHeight	= mWindowManager.getDefaultDisplay().getHeight();
 		
-		
-		
-//		//automatically get X coord of popup (top left)
-//		if ((anchorRect.left + rootWidth) > screenWidth) {
-//			xPos 		= anchorRect.left - (rootWidth-anchor.getWidth());			
-//			xPos 		= (xPos < 0) ? 0 : xPos;
-//			
-//			arrowPos 	= anchorRect.centerX()-xPos;
-//			
-//		} else {
-//			if (anchor.getWidth() > rootWidth) {
-//				xPos = anchorRect.centerX() - (rootWidth/2);
-//			} else {
-//				xPos = anchorRect.left;
-//			}
-//			
-//			arrowPos = anchorRect.centerX()-xPos;
-//		}
-		
-		// this should align to the word
-		xPos = 0;
+		//automatically get X coord of popup (top left)
+		if ((anchorRect.left + rootWidth) > screenWidth) {
+			xPos 		= anchorRect.left - (rootWidth-anchor.getWidth());			
+			xPos 		= (xPos < 0) ? 0 : xPos;
+			
+			arrowPos 	= anchorRect.centerX()-xPos;
+			
+		} else {
+			if (anchor.getWidth() > rootWidth) {
+				xPos = anchorRect.centerX() - (rootWidth/2);
+			} else {
+				xPos = anchorRect.left;
+			}
+			
+			arrowPos = anchorRect.centerX()-xPos;
+		}
 		
 		//This part just checks how many pixels does one character take up then multiplies it to the offset
 		
@@ -289,26 +284,13 @@ public class QuickAction extends PopupWindows implements OnDismissListener {
 		int totalWidth = bounds.width();
 		textPaint.getTextBounds(textView.getText().toString(),offset,textView.getText().toString().length(),bounds);
 		int width = bounds.width();
-		
+		arrowPos = getLeft + totalWidth - width;
+		Log.i(Integer.toString(totalWidth)+" "+Integer.toString(width),Integer.toString(arrowPos)+"ARROWPOSBEEH");
 		
 		int dyTop			= anchorRect.top;
 		int dyBottom		= screenHeight - anchorRect.bottom;
 
 		boolean onTop		= (dyTop > dyBottom) ? true : false;
-		View arrow = (onTop) ? mArrowDown : mArrowUp;
-		
-		if (totalWidth-width==0)
-		{
-			arrowPos = getLeft + arrow.getMeasuredWidth()/2;  // need to adjust for the arrow width
-		}
-		else
-		{
-			arrowPos = getLeft + arrow.getMeasuredWidth()/2 + totalWidth - width;
-		}
-		
-		//Log.i(Integer.toString(totalWidth)+" "+Integer.toString(width),Integer.toString(arrowPos)+"ARROWPOSBEEH");
-		
-
 
 		if (onTop) {
 			if (rootHeight > dyTop) {
@@ -326,12 +308,6 @@ public class QuickAction extends PopupWindows implements OnDismissListener {
 				l.height		= dyBottom;
 			}
 		}
-		
-		Log.i("test", "xPos = "+xPos);		
-		Log.i("test", "yPos = "+yPos);		
-		Log.i("test", "arrowPos = "+arrowPos);
-		Log.i("test", "totalWidth = "+totalWidth);
-		Log.i("test", "width = "+width);
 		
 		showArrow(((onTop) ? R.id.arrow_down : R.id.arrow_up), arrowPos);
 		
@@ -433,10 +409,5 @@ public class QuickAction extends PopupWindows implements OnDismissListener {
 	 */
 	public interface OnDismissListener {
 		public abstract void onDismiss();
-	}
-	//added by Brent. July 18, 2015
-	public int size()
-	{
-		return actionItems.size();
 	}
 }

@@ -89,7 +89,7 @@ public class ExampleActivity extends Activity {
 		btn1.setOnClickListener(new View.OnClickListener() {
 			//@Override
 			public void onClick(View v) {
-				quickAction.show(v);
+				//quickAction.show(v);
 			}
 		});
 
@@ -97,7 +97,7 @@ public class ExampleActivity extends Activity {
 		btn2.setOnClickListener(new OnClickListener() {
 			//@Override
 			public void onClick(View v) {
-				quickAction.show(v);
+				//quickAction.show(v);
 			}
 		});
 		
@@ -105,7 +105,7 @@ public class ExampleActivity extends Activity {
 		btn3.setOnClickListener(new OnClickListener() {
 			//@Override
 			public void onClick(View v) {
-				quickAction.show(v);
+				//quickAction.show(v);
 				quickAction.setAnimStyle(QuickAction.ANIM_REFLECT);
 			}
 		});

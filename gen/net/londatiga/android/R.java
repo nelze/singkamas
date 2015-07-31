@@ -31,14 +31,14 @@ public final class R {
 		public static final int arrow_down = 0x7f020004;
 		public static final int arrow_up = 0x7f020005;
 		public static final int icon = 0x7f020023;
-		public static final int menu_cancel = 0x7f020037;
-		public static final int menu_down_arrow = 0x7f020038;
-		public static final int menu_eraser = 0x7f020039;
-		public static final int menu_info = 0x7f02003a;
-		public static final int menu_ok = 0x7f02003b;
-		public static final int menu_search = 0x7f02003c;
-		public static final int menu_up_arrow = 0x7f02003d;
-		public static final int popup = 0x7f020042;
+		public static final int menu_cancel = 0x7f02003b;
+		public static final int menu_down_arrow = 0x7f02003c;
+		public static final int menu_eraser = 0x7f02003d;
+		public static final int menu_info = 0x7f02003e;
+		public static final int menu_ok = 0x7f02003f;
+		public static final int menu_search = 0x7f020040;
+		public static final int menu_up_arrow = 0x7f020041;
+		public static final int popup = 0x7f020046;
 	}
 	public static final class id {
 		public static final int arrow_down = 0x7f0c001d;

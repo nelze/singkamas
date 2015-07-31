@@ -34,6 +34,10 @@ public class ActionItem {
         this.icon = icon;
         this.actionId = actionId;
     }
+    public ActionItem(String title)
+    {
+    	this.title = title;
+    }
     
     /**
      * Constructor

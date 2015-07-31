@@ -239,7 +239,7 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
     		    		
     			    }*/
     				}
-    				}catch(Exception e){System.out.println("huehuehuehueahaue "+e);}    			
+    				}catch(Exception e){e.printStackTrace();}    			
     				return true;
     				}
     			});
@@ -894,9 +894,9 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
 		   .setCancelable(false)
 		   .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
 		       public void onClick(DialogInterface dialog, int id) {
-			       	Intent intent = new Intent(MainActivity.this, SongSelection.class);
-			    	intent.putExtra("language", language);
-			    	startActivity(intent);
+			       	//Intent intent = new Intent(MainActivity.this, xSongSelection.class);
+			    	//intent.putExtra("language", language);
+			    	//startActivity(intent);
 			    	MainActivity.this.finish();
 		       }
 		   })

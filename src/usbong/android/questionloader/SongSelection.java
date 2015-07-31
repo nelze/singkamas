@@ -23,7 +23,9 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -89,8 +91,8 @@ public class SongSelection extends ListActivity {
 			
             list.addHeaderView(v);
         	list.setBackgroundColor(Color.parseColor("#FFFFFF")); //6f5c44 36342a
-        	list.setDividerHeight(1);
-        	list.setDivider(new ColorDrawable(0xFF613318));
+        	list.setDividerHeight(10);
+        	list.setDivider(new ColorDrawable(0x00613318));
             list.setOnItemClickListener(new OnItemClickListener() {
 
 				@Override
@@ -99,7 +101,6 @@ public class SongSelection extends ListActivity {
 					if(position!=0)
 					{
 						//arg1.setBackgroundColor(Color.parseColor("#4e4b3c"));
-						
 						// TODO Auto-generated method stub
 						TextView textPlaceHolder = (TextView) arg1.findViewById(R.id.textViewPlaceHolder);
 						//System.out.println(text.getText());
