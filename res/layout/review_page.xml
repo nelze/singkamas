@@ -2,21 +2,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity" 
-    android:background="#36342a">
-    
-    <Button
-        android:id="@+id/exitButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:textColor="#f6361d"
-        android:text="X"
-        android:background="#36342a"
-        android:textSize="20sp"
-        android:paddingLeft="8dp"
-        android:onClick="exitReviewPage"/>
+    android:background="#ffffff"
+    tools:context=".MainActivity" >
     
     <ImageView
         android:id="@+id/imageView1"
@@ -24,19 +11,17 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="30dp"
         android:contentDescription="imageView1"
          />
+
     <ImageView
         android:id="@+id/imageView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="40dp"
-        android:visibility="invisible"
         android:contentDescription="imageView2"
-         />
+        android:visibility="invisible" />
 
     <TextView
         android:id="@+id/textView1"
@@ -49,13 +34,24 @@
 
      <Button
         android:id="@+id/button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="196dp"
+        android:layout_height="43dp"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="20dp"
+        android:layout_marginBottom="15dp"
         android:visibility="invisible"
         android:onClick="buttonPressed"
         android:background="@drawable/review_katakana"        
-         />    
+         />
+
+     <Button
+         android:id="@+id/exitButton"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:layout_alignParentTop="true"
+         android:layout_toRightOf="@+id/button"
+         android:layout_marginLeft="25dp"
+         android:background="@drawable/exit_idle"
+         android:onClick="exitReviewPage" />
+    
 </RelativeLayout>

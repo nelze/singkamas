@@ -268,13 +268,13 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
     		youTubePlayerView.initialize(API_KEY, this);
         	if (difficulty.equalsIgnoreCase("easy"))
         	{
-        		questionDifficultyFinal = language.equalsIgnoreCase("japanese") ? parts[0].replace("　","").replace(" ", "").replace("\\", " "):parts[0];
+        		questionDifficultyFinal = language.equalsIgnoreCase("japanese")||language.equalsIgnoreCase("mandarin") ? parts[0].replace("　","").replace(" ", "").replace("\\", " "):parts[0];
         		questionDifficulty = language.equalsIgnoreCase("japanese")? "　"+parts[0].replace(" ", "　")+"　": parts[0];
-        		translate1 = language.equalsIgnoreCase("japanese") ? "　"+parts[1].replace(" ", "　")+"　":questionDifficulty;
+        		translate1 = language.equalsIgnoreCase("japanese")? "　"+parts[1].replace(" ", "　")+"　":questionDifficulty;
         	}
         	else
         	{
-        		questionDifficultyFinal =language.equalsIgnoreCase("japanese") ? parts[1].replace("　","").replace(" ", "").replace("\\", " "):parts[1];
+        		questionDifficultyFinal =language.equalsIgnoreCase("japanese")||language.equalsIgnoreCase("mandarin")  ? parts[1].replace("　","").replace(" ", "").replace("\\", " "):parts[1];
         		questionDifficulty = language.equalsIgnoreCase("japanese")?"　"+parts[1].replace(" ", "　")+"　":parts[1];
         		translate1 = questionDifficulty;
         	}
@@ -629,20 +629,26 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
     private void chineseExecute()
 	{
     	dictEntries.clear();
-		searchPrefix(translate1,"");
-		/*for(int i = 0; i < dictEntries.size(); i++)
-		{
-			for (int j = i+1; j < dictEntries.size();)
-			{
-				if (dictEntries.get(i).getWord().equals(dictEntries.get(j).getWord()))
-				{
-					System.out.println("removed"+dictEntries.get(j).getWord());
-					dictEntries.remove(j);
-				}
-				else
-					j++;
+		//searchPrefix(translate1,"");
+    	String[] parts = questionDifficulty.split(" ");
+    	for(String part:parts)
+    	{
+	    	String url = "http://moscpas.dyndns.biz/getDefinitionMandarin.php?word='"+part+"'";
+			String readUrlContentAsString;
+			try {
+				readUrlContentAsString = NetUtil.readUrlContentAsString(url);
+				ObjectMapper mapper = new ObjectMapper();
+				List<LinkedHashMap> map = mapper.readValue(readUrlContentAsString, List.class);
+				System.out.println("Chin here " + map.get(0).get("DEF").toString());
+				if (inQuestion(part, map.get(0).get("DEF").toString()))
+					System.out.println("added chin huehue"+part);
+			} 
+			//this means no definition
+			catch (Exception e) {
+				// TODO Auto-generated catch block
+				System.out.println("error: " + e);
 			}
-		}*/
+    	}
 	}
     private void searchPrefix(String word,String result)
 	{
@@ -827,13 +833,13 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
         	String[] parts = string.split("~"); //changed "-" to "~" by Mike, 2 June 2015
         	if (difficulty.equalsIgnoreCase("easy"))
         	{
-        		questionDifficultyFinal = language.equalsIgnoreCase("japanese") ? parts[0].replace("　","").replace(" ", "").replace("\\", " "):parts[0];
+        		questionDifficultyFinal = language.equalsIgnoreCase("japanese") ||language.equalsIgnoreCase("mandarin") ? parts[0].replace("　","").replace(" ", "").replace("\\", " "):parts[0];
         		questionDifficulty = language.equalsIgnoreCase("japanese")? "　"+parts[0].replace(" ", "　")+"　": parts[0];
         		translate1 = language.equalsIgnoreCase("japanese") ? "　"+parts[1].replace(" ", "　")+"　":questionDifficulty;
         	}
         	else
         	{
-        		questionDifficultyFinal =language.equalsIgnoreCase("japanese") ? parts[1].replace("　","").replace(" ", "").replace("\\", " "):parts[1];
+        		questionDifficultyFinal =language.equalsIgnoreCase("japanese")||language.equalsIgnoreCase("mandarin") ? parts[1].replace("　","").replace(" ", "").replace("\\", " "):parts[1];
         		questionDifficulty = language.equalsIgnoreCase("japanese")?"　"+parts[1].replace(" ", "　")+"　":parts[1];
         		translate1 = questionDifficulty;
         	}
