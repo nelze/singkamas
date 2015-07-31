@@ -376,13 +376,9 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
         		japExecute();
         	else if (language.equalsIgnoreCase("mandarin"))
         	{
-        		//if(addedDict)
-        			chineseExecute();
-        		//else
-        		//{
-        		//	addChineseDictionary();
-        			//chineseExecute();
-        		//}
+        		if(!addedDict)
+        			addChineseDictionary();
+        		chineseExecute();
         	}
         	else if(language.equalsIgnoreCase("korean"))
 				try {
@@ -478,6 +474,8 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
     			String wholeWord = "";
     			if(questionDifficulty.indexOf("　",questionDifficulty.indexOf(query))!=-1)
     				wholeWord = questionDifficulty.substring(questionDifficulty.indexOf(query),questionDifficulty.indexOf("　",questionDifficulty.indexOf(query)));
+    			else if(questionDifficulty.indexOf(" ",questionDifficulty.indexOf(query))!=-1)
+    				wholeWord = questionDifficulty.substring(questionDifficulty.indexOf(query),questionDifficulty.indexOf(" ",questionDifficulty.indexOf(query)));
     			else
     				wholeWord = questionDifficulty.substring(questionDifficulty.indexOf(query),questionDifficulty.indexOf(query)+query.length());
     			dictEntries.add(new DictionaryEntry(wholeWord,def,position,position+wholeWord.length()));
@@ -633,21 +631,23 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
     	String[] parts = questionDifficulty.split(" ");
     	for(String part:parts)
     	{
-	    	String url = "http://moscpas.dyndns.biz/getDefinitionMandarin.php?word='"+part+"'";
-			String readUrlContentAsString;
-			try {
-				readUrlContentAsString = NetUtil.readUrlContentAsString(url);
-				ObjectMapper mapper = new ObjectMapper();
-				List<LinkedHashMap> map = mapper.readValue(readUrlContentAsString, List.class);
-				System.out.println("Chin here " + map.get(0).get("DEF").toString());
-				if (inQuestion(part, map.get(0).get("DEF").toString()))
-					System.out.println("added chin huehue"+part);
-			} 
-			//this means no definition
-			catch (Exception e) {
-				// TODO Auto-generated catch block
-				System.out.println("error: " + e);
-			}
+    		for(String dict:chinDict)
+    		{
+    			if(!dict.contains("#"))
+    			{
+    			String splitDict[] = dict.split(" ");
+    			//To show traditional and simplified versions of the character
+    			int index = difficulty.equalsIgnoreCase("easy") ? 1 : 0;
+    			if(part.equals(splitDict[index]))
+    			{
+    				int opposite = difficulty.equalsIgnoreCase("easy") ? 0 : 1;
+    				String diff = difficulty.equalsIgnoreCase("easy") ? "\nTraditional: " : "\nSimplified: ";
+    				String s = splitDict[index]+diff+splitDict[opposite]+"\n"+dict.substring(dict.indexOf(splitDict[2]),dict.length());
+    				if(inQuestion(splitDict[index],s))
+    					Log.i(dict,"DIIIIIIIIIIIICCCTT ADDED");
+    			}
+    			}
+    		}
     	}
 	}
     private void searchPrefix(String word,String result)
