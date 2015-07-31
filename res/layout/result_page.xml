@@ -2,75 +2,76 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity" 
-    android:background="#36342a">
-    
-    <Button
-        android:id="@+id/exitButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:textColor="#f6361d"
-        android:text="X"
-        android:background="#36342a"
-        android:textSize="20sp"
-        android:paddingLeft="8dp"
-        android:onClick="exitResultPage"/>    
-    
+    android:background="@drawable/results_bg"
+    tools:context=".MainActivity" >
+
     <TextView
         android:id="@+id/textView1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
+        android:layout_below="@+id/exitButton"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="81dp"
-        android:textSize="24sp"        
+        android:layout_marginTop="16dp"
         android:text="Congratulations!"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColor="#000000"
+        android:textColorHint="#000000"
+        android:textSize="24sp" />
+
+    <Button
+        android:id="@+id/button2"
+        android:layout_width="240dp"
+        android:layout_height="46dp"
+        android:layout_above="@+id/button1"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="14dp"
+        android:background="@drawable/back_selector"
+        android:onClick="back" />
+
+    <Button
+        android:id="@+id/button1"
+        android:layout_width="240dp"
+        android:layout_height="46dp"
+        android:layout_alignLeft="@+id/button2"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="30dp"
+        android:background="@drawable/send_feedback"
+        android:onClick="sendFeedback" />
+
+    <Button
+        android:id="@+id/exitButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_toRightOf="@+id/button1"
+        android:background="@drawable/exit_idle"
+        android:onClick="exitResultPage"
+        android:paddingLeft="8dp"
+        android:textColor="#f6361d"
+        android:textSize="20sp" />
 
     <TextView
         android:id="@+id/numScore"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/textView1"
         android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:textSize="48sp"
+        android:layout_marginTop="15dp"
         android:text="Large Text"
-        android:textColor="#92d050"        
-        android:textAppearance="?android:attr/textAppearanceLarge" />
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColor="#92d050"
+        android:textSize="48sp" />
 
     <TextView
         android:id="@+id/score"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/textView1"
+        android:layout_below="@+id/numScore"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="30dp"
-        android:textSize="48sp"
+        android:layout_marginTop="15dp"
         android:text="Score"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
-
-    <Button
-        android:id="@+id/button1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"        
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="72dp"
-        android:layout_marginTop="8dp"        
-        android:onClick="sendFeedback"
-        android:background="@drawable/send_feedback"
-         />
-    
-    <Button
-        android:id="@+id/button2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/button1"        
-        android:layout_centerHorizontal="true"
-        android:onClick="back"
-        android:background="@drawable/back_selector"
-         />
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColor="#000000"
+        android:textSize="40sp" />
     
 </RelativeLayout>

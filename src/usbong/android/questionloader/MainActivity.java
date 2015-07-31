@@ -474,7 +474,7 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
     			String wholeWord = "";
     			if(questionDifficulty.indexOf("　",questionDifficulty.indexOf(query))!=-1)
     				wholeWord = questionDifficulty.substring(questionDifficulty.indexOf(query),questionDifficulty.indexOf("　",questionDifficulty.indexOf(query)));
-    			else if(questionDifficulty.indexOf(" ",questionDifficulty.indexOf(query))!=-1)
+    			else if(questionDifficulty.indexOf(" ",questionDifficulty.indexOf(query))!=-1&&language.equalsIgnoreCase("mandarin"))
     				wholeWord = questionDifficulty.substring(questionDifficulty.indexOf(query),questionDifficulty.indexOf(" ",questionDifficulty.indexOf(query)));
     			else
     				wholeWord = questionDifficulty.substring(questionDifficulty.indexOf(query),questionDifficulty.indexOf(query)+query.length());
