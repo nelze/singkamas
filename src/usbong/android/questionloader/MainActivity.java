@@ -27,8 +27,11 @@ import usbong.android.utils.UsbongUtils;
 import android.annotation.SuppressLint;
 import android.app.ActionBar;
 import android.app.AlertDialog;
+import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Point;
@@ -64,6 +67,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
+import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 import android.widget.TextView.BufferType;
 import android.widget.Toast;
@@ -117,6 +121,8 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
 	String difficulty;
 	boolean correct = true;
 	String songname;
+	String selection;
+	String[] selectionArgs;
 	double score;
 	double total;
 	String link;
@@ -130,12 +136,23 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
 	List<VideoItem> searchResults;
 	double accuracy; //added by Mike, 27 March 2015
     YouTubePlayer player;
+    
+    private ChineseDBAdapter dbHelper;
+	private SimpleCursorAdapter dataAdapter;
 	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         	Bundle bundle = getIntent().getExtras();
+        	try{
+        	dbHelper = new ChineseDBAdapter(this);
+    		dbHelper.open();}
+        	catch (Exception e)
+        	{
+        		Log.i("0","Opening error " + e);
+        	}
+    		
         	difficulty = bundle.getString("difficulty");
         	songname = bundle.getString("song_title");
         	language = bundle.getString("language");
@@ -376,8 +393,8 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
         		japExecute();
         	else if (language.equalsIgnoreCase("mandarin"))
         	{
-        		if(!addedDict)
-        			addChineseDictionary();
+        		//if(!addedDict)
+        			//addChineseDictionary();
         		chineseExecute();
         	}
         	else if(language.equalsIgnoreCase("korean"))
@@ -631,7 +648,8 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
     	String[] parts = questionDifficulty.split(" ");
     	for(String part:parts)
     	{
-    		for(String dict:chinDict)
+    		dictContains(part);
+    		/*for(String dict:chinDict)
     		{
     			if(!dict.contains("#"))
     			{
@@ -647,7 +665,7 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
     					Log.i(dict,"DIIIIIIIIIIIICCCTT ADDED");
     			}
     			}
-    		}
+    		}*/
     	}
 	}
     private void searchPrefix(String word,String result)
@@ -669,15 +687,44 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
 	}
 	private boolean dictContains(String word)
 	{
+		System.out.println("Entering dictcontains");
 		String url = "http://moscpas.dyndns.biz/getDefinitionMandarin.php?word='" + word+"'";
 		String readUrlContentAsString;
 		try {
-			readUrlContentAsString = NetUtil.readUrlContentAsString(url);
-			ObjectMapper mapper = new ObjectMapper();
-			List<LinkedHashMap> map = mapper.readValue(readUrlContentAsString, List.class);
-			System.out.println("Korean here " + map.get(0).get("DEF").toString());
-			if (inQuestion(word, map.get(0).get("DEF").toString()))
-				return true;
+			
+			Cursor cursor = dbHelper.fetchDefByWord(word);
+			System.out.println("Step 1");
+	        if(cursor!=null && cursor.getCount()==0){//this means not yet in cache so get it then save it to local db
+	            System.out.println("cursor is null");
+	            readUrlContentAsString = NetUtil.readUrlContentAsString(url);
+				ObjectMapper mapper = new ObjectMapper();
+				List<LinkedHashMap> map = mapper.readValue(readUrlContentAsString, List.class);
+				System.out.println("Korean here " + map.get(0).get("DEF").toString());
+				if (inQuestion(word, map.get(0).get("DEF").toString())) //save it to local
+				{
+					dbHelper.createEntry( word, map.get(0).get("DEF").toString());
+					System.out.println("Entry created");
+					cursor.close();
+					return true;
+				}
+	        }
+	        else //this means cursor has a value
+	        {
+	        	System.out.println("Cursor is not empty");
+	        	if  (cursor.moveToFirst()) {
+	                do {
+	                String dir = cursor.getString(cursor.getColumnIndex("def"));
+	                	if (inQuestion(word, dir))
+	                	{
+	                		cursor.close();
+	                		return true;
+	                	}
+	                }while (cursor.moveToNext());
+	          }
+	        }
+	    cursor.close();
+	    return true;
+			
 		} 
 		//this means no definition
 		catch (Exception e) {
