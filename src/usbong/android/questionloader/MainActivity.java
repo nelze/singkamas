@@ -268,13 +268,13 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
     		youTubePlayerView.initialize(API_KEY, this);
         	if (difficulty.equalsIgnoreCase("easy"))
         	{
-        		questionDifficultyFinal = language.equalsIgnoreCase("japanese") ? parts[0].replace("　","").replace(" ", "").replace("\\", " "):parts[0];
+        		questionDifficultyFinal = language.equalsIgnoreCase("japanese")||language.equalsIgnoreCase("mandarin") ? parts[0].replace("　","").replace(" ", "").replace("\\", " "):parts[0];
         		questionDifficulty = language.equalsIgnoreCase("japanese")? "　"+parts[0].replace(" ", "　")+"　": parts[0];
-        		translate1 = language.equalsIgnoreCase("japanese") ? "　"+parts[1].replace(" ", "　")+"　":questionDifficulty;
+        		translate1 = language.equalsIgnoreCase("japanese")? "　"+parts[1].replace(" ", "　")+"　":questionDifficulty;
         	}
         	else
         	{
-        		questionDifficultyFinal =language.equalsIgnoreCase("japanese") ? parts[1].replace("　","").replace(" ", "").replace("\\", " "):parts[1];
+        		questionDifficultyFinal =language.equalsIgnoreCase("japanese")||language.equalsIgnoreCase("mandarin")  ? parts[1].replace("　","").replace(" ", "").replace("\\", " "):parts[1];
         		questionDifficulty = language.equalsIgnoreCase("japanese")?"　"+parts[1].replace(" ", "　")+"　":parts[1];
         		translate1 = questionDifficulty;
         	}
@@ -376,13 +376,9 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
         		japExecute();
         	else if (language.equalsIgnoreCase("mandarin"))
         	{
-        		//if(addedDict)
-        			chineseExecute();
-        		//else
-        		//{
-        		//	addChineseDictionary();
-        			//chineseExecute();
-        		//}
+        		if(!addedDict)
+        			addChineseDictionary();
+        		chineseExecute();
         	}
         	else if(language.equalsIgnoreCase("korean"))
 				try {
@@ -478,6 +474,8 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
     			String wholeWord = "";
     			if(questionDifficulty.indexOf("　",questionDifficulty.indexOf(query))!=-1)
     				wholeWord = questionDifficulty.substring(questionDifficulty.indexOf(query),questionDifficulty.indexOf("　",questionDifficulty.indexOf(query)));
+    			else if(questionDifficulty.indexOf(" ",questionDifficulty.indexOf(query))!=-1&&language.equalsIgnoreCase("mandarin"))
+    				wholeWord = questionDifficulty.substring(questionDifficulty.indexOf(query),questionDifficulty.indexOf(" ",questionDifficulty.indexOf(query)));
     			else
     				wholeWord = questionDifficulty.substring(questionDifficulty.indexOf(query),questionDifficulty.indexOf(query)+query.length());
     			dictEntries.add(new DictionaryEntry(wholeWord,def,position,position+wholeWord.length()));
@@ -629,20 +627,28 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
     private void chineseExecute()
 	{
     	dictEntries.clear();
-		searchPrefix(translate1,"");
-		/*for(int i = 0; i < dictEntries.size(); i++)
-		{
-			for (int j = i+1; j < dictEntries.size();)
-			{
-				if (dictEntries.get(i).getWord().equals(dictEntries.get(j).getWord()))
-				{
-					System.out.println("removed"+dictEntries.get(j).getWord());
-					dictEntries.remove(j);
-				}
-				else
-					j++;
-			}
-		}*/
+		//searchPrefix(translate1,"");
+    	String[] parts = questionDifficulty.split(" ");
+    	for(String part:parts)
+    	{
+    		for(String dict:chinDict)
+    		{
+    			if(!dict.contains("#"))
+    			{
+    			String splitDict[] = dict.split(" ");
+    			//To show traditional and simplified versions of the character
+    			int index = difficulty.equalsIgnoreCase("easy") ? 1 : 0;
+    			if(part.equals(splitDict[index]))
+    			{
+    				int opposite = difficulty.equalsIgnoreCase("easy") ? 0 : 1;
+    				String diff = difficulty.equalsIgnoreCase("easy") ? "\nTraditional: " : "\nSimplified: ";
+    				String s = splitDict[index]+diff+splitDict[opposite]+"\n"+dict.substring(dict.indexOf(splitDict[2]),dict.length());
+    				if(inQuestion(splitDict[index],s))
+    					Log.i(dict,"DIIIIIIIIIIIICCCTT ADDED");
+    			}
+    			}
+    		}
+    	}
 	}
     private void searchPrefix(String word,String result)
 	{
@@ -827,13 +833,13 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
         	String[] parts = string.split("~"); //changed "-" to "~" by Mike, 2 June 2015
         	if (difficulty.equalsIgnoreCase("easy"))
         	{
-        		questionDifficultyFinal = language.equalsIgnoreCase("japanese") ? parts[0].replace("　","").replace(" ", "").replace("\\", " "):parts[0];
+        		questionDifficultyFinal = language.equalsIgnoreCase("japanese") ||language.equalsIgnoreCase("mandarin") ? parts[0].replace("　","").replace(" ", "").replace("\\", " "):parts[0];
         		questionDifficulty = language.equalsIgnoreCase("japanese")? "　"+parts[0].replace(" ", "　")+"　": parts[0];
         		translate1 = language.equalsIgnoreCase("japanese") ? "　"+parts[1].replace(" ", "　")+"　":questionDifficulty;
         	}
         	else
         	{
-        		questionDifficultyFinal =language.equalsIgnoreCase("japanese") ? parts[1].replace("　","").replace(" ", "").replace("\\", " "):parts[1];
+        		questionDifficultyFinal =language.equalsIgnoreCase("japanese")||language.equalsIgnoreCase("mandarin") ? parts[1].replace("　","").replace(" ", "").replace("\\", " "):parts[1];
         		questionDifficulty = language.equalsIgnoreCase("japanese")?"　"+parts[1].replace(" ", "　")+"　":parts[1];
         		translate1 = questionDifficulty;
         	}
