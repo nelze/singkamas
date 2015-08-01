@@ -73,7 +73,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/exitButton"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="20dp"
         android:text="SELECT CHALLENGE"
         android:textColor="#99ca3d"
         android:textSize="28sp" />

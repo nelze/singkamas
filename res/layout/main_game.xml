@@ -55,9 +55,10 @@
         android:id="@+id/button1"
         android:layout_width="160dp"
         android:layout_height="54dp"
-        android:layout_above="@+id/button5"
+        android:layout_below="@+id/button2"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="7dp"
+        android:layout_marginTop="275dp"
         android:background="@drawable/start_selector"
         android:onClick="startRecord"/>
 
@@ -65,7 +66,7 @@
         android:id="@+id/button5"
         android:layout_width="160dp"
         android:layout_height="54dp"
-        android:layout_above="@+id/button4"
+        android:layout_below="@+id/button1"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="7dp"
         android:background="@drawable/languagebutton_idle" />
@@ -74,7 +75,7 @@
         android:id="@+id/button4"
         android:layout_width="160dp"
         android:layout_height="54dp"
-        android:layout_above="@+id/textView1"
+        android:layout_below="@+id/button5"
         android:layout_centerHorizontal="true"
         android:background="@drawable/reviewbutton_default"
         android:onClick="review"

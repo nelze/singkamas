@@ -125,8 +125,8 @@ public class ReviewPage extends Activity {
 		   .setCancelable(false)
 		   .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
 		       public void onClick(DialogInterface dialog, int id) {
-			       	Intent intent = new Intent(ReviewPage.this, MainMenuActivity.class);
-			    	startActivity(intent);
+			       	//Intent intent = new Intent(ReviewPage.this, MainMenuActivity.class);
+			    	//startActivity(intent);
 			    	ReviewPage.this.finish();
 		       }
 		   })
