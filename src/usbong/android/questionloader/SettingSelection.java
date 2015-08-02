@@ -115,7 +115,7 @@ public class SettingSelection extends Activity {
     {
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		builder.setTitle("Exiting...");
-		builder.setMessage("Are you sure you want to return to Main Menu?")
+		builder.setMessage("Are you sure you want to return to Song Selection?")
 
 		   .setCancelable(false)
 		   .setPositiveButton("Yes", new DialogInterface.OnClickListener() {

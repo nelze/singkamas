@@ -11,13 +11,12 @@
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
+        android:layout_marginRight="15dp"
+        android:layout_marginTop="5dp"
         android:background="@drawable/exit_idle"
         android:onClick="exitSettingSelection"
-        android:paddingLeft="8dp"
         android:textColor="#f6361d"
         android:textSize="20sp"
-        android:layout_marginTop="5dp"
-          android:layout_marginRight="15dp"
          />
 
     <Button

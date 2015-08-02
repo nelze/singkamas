@@ -91,8 +91,8 @@ public class SongSelection extends ListActivity {
 			
             list.addHeaderView(v);
         	list.setBackgroundColor(Color.parseColor("#FFFFFF")); //6f5c44 36342a
-        	list.setDividerHeight(10);
-        	list.setDivider(new ColorDrawable(0x00613318));
+        	//list.setDividerHeight(10);
+        	//list.setDivider(new ColorDrawable(0x00613318));
             list.setOnItemClickListener(new OnItemClickListener() {
 
 				@Override
