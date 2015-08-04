@@ -918,8 +918,10 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
     		Intent i = new Intent(getApplicationContext(), ResultPage.class);
     		i.putExtra("score", totalScore);
     		i.putExtra("language", language);
+    		dbHelper.close();
     		startActivity(i);
     		MainActivity.this.finish();
+    		
     		//Switch to scoreboard
     	}
     	
@@ -1115,6 +1117,13 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
 		return sb.toString();
     	
     }
+    
+    @Override
+    public void finish()
+	{
+		dbHelper.close();
+		super.finish();
+	}
     public static String postFormDataToUrl(String url, String data) throws Exception
 	{
 		InputStream is = null;
