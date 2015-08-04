@@ -139,9 +139,9 @@ public class ResultPage extends Activity {
     
     public void back(View view)
     {    	
-    	Intent intent = new Intent(ResultPage.this, SongSelection.class);
-    	intent.putExtra("language", language);
-    	startActivity(intent);
+    	//Intent intent = new Intent(ResultPage.this, SongSelection.class);
+    	//intent.putExtra("language", language);
+    	//startActivity(intent);
     	ResultPage.this.finish();
     }
     

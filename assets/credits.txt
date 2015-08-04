@@ -9,7 +9,7 @@ Brent Carl W. Anonas
 
 --QA Engineer--
 Juaneo Fernando
-
+Jaime D. Lopez
 --Graphic Artists--
 Angela Escudero
 Juaneo Fernando
@@ -21,7 +21,11 @@ Nikko A. Nolasco
 Jaime D. Lopez
 Brent Carl W. Anonas
 
---Acknowledgment--
+--Contributors--
+Billy Ken B. Poon
+Chaleen Avery I. Bautista
+
+--Acknowledgments--
 Pop-Up by Lorensius Londa: http://www.londatiga.net/it/how-to-create-quickaction-dialog-in-android/
 
 Instrument Vectors from http://www.freepik.com/free-vector/musical-instruments_766763.htm#term=instruments&page=1&position=3
