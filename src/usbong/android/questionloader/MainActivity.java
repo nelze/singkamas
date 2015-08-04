@@ -5,7 +5,6 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.net.ConnectException;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
@@ -108,6 +107,7 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
 	String translate1;
 	String questionDifficultyFinal;
     Handler handler;
+    String koreanwithspace;
 	EditText input_ans;
 	int questionCounter = 0;
 	QuestionManager qm;
@@ -280,6 +280,7 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
         	link = newQues.getLink();
         	String string = newQues.getQuestionText();
         	String[] parts = string.split("~"); //changed "-" to "~" by Mike, 2 June 2015
+        	koreanwithspace = parts[0];
         	youTubePlayerView = (YouTubePlayerView) findViewById(R.id.youtube_player);
     		youTubePlayerView.initialize(API_KEY, this);
         	if (difficulty.equalsIgnoreCase("easy"))
@@ -454,6 +455,7 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
      */
     private boolean inQuestion(String query,String def,int color)
     {
+    	Log.i("query"+query+"huehue",def);
     	if(questionDifficulty.contains(query))
 		{
     		int position = questionDifficulty.indexOf(query);
@@ -481,6 +483,7 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
     	if(questionDifficulty.contains(query))
 		{
     		int position = questionDifficultyFinal.indexOf(query);
+    		System.out.println(position+"positioooooooooooooon");
     		while(position!=-1)
     		{
     			Log.i(query,"added huehuehuheuue");
@@ -488,7 +491,7 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
     			String wholeWord = "";
     			if(questionDifficulty.indexOf("　",questionDifficulty.indexOf(query))!=-1)
     				wholeWord = questionDifficulty.substring(questionDifficulty.indexOf(query),questionDifficulty.indexOf("　",questionDifficulty.indexOf(query)));
-    			else if(questionDifficulty.indexOf(" ",questionDifficulty.indexOf(query))!=-1&&language.equalsIgnoreCase("mandarin"))
+    			else if(questionDifficulty.indexOf(" ",questionDifficulty.indexOf(query))!=-1&&(language.equalsIgnoreCase("mandarin")||language.equalsIgnoreCase("korean")))
     				wholeWord = questionDifficulty.substring(questionDifficulty.indexOf(query),questionDifficulty.indexOf(" ",questionDifficulty.indexOf(query)));
     			else
     				wholeWord = questionDifficulty.substring(questionDifficulty.indexOf(query),questionDifficulty.indexOf(query)+query.length());
@@ -505,17 +508,17 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
 			BufferedReader br = null;
 			if(language.equalsIgnoreCase("japanese"))
 				br = new BufferedReader(new InputStreamReader(getResources().getAssets().open("localJapaneseDictionary.txt")));
-			else if(language.equalsIgnoreCase("korean"))
+			else
 				br = new BufferedReader(new InputStreamReader(getResources().getAssets().open("localKoreanDictionary.txt")));
 			String line;
 			while((line = br.readLine())!=null)
 			{
 				String[] parts = line.split("~");
 				int color = line.length()-line.replace("~","").length()==2 ? -1 : 0xFFd37627;
-				if(inQuestion("　"+parts[0]+"　",parts[1],color)&&language.equalsIgnoreCase("japanese"))
-		    		System.out.println("added"+parts[0]);
-				else if(inQuestion("　"+parts[0]+"　",parts[1])&&language.equalsIgnoreCase("korean"))
-					System.out.println("added"+parts[0]);
+				if (language.equalsIgnoreCase("japanese"))
+					inQuestion("　"+parts[0]+"　",parts[1],color);
+				else
+					inQuestion(parts[0],parts[1]);
 			}
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
@@ -637,8 +640,7 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
 		            }
 		            System.out.println("parts"+parts[1]);
 				}
-    	}catch(Exception e){System.out.println("THE PROBLEEEM "+e);
-    	Toast.makeText(getApplicationContext(), "Error in generating all definitions. Turn on internet and restart game proper to access all definitions and full dictionary feature.", Toast.LENGTH_LONG).show();}
+    	}catch(Exception e){System.out.println("THE PROBLEEEM "+e);}
     }
     /**
      * chineseExecute uses dynamic programming. If it were to be put in the server side of the code, 
@@ -732,9 +734,9 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
 		//this means no definition
 		catch (Exception e) {
 			// TODO Auto-generated catch block
-			Toast.makeText(getApplicationContext(), "Error in generating definitions. For the case of Mandarin,user must first connect to the internet to add definitions of the words in the line to the local database. Please connect to the internet, then restart game proper.", Toast.LENGTH_LONG).show();
-			
+			System.out.println("error: " + e);
 		}
+		
 		/*for(String dict:chinDict)
 		{
 			if(!dict.contains("#"))
@@ -786,8 +788,6 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
 			catch (Exception e) {
 				// TODO Auto-generated catch block
 				System.out.println("error: " + e);
-
-		    	Toast.makeText(getApplicationContext(), "Error in generating all definitions. Turn on internet and restart game proper to access all definitions and full dictionary feature.", Toast.LENGTH_LONG).show();
 			}
 		}
 	}
@@ -924,8 +924,10 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
     		Intent i = new Intent(getApplicationContext(), ResultPage.class);
     		i.putExtra("score", totalScore);
     		i.putExtra("language", language);
+    		dbHelper.close();
     		startActivity(i);
     		MainActivity.this.finish();
+    		
     		//Switch to scoreboard
     	}
     	
@@ -975,7 +977,7 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
     {
     	user_answer = input_ans.getText().toString();
     	//edited by Mike, 27 March 2015
-    	double temp_accuracy = compareAnswer(user_answer.toLowerCase().replaceAll("\\s+",""),newQues.getCorrectAnswer().toLowerCase().replaceAll("\\s+",""));
+    	double temp_accuracy = compareAnswer(user_answer.replaceAll("\\s+",""),newQues.getCorrectAnswer().replaceAll("\\s+",""));
     	System.out.println(">>>temp_accuracy: "+temp_accuracy);
 
 //    	score += Math.round(temp_accuracy);
@@ -1121,6 +1123,13 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
 		return sb.toString();
     	
     }
+    
+    @Override
+    public void finish()
+	{
+		dbHelper.close();
+		super.finish();
+	}
     public static String postFormDataToUrl(String url, String data) throws Exception
 	{
 		InputStream is = null;
