@@ -89,6 +89,7 @@ public class SettingSelection extends Activity {
     {
     	
     	Intent intent = new Intent(SettingSelection.this, MainActivity.class);
+    	//Intent intent = new Intent(SettingSelection.this, LoadingScreen.class);
     	intent.putExtra("difficulty", "easy");
     	intent.putExtra("song_title", songname);
     	intent.putExtra("language", language);
@@ -99,6 +100,7 @@ public class SettingSelection extends Activity {
     public void medium(View view)
     {
     	Intent intent = new Intent(SettingSelection.this, MainActivity.class);
+    	//Intent intent = new Intent(SettingSelection.this, LoadingScreen.class);
     	intent.putExtra("difficulty", "medium");
     	intent.putExtra("song_title", songname);
     	intent.putExtra("language", language);
@@ -118,8 +120,8 @@ public class SettingSelection extends Activity {
 		   .setCancelable(false)
 		   .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
 		       public void onClick(DialogInterface dialog, int id) {
-			       	Intent intent = new Intent(SettingSelection.this, MainMenuActivity.class);
-			    	startActivity(intent);
+			       	//Intent intent = new Intent(SettingSelection.this, MainMenuActivity.class);
+			    	//startActivity(intent);
 			    	SettingSelection.this.finish();
 		       }
 		   })
@@ -132,4 +134,12 @@ public class SettingSelection extends Activity {
 		alert.show();
     }
 
+    public void loadingScreen(View view)
+	{
+   		Intent intent = new Intent(SettingSelection.this,LoadingScreen.class);
+   		intent.putExtra("difficulty", "medium");
+       	intent.putExtra("song_title", songname);
+       	intent.putExtra("language", language);
+       	startActivity(intent);
+	}
 }

@@ -1,0 +1,68 @@
+の~Particle; Functions as: possession indicator, noun link, topic marker (subordinate clauses), nominalization. (at sentence-end, falling tone) Indicates a confident conclusion (often ん); (fem) (at sentence-end) indicates emotional emphasis; (at sentence-end, rising tone) indicates question.
+だけ~Particle; Translates to: "only"; limit. だけ　functions as a noun.
+で~Particle; Can be used as "at" or "by means of". When serving as the continuative で form of a subordinate clause.
+でも~Particle; Even; or; but, however.
+へ~Particle; to, in; direction.
+が~Particle; Identifier (identifies something unspecified), conjunction ("but").
+まで~Particle; Up to, until, as far as; Indicates a time or place as a limit.
+か~Particle; Functions as: question denominator, alternative item conjunction, quotation expressing doubt; "whether", especially when used with どうか ("or not").
+かい~Particle; A gentler and masculine variant of the question marker か.
+かな~Particle; I wonder.
+から~Particle; From, after, because; may be followed by の to link two nouns."
+けど~Particle; Although, but.
+きり~Particle; Just, only
+ころ~Particle; Around, about, approximately
+こそ~Particle; Emphasis marker; roughly analogous to "precisely" or "exactly".
+も~Particle; Also.
+もの~Particle; Verb + もの (物) : creates a noun from the verb (only applies to certain verbs).
+もん~Particle; Verb + もん (物) : creates a noun from the verb (only applies to certain verbs).
+な~Particle;  Used with a class of adjectives which behave grammatically like nouns.  If na follows a dictionary form verb, it is a negative command ("Don't... "). However, if used with a verb stem, it implies the opposite: "Do...". It is also used to modify general nouns before other particles which cannot directly follow nouns (e.g. no de).
+なあ~Particle; Emphasis marker. Expresses hope or want when placed after verb stem + たい; (fam) hey; say; look; used to get someone's attention or press one's point
+など~Particle; For example, things like, such as, etc., and so on. Functions as a noun and may be followed by no.
+なら~Particle; Translates to: "if"; conditional
+ね~Particle; Translates to: "right?", "isn't it?", "eh?"; hey; say; look; used to get someone's attention or press one's point
+に~Particle; Functions as: pointer to the preceding indirect object, direction; Translates to: "to, in, at, by"; following a na-adjective, it creates an adverb.
+にて~Particle; Formal version of de, functions in exactly the same way, i.e. can be used as "at" or "by means of".
+には~Particle; For; in, to; in order to.
+ので~Particle;　Because; Colloquially, no de is often shortened to んで.
+のみ~Particle; Only, just.
+のに~Particle; Despite, although, even though; would have; in order to.
+を~Particle; Functions as: pointer to the preceding direct object.
+さ~Particle;  Masculine sentence/phrase final particle, indicating explanation of obvious facts. It is softer than よ.
+さあ~Particle; I don't know, I have no clue; 
+さえ~Particle; Even, also; Note the meaning overlaps with も. When followed by a verb and ば・ら, it means "if only". For example, "これさえのめば。。。" translates to "if you would just drink this..."
+し~Particle; "and what's more"(conjunction).
+しか~Particle; Only, just. The verb must be in the negative form.
+すら~Particle; Even.
+と~Particle; "And" (conjunction); "with" or "as with" (preposition); "when"; quotation.
+とか~Particle; Functions as: A listing particle used like nado. Can be used with the question word nani (what) in the form nantoka ("something or other").
+とも~Particle; Tomo (共): "both, all of the".
+は~Particle; A topic marker. Not to be confused with the particle が.
+わ~Particle; Used at the end of the sentence to establish an emotional connection. This also conveys a certain deference to the speaker's wishes and emotions. Predominantly used by females, except in the Kansai region, where guys also use at the end of a sentence わ to mean よ.
+や~Particle; Used to make incomplete lists of things (usually nouns). To make an exhaustive list, the particle　と is used instead.
+やら~Particle; Denotes either uncertainty or listing.
+よ~Particle; Comes at the end of the sentence, and is used to make assertions. Can be thought of as an exclamation point.
+より~Particle; Can mean "from", and is also used to make comparisons.
+ぜ~Particle; Indicates assertion, like よ, but stronger. Used mostly by men, it is never considered polite.
+ぞ~Particle;　Indicates assertion, like よ, but stronger.. Used mainly by men, it is considered somewhat less forceful and more positive than ぜ.
+ずつ~Particle; Denotes an equal or gradual distribution of quantity like "at a time" in "one at a time", "by" in "one by one", or "each" in "one each". It usually follows counted nouns.
+これ~; This.~
+それ~; That.~
+あれ~; That one (over there).~
+どれ~; Which one.~
+あの~; That... (over there) followed by a noun.~
+その~; That... followed by a noun.~
+この~; This... followed by a noun.~
+どの~; Which... followed by a noun.~
+ここ~; Here.~
+そこ~; There.~
+あそこ~; Over there.~
+どこ~; Where.~
+こちら~; Here. Can also be used to politely mean "I"~
+そちら~; There. Can also be used to politely mean "you"~
+あちら~; Over there. Can also be used to politely mean "they"~
+どこ~; Where.~
+だれ~; Who.~
+ある~;There is. There exists (for non-living things)~
+いる~;There is. There exists (for living things)~
+だ~;Casual form of です (linking verb at the end of the sentence which means is/are).~

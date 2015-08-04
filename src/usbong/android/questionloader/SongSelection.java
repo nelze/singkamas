@@ -14,6 +14,7 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.Point;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -22,7 +23,9 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -87,47 +90,49 @@ public class SongSelection extends ListActivity {
         	}
 			
             list.addHeaderView(v);
-        	list.setBackgroundColor(Color.parseColor("#36342a")); //6f5c44
-
+        	list.setBackgroundColor(Color.parseColor("#FFFFFF")); //6f5c44 36342a
+        	list.setDividerHeight(10);
+        	list.setDivider(new ColorDrawable(0x00613318));
             list.setOnItemClickListener(new OnItemClickListener() {
 
 				@Override
 				public void onItemClick(AdapterView<?> arg0, View arg1,
 						int position, long id) {
-					arg1.setBackgroundColor(Color.parseColor("#4e4b3c"));
-					
-					// TODO Auto-generated method stub
-					TextView textPlaceHolder = (TextView) arg1.findViewById(R.id.textViewPlaceHolder);
-					//System.out.println(text.getText());
-					if (language.equalsIgnoreCase("Japanese"))
+					if(position!=0)
 					{
-						Intent intent = new Intent(SongSelection.this, SettingSelection.class);
-						intent.putExtra("song_title", textPlaceHolder.getText());
-						intent.putExtra("language", language);
-						//System.out.println("LAnguage"+language);
-						startActivity(intent);
-						SongSelection.this.finish();
+						//arg1.setBackgroundColor(Color.parseColor("#4e4b3c"));
+						// TODO Auto-generated method stub
+						TextView textPlaceHolder = (TextView) arg1.findViewById(R.id.textViewPlaceHolder);
+						//System.out.println(text.getText());
+						if (language.equalsIgnoreCase("Japanese"))
+						{
+							Intent intent = new Intent(SongSelection.this, SettingSelection.class);
+							intent.putExtra("song_title", textPlaceHolder.getText());
+							intent.putExtra("language", language);
+							//System.out.println("LAnguage"+language);
+							startActivity(intent);
+							//SongSelection.this.finish();
+						}
+						else if (language.equalsIgnoreCase("Mandarin"))
+						{
+							Intent intent = new Intent(SongSelection.this, SettingSelection.class);
+							intent.putExtra("song_title", textPlaceHolder.getText());
+							intent.putExtra("language", language);
+							//System.out.println("LAnguage"+language);
+							startActivity(intent);
+							//SongSelection.this.finish();
+						}
+						else
+						{
+							Intent intent = new Intent(SongSelection.this, MainActivity.class);
+					    	intent.putExtra("difficulty", "easy");
+					    	intent.putExtra("song_title", textPlaceHolder.getText());
+					    	intent.putExtra("language", language);
+					    	startActivity(intent);
+					    	//SongSelection.this.finish();
+					    	
+						}
 					}
-					else if (language.equalsIgnoreCase("Mandarin"))
-					{
-						Intent intent = new Intent(SongSelection.this, SettingSelection.class);
-						intent.putExtra("song_title", textPlaceHolder.getText());
-						intent.putExtra("language", language);
-						//System.out.println("LAnguage"+language);
-						startActivity(intent);
-						SongSelection.this.finish();
-					}
-					else
-					{
-						Intent intent = new Intent(SongSelection.this, MainActivity.class);
-				    	intent.putExtra("difficulty", "easy");
-				    	intent.putExtra("song_title", textPlaceHolder.getText());
-				    	intent.putExtra("language", language);
-				    	startActivity(intent);
-				    	SongSelection.this.finish();
-				    	
-					}
-					
 				}
 			});
 
@@ -183,8 +188,6 @@ public class SongSelection extends ListActivity {
 
 		}
 	}
-    
-    
     private class MyListAdapter extends BaseAdapter
     {
     	private String[] fileList;
@@ -236,40 +239,7 @@ public class SongSelection extends ListActivity {
 
 			TextView text = (TextView) view.findViewById(R.id.textView1);			
 			TextView textPlaceHolder = (TextView) view.findViewById(R.id.textViewPlaceHolder);			
-/*
-			// set the image here
-			try {
-				String bannerString = "banner";
-				if (language.equalsIgnoreCase("Japanese")) {
-					myDrawableImage = myRes.getDrawable(myRes.getIdentifier("japan"+bannerString, "drawable", UsbongUtils.myPackageName));
-					banner_image.setImageDrawable(myDrawableImage);		        		        						
-				}
-				else if (language.equalsIgnoreCase("Mandarin")) {
-					myDrawableImage = myRes.getDrawable(myRes.getIdentifier("china"+bannerString, "drawable", UsbongUtils.myPackageName));
-					banner_image.setImageDrawable(myDrawableImage);		        		        						
-				}
-				else if (language.equalsIgnoreCase("Korean")) {
-					myDrawableImage = myRes.getDrawable(myRes.getIdentifier("korea"+bannerString, "drawable", UsbongUtils.myPackageName));
-					banner_image.setImageDrawable(myDrawableImage);		        		        						
-				}
-			}
-			catch (NotFoundException e) { //if song is not found
-				//use default image
-			}
-*/
-/*			//commented out by Mike, 25 May 2015
-			// set the image here
-			try {
-				
-				String imgFile = (fileList[position].replaceAll("[()?:!.,;{}\\'\\s+]", "")).toLowerCase();
-				System.out.println("Image here" + imgFile);
-				myDrawableImage = myRes.getDrawable(myRes.getIdentifier(imgFile, "drawable", UsbongUtils.myPackageName));
-				image.setImageDrawable(myDrawableImage);		        		        	
-			}
-			catch (NotFoundException e) { //if song is not found
-				//use default image
-			}
-*/			
+
 			
 			//System.out.println(text);
 			// set the text

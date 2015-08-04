@@ -1,6 +1,3 @@
---Singkamas (beta)--
-ver: June 15, 2015
-
 Singkamas: Language Learning through Music
 
 Usbong Social Systems, Inc.
@@ -8,21 +5,26 @@ Usbong Social Systems, Inc.
 Michael B. Syson 
 Nadia C. Leetian
 Nikko A. Nolasco 
+Brent Carl W. Anonas
 
 --QA Engineer--
 Juaneo Fernando
 
---Graphics Artists--
+--Graphic Artists--
 Angela Escudero
 Juaneo Fernando
 Jaime D. Lopez
+Isabel Ann Pasco
 
 --Community Developers--
 Nikko A. Nolasco
 Jaime D. Lopez
+Brent Carl W. Anonas
 
 --Acknowledgment--
-Brent Anonas
+Pop-Up by Lorensius Londa: http://www.londatiga.net/it/how-to-create-quickaction-dialog-in-android/
+
+Instrument Vectors from http://www.freepik.com/free-vector/musical-instruments_766763.htm#term=instruments&page=1&position=3
 
 Contact:
 Website: www.usbong.ph
