@@ -29,8 +29,10 @@
         android:id="@+id/button2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
         android:layout_alignRight="@+id/textView1"
+        android:layout_marginRight="15dp"
         android:layout_marginTop="5dp"
         android:background="@drawable/exit_idle"
         android:onClick="exit" />
@@ -76,6 +78,7 @@
         android:layout_height="54dp"
         android:layout_above="@+id/textView1"
         android:layout_centerHorizontal="true"
+        android:layout_marginBottom="15dp"
         android:background="@drawable/reviewbutton_default"
         android:onClick="review"
         android:visibility="invisible" />

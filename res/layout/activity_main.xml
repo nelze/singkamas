@@ -73,8 +73,7 @@
         android:layout_marginTop="90dp"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
-        android:background="#000000"
-        android:padding="20dp" />
+        android:background="#000000"/>
 
     <ListView
         android:id="@+id/videos_found"
@@ -101,10 +100,10 @@
         android:id="@+id/exitButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentTop="true"
         android:background="@drawable/exit_idle"
         android:onClick="exitMainActivity"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
         android:layout_marginRight="15dp"
         android:layout_marginTop="5dp"
         android:textColor="#f6361d"

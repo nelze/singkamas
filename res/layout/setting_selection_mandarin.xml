@@ -11,13 +11,13 @@
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
+        android:layout_marginRight="15dp"
+        android:layout_marginTop="5dp"
         android:background="@drawable/exit_idle"
         android:onClick="exitSettingSelection"
         android:paddingLeft="8dp"
         android:textColor="#f6361d"
         android:textSize="20sp"
-        android:layout_marginTop="5dp"
-          android:layout_marginRight="15dp"
          />
 
     <Button
@@ -26,7 +26,7 @@
         android:layout_height="51dp"
         android:layout_below="@+id/textView1"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="20dp"
         android:background="@drawable/simplified_selector"
         android:onClick="easy" />
 

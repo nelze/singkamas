@@ -1,4 +1,5 @@
 Singkamas: Language Learning through Music
+version: Aug. 5, 2015
 
 Usbong Social Systems, Inc.
 --Core Developers--
@@ -9,6 +10,7 @@ Brent Carl W. Anonas
 
 --QA Engineer--
 Juaneo Fernando
+Jaime D. Lopez
 
 --Graphic Artists--
 Angela Escudero
@@ -19,7 +21,10 @@ Isabel Ann Pasco
 --Community Developers--
 Nikko A. Nolasco
 Jaime D. Lopez
-Brent Carl W. Anonas
+
+--Contributors--
+Billy Ken B. Poon
+Chaleen I. Bautista
 
 --Acknowledgment--
 Pop-Up by Lorensius Londa: http://www.londatiga.net/it/how-to-create-quickaction-dialog-in-android/

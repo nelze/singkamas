@@ -490,7 +490,7 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
     			String wholeWord = "";
     			if(questionDifficulty.indexOf("　",questionDifficulty.indexOf(query))!=-1)
     				wholeWord = questionDifficulty.substring(questionDifficulty.indexOf(query),questionDifficulty.indexOf("　",questionDifficulty.indexOf(query)));
-    			else if(questionDifficulty.indexOf(" ",questionDifficulty.indexOf(query))!=-1&&language.equalsIgnoreCase("mandarin"))
+       			else if(questionDifficulty.indexOf(" ",questionDifficulty.indexOf(query))!=-1&&(language.equalsIgnoreCase("mandarin")||language.equalsIgnoreCase("korean")))
     				wholeWord = questionDifficulty.substring(questionDifficulty.indexOf(query),questionDifficulty.indexOf(" ",questionDifficulty.indexOf(query)));
     			else
     				wholeWord = questionDifficulty.substring(questionDifficulty.indexOf(query),questionDifficulty.indexOf(query)+query.length());
@@ -501,18 +501,23 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
 		}
     	return false;
     }
-    private void colorJapParticles()
+    private void colorParticles()
     {
 		try {
-			BufferedReader br = new BufferedReader(new InputStreamReader(getResources().getAssets().open("localJapaneseDictionary.txt")));
+			BufferedReader br = null;
+			if(language.equalsIgnoreCase("japanese"))
+				br = new BufferedReader(new InputStreamReader(getResources().getAssets().open("localJapaneseDictionary.txt")));
+			else
+				br = new BufferedReader(new InputStreamReader(getResources().getAssets().open("localKoreanDictionary.txt")));
 			String line;
 			while((line = br.readLine())!=null)
 			{
-				System.out.println(line);
 				String[] parts = line.split("~");
 				int color = line.length()-line.replace("~","").length()==2 ? -1 : 0xFFd37627;
-				if(inQuestion("　"+parts[0]+"　",parts[1],color))
-					System.out.println("added"+parts[0]);
+				if (language.equalsIgnoreCase("japanese"))
+					inQuestion("　"+parts[0]+"　",parts[1],color);
+				else
+					inQuestion(parts[0],parts[1]);
 			}
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -530,7 +535,7 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
 		    	String url = "http://www.edrdg.org/cgi-bin/wwwjdic/wwwjdic?9U";
 		    	String data = "gloss_line="+ URLEncoder.encode(translate1,"UTF-8")+"&dicsel=9&glleng=60";
 				reply = postFormDataToUrl(url, data);
-		    	colorJapParticles();
+		    	colorParticles();
 				// collect <li> stuff
 				ArrayList<String> liList = new ArrayList<String>();
 				int position = reply.indexOf("<li>", 0);
@@ -754,6 +759,7 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
 	{
 		
 		dictEntries.clear();
+		colorParticles();
 		String parts[] = questionDifficultyFinal.split(" ");
 		System.out.println("Korean " + parts.length);
 		for (int i = 0; i < parts.length; i++)
@@ -916,6 +922,7 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
     		Intent i = new Intent(getApplicationContext(), ResultPage.class);
     		i.putExtra("score", totalScore);
     		i.putExtra("language", language);
+    		dbHelper.close();
     		startActivity(i);
     		MainActivity.this.finish();
     		//Switch to scoreboard
@@ -1113,6 +1120,14 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
 		return sb.toString();
     	
     }
+    
+    @Override
+    public void finish()
+    {
+    	dbHelper.close();
+    	super.finish();
+    }
+    
     public static String postFormDataToUrl(String url, String data) throws Exception
 	{
 		InputStream is = null;

@@ -4,17 +4,6 @@
     android:layout_height="match_parent"
     android:background="@drawable/challenge_bg"
     tools:context=".MainActivity" >
-    
-    <TextView
-        android:id="@+id/textView1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/exitButton"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="40dp"
-        android:text="SELECT CHALLENGE"
-        android:textColor="#99ca3d"
-        android:textSize="28sp" />
 
     <Button
         android:id="@+id/exitButton"
@@ -22,13 +11,12 @@
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
+        android:layout_marginRight="15dp"
+        android:layout_marginTop="5dp"
         android:background="@drawable/exit_idle"
         android:onClick="exitSettingSelection"
-        android:paddingLeft="8dp"
         android:textColor="#f6361d"
         android:textSize="20sp"
-        android:layout_marginTop="5dp"
-          android:layout_marginRight="15dp"
          />
 
     <Button
@@ -77,5 +65,16 @@
         android:text="For those who are confident about their kanji skills"
         android:textColor="#000000"
         android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/exitButton"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:text="SELECT CHALLENGE"
+        android:textColor="#99ca3d"
+        android:textSize="28sp" />
 
 </RelativeLayout>

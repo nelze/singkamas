@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="usbong.android.questionloader"
     android:versionCode="14"
-    android:versionName="Aug4,2015" >
+    android:versionName="Aug5,2015" >
 
     <uses-sdk
         android:minSdkVersion="8"
