@@ -690,7 +690,7 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
 				}
 		}
 	}
-	private boolean dictContains(String word)
+    private boolean dictContains(String word)
 	{
 		System.out.println("Entering dictcontains");
 		String url = "http://moscpas.dyndns.biz/getDefinitionMandarin.php?word='" + word+"'";
@@ -704,10 +704,11 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
 	            readUrlContentAsString = NetUtil.readUrlContentAsString(url);
 				ObjectMapper mapper = new ObjectMapper();
 				List<LinkedHashMap> map = mapper.readValue(readUrlContentAsString, List.class);
-				System.out.println("Korean here " + map.get(0).get("DEF").toString());
-				if (inQuestion(word, map.get(0).get("DEF").toString())) //save it to local
+				//System.out.println("Korean here " + map.get(0).get("DEF").toString());
+				String full = map.get(0).get("READING").toString()+"\n"+map.get(0).get("DEF").toString();
+				if (inQuestion(word, full)) //save it to local
 				{
-					dbHelper.createEntry( word, map.get(0).get("DEF").toString());
+					dbHelper.createEntry( word, map.get(0).get("DEF").toString(), map.get(0).get("READING").toString());
 					System.out.println("Entry created");
 					cursor.close();
 					return true;
@@ -718,8 +719,9 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
 	        	System.out.println("Cursor is not empty");
 	        	if  (cursor.moveToFirst()) {
 	                do {
-	                String dir = cursor.getString(cursor.getColumnIndex("def"));
-	                	if (inQuestion(word, dir))
+	                	String full =cursor.getString(cursor.getColumnIndex("READING"))  + "\n" + cursor.getString(cursor.getColumnIndex("DEF"));
+	                //String dir = cursor.getString(cursor.getColumnIndex("def"));
+	                	if (inQuestion(word, full))
 	                	{
 	                		cursor.close();
 	                		return true;

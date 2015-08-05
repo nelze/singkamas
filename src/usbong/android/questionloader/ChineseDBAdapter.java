@@ -29,8 +29,9 @@ import android.util.Log;
 public class ChineseDBAdapter {
 
 	public static final String KEY_ROWID = "_id";
-	public static final String KEY_WORD = "word";
-	public static final String KEY_DEF = "def";
+	public static final String KEY_WORD = "WORD";
+	public static final String KEY_DEF = "DEF";
+	public static final String KEY_READING = "READING";
 
 	private DatabaseHelper mDbHelper;
 	private SQLiteDatabase mDb;
@@ -44,7 +45,7 @@ public class ChineseDBAdapter {
 	private static final String DATABASE_CREATE = "CREATE TABLE if not exists "
 			+ SQLITE_TABLE + " (" + KEY_ROWID
 			+ " integer PRIMARY KEY autoincrement," + KEY_WORD + ","
-			+ KEY_DEF + ");";
+			+ KEY_DEF + "," + KEY_READING + ");";
 
 	
 	// UTILITY TABLE HELPER CLASS
@@ -95,13 +96,14 @@ public class ChineseDBAdapter {
 	// ACTIONS
 	
 	
-	public long createEntry(String word, String def) {
+	public long createEntry(String word, String def, String reading) {
 
 		
 		// INSERT
 		ContentValues initialValues = new ContentValues();
 		initialValues.put(KEY_WORD, word);
 		initialValues.put(KEY_DEF, def);
+		initialValues.put(KEY_READING, reading);
 
 		// parameters
 		// mDb.insert(table, nullColumnHack, values);
@@ -126,11 +128,11 @@ public class ChineseDBAdapter {
 		if (inputText == null || inputText.length() == 0) {
 			
 			mCursor = mDb.query(SQLITE_TABLE, new String[] { KEY_ROWID,
-					KEY_WORD, KEY_DEF }, null, null, null, null, null);
+					KEY_WORD, KEY_DEF, KEY_READING }, null, null, null, null, null);
 
 		} else {
 			mCursor = mDb.query(true, SQLITE_TABLE, new String[] { KEY_ROWID,
-					KEY_WORD, KEY_DEF }, KEY_WORD + " like '%" + inputText
+					KEY_WORD, KEY_DEF, KEY_READING }, KEY_WORD + " like '%" + inputText
 					+ "%'", null, null, null, null, null);
 		}
 		if (mCursor != null) {
@@ -146,7 +148,7 @@ public class ChineseDBAdapter {
 		// mDb.query(table, columns, selection, selectionArgs, groupBy, having, orderBy)
 
 		Cursor mCursor = mDb.query(SQLITE_TABLE, new String[] { KEY_ROWID,
-				KEY_WORD, KEY_DEF }, null, null, null, null, null);
+				KEY_WORD, KEY_DEF, KEY_READING }, null, null, null, null, null);
 
 		if (mCursor != null) {
 			mCursor.moveToFirst();
@@ -159,7 +161,6 @@ public class ChineseDBAdapter {
 	// SEEDING
 	
 	/*public void seed() {
-
 		// the Context is the Activity where this is currently used
 		String[] regionData = mCtx.getResources().getStringArray(R.array.regions);
 		
