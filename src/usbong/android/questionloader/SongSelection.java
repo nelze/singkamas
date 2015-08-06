@@ -40,7 +40,6 @@ public class SongSelection extends ListActivity {
 	Button review;
 	Resources myRes;
 	Drawable myDrawableImage;
-	
 	@SuppressLint("NewApi")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -263,9 +262,7 @@ public class SongSelection extends ListActivity {
 	        catch(Exception e) {
 	        	e.printStackTrace();
 	        }
-			
 			return view;
 		}
-    	
     }    
 }

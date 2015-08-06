@@ -412,6 +412,7 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
     	@Override
     	protected void onPostExecute(Void result)
     	{
+    		System.out.println("inPostExecute");
 	    	for(int i = 0; i < dictEntries.size();)
 	    	{
 	    		int start = dictEntries.get(i).start();
@@ -491,7 +492,7 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
     			String wholeWord = "";
     			if(questionDifficulty.indexOf("　",questionDifficulty.indexOf(query))!=-1)
     				wholeWord = questionDifficulty.substring(questionDifficulty.indexOf(query),questionDifficulty.indexOf("　",questionDifficulty.indexOf(query)));
-    			else if(questionDifficulty.indexOf(" ",questionDifficulty.indexOf(query))!=-1&&(language.equalsIgnoreCase("mandarin")||language.equalsIgnoreCase("korean")))
+    			else if(questionDifficulty.indexOf(" ",questionDifficulty.indexOf(query))!=-1&&(language.equalsIgnoreCase("mandarin")))
     				wholeWord = questionDifficulty.substring(questionDifficulty.indexOf(query),questionDifficulty.indexOf(" ",questionDifficulty.indexOf(query)));
     			else
     				wholeWord = questionDifficulty.substring(questionDifficulty.indexOf(query),questionDifficulty.indexOf(query)+query.length());

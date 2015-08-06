@@ -5,7 +5,6 @@
 가시는~Thorns~
 님은~Friendship~
 내~Within; of mine~
-마음을~Heart~
 몰라몰라~I do not know~
 어떡해~Cram~
 자꾸~Repeatedly; fast~
@@ -44,7 +43,6 @@
 누구나~Everyone; whosoever~
 알~Egg; ball; spawn; nit; berry; head; ovum~
 수~Number; male; hand; trick; possibility; luck; longevity; embroidery; piece; science; play
-있는~With~
 오~Five; horse; file; pentad~
 달콤한~Sweet~
 솜사탕처럼~Like cotton candy~
@@ -102,7 +100,7 @@
 있잖아요~You know~
 따뜻한~Warm; worm; mild~
 날에~Day~
-마음~Mind; will; sentient~
+마음~Mind; will; sentient; heart~
 함께~Together~
 할래요~Will you~
 푸르른~Greenery~
@@ -137,3 +135,6 @@
 든다~Costs~
 아프게~Sick~
 웃는다~Laughs~
+난~I~
+아닌~And not~
+어쩌죠~"What do you do"~
