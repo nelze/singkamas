@@ -78,7 +78,7 @@
     <ListView
         android:id="@+id/videos_found"
         android:layout_width="match_parent"
-        android:layout_height="320dip"
+        android:layout_height="wrap_content"
         android:layout_below="@+id/imageView1"
         android:layout_centerVertical="true"
         android:background="#d57728"
