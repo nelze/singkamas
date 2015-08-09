@@ -152,6 +152,9 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
         	{
         		Log.i("0","Opening error " + e);
         	}
+        	//change background to white. there was a bug where the background changes to green idk.
+    		View relView = findViewById(R.id.rel_layout);
+    		relView.setBackgroundColor(Color.parseColor("#FFFFFF"));
     		
         	difficulty = bundle.getString("difficulty");
         	songname = bundle.getString("song_title");

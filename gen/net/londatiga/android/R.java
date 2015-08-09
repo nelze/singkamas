@@ -41,14 +41,14 @@ public final class R {
 		public static final int popup = 0x7f020046;
 	}
 	public static final class id {
-		public static final int arrow_down = 0x7f0c001d;
-		public static final int arrow_up = 0x7f0c001c;
-		public static final int btn1 = 0x7f0c0010;
-		public static final int btn2 = 0x7f0c0011;
-		public static final int btn3 = 0x7f0c0012;
+		public static final int arrow_down = 0x7f0c001e;
+		public static final int arrow_up = 0x7f0c001d;
+		public static final int btn1 = 0x7f0c0011;
+		public static final int btn2 = 0x7f0c0012;
+		public static final int btn3 = 0x7f0c0013;
 		public static final int iv_icon = 0x7f0c0000;
-		public static final int scroller = 0x7f0c001a;
-		public static final int tracks = 0x7f0c001b;
+		public static final int scroller = 0x7f0c001b;
+		public static final int tracks = 0x7f0c001c;
 		public static final int tv_title = 0x7f0c0001;
 	}
 	public static final class layout {
