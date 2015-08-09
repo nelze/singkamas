@@ -356,7 +356,6 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
 	                ImageView thumbnail = (ImageView)convertView.findViewById(R.id.video_thumbnail);
 	                TextView title = (TextView)convertView.findViewById(R.id.video_title);
 	                TextView description = (TextView)convertView.findViewById(R.id.video_description);
-	                 
 	                VideoItem searchResult = searchResults.get(position);
 	                 
 	                Picasso.with(getApplicationContext()).load(searchResult.getThumbnailURL()).into(thumbnail);
@@ -532,12 +531,12 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
     	try
     	{
     		dictEntries.clear();
+    		colorParticles();
 			// TODO Auto-generated method stub
 		    	String reply = "";
 		    	String url = "http://www.edrdg.org/cgi-bin/wwwjdic/wwwjdic?9U";
 		    	String data = "gloss_line="+ URLEncoder.encode(translate1,"UTF-8")+"&dicsel=9&glleng=60";
 				reply = postFormDataToUrl(url, data);
-		    	colorParticles();
 				// collect <li> stuff
 				ArrayList<String> liList = new ArrayList<String>();
 				int position = reply.indexOf("<li>", 0);
@@ -641,7 +640,9 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
 		            }
 		            System.out.println("parts"+parts[1]);
 				}
-    	}catch(Exception e){System.out.println("THE PROBLEEEM "+e);}
+    	}catch(Exception e){
+    		System.out.println("THE PROBLEEEM "+e);
+    	}
     }
     /**
      * chineseExecute uses dynamic programming. If it were to be put in the server side of the code, 
@@ -655,23 +656,6 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
     	for(String part:parts)
     	{
     		dictContains(part);
-    		/*for(String dict:chinDict)
-    		{
-    			if(!dict.contains("#"))
-    			{
-    			String splitDict[] = dict.split(" ");
-    			//To show traditional and simplified versions of the character
-    			int index = difficulty.equalsIgnoreCase("easy") ? 1 : 0;
-    			if(part.equals(splitDict[index]))
-    			{
-    				int opposite = difficulty.equalsIgnoreCase("easy") ? 0 : 1;
-    				String diff = difficulty.equalsIgnoreCase("easy") ? "\nTraditional: " : "\nSimplified: ";
-    				String s = splitDict[index]+diff+splitDict[opposite]+"\n"+dict.substring(dict.indexOf(splitDict[2]),dict.length());
-    				if(inQuestion(splitDict[index],s))
-    					Log.i(dict,"DIIIIIIIIIIIICCCTT ADDED");
-    			}
-    			}
-    		}*/
     	}
 	}
     private void searchPrefix(String word,String result)
@@ -697,7 +681,6 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
 		String url = "http://moscpas.dyndns.biz/getDefinitionMandarin.php?word='" + word+"'";
 		String readUrlContentAsString;
 		try {
-			
 			Cursor cursor = dbHelper.fetchDefByWord(word);
 			System.out.println("Step 1");
 	        if(cursor!=null && cursor.getCount()==0){//this means not yet in cache so get it then save it to local db
@@ -779,8 +762,6 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
 			String url = "http://moscpas.dyndns.biz/getDefinitionKorean.php?word='" + parts[i]+"'";
 			String readUrlContentAsString;
 			try {
-				
-				
 				readUrlContentAsString = NetUtil.readUrlContentAsString(url);
 				ObjectMapper mapper = new ObjectMapper();
 				List<LinkedHashMap> map = mapper.readValue(readUrlContentAsString, List.class);
@@ -1173,7 +1154,6 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
 			YouTubeInitializationResult arg1) {
 		// TODO Auto-generated method stub
 		Toast.makeText(this, arg1.toString(), Toast.LENGTH_LONG).show();
-		
 	}     
       
 	@Override

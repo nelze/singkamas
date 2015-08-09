@@ -7,11 +7,13 @@
      
     <ImageView
         android:id="@+id/video_thumbnail"
-        android:layout_width="128dp"
-        android:layout_height="128dp"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
         android:layout_marginRight="20dp"
+        android:layout_marginLeft="20dp"
+        android:adjustViewBounds="true"
         />
      
     <TextView android:id="@+id/video_title"
@@ -19,9 +21,10 @@
         android:layout_height="wrap_content"
         android:layout_toRightOf="@+id/video_thumbnail"
         android:layout_alignParentTop="true"
-        android:layout_marginTop="5dp"
         android:textSize="18sp"
         android:textStyle="bold"
+        android:textColor="#edefc5"
+        android:layout_marginTop="7dp"
         />
      
     <TextView android:id="@+id/video_description"
@@ -29,6 +32,7 @@
         android:layout_height="wrap_content"
         android:layout_toRightOf="@+id/video_thumbnail"
         android:layout_below="@+id/video_title"
-        android:textSize="15sp"       
+        android:textSize="15sp"   
+        android:textColor="#ffffff"    
         /> 
 </RelativeLayout>

@@ -158,7 +158,7 @@ public final class R {
         public static final int youbymysidekimberleychen=0x7f020070;
     }
     public static final class id {
-        public static final int about=0x7f0c0029;
+        public static final int about=0x7f0c002a;
         public static final int answerView=0x7f0c0004;
         public static final int arrow_down=0x7f0c001d;
         public static final int arrow_up=0x7f0c001c;
@@ -175,7 +175,7 @@ public final class R {
         public static final int editText1=0x7f0c0002;
         public static final int enterButton=0x7f0c0009;
         public static final int exitButton=0x7f0c000c;
-        public static final int feedback=0x7f0c002a;
+        public static final int feedback=0x7f0c002b;
         public static final int imageView1=0x7f0c000b;
         public static final int imageView2=0x7f0c0020;
         public static final int instructionsView=0x7f0c0003;
@@ -188,6 +188,7 @@ public final class R {
         public static final int resultView=0x7f0c000d;
         public static final int score=0x7f0c001f;
         public static final int scroller=0x7f0c001a;
+        public static final int separator=0x7f0c0026;
         public static final int spinner1=0x7f0c0016;
         public static final int textView1=0x7f0c000f;
         public static final int textView2=0x7f0c000e;
@@ -196,9 +197,9 @@ public final class R {
         public static final int topButton=0x7f0c0022;
         public static final int tracks=0x7f0c001b;
         public static final int tv_title=0x7f0c0001;
-        public static final int video_description=0x7f0c0028;
-        public static final int video_thumbnail=0x7f0c0026;
-        public static final int video_title=0x7f0c0027;
+        public static final int video_description=0x7f0c0029;
+        public static final int video_thumbnail=0x7f0c0027;
+        public static final int video_title=0x7f0c0028;
         public static final int videos_found=0x7f0c000a;
         public static final int youtube_player=0x7f0c0008;
     }
