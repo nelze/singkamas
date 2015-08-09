@@ -406,8 +406,6 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
 					// TODO Auto-generated catch block
 					System.out.println("Error " + e);
 				}
-        	//else if(language.equalsIgnoreCase("korean"))
-        		
 			return null;
 		}
 		

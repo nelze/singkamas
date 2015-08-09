@@ -46,23 +46,24 @@
 ぜ~Particle; Indicates assertion, like よ, but stronger. Used mostly by men, it is never considered polite.
 ぞ~Particle;　Indicates assertion, like よ, but stronger.. Used mainly by men, it is considered somewhat less forceful and more positive than ぜ.
 ずつ~Particle; Denotes an equal or gradual distribution of quantity like "at a time" in "one at a time", "by" in "one by one", or "each" in "one each". It usually follows counted nouns.
-これ~; This.~
-それ~; That.~
-あれ~; That one (over there).~
-どれ~; Which one.~
-あの~; That... (over there) followed by a noun.~
-その~; That... followed by a noun.~
-この~; This... followed by a noun.~
-どの~; Which... followed by a noun.~
-ここ~; Here.~
-そこ~; There.~
-あそこ~; Over there.~
-どこ~; Where.~
-こちら~; Here. Can also be used to politely mean "I"~
-そちら~; There. Can also be used to politely mean "you"~
-あちら~; Over there. Can also be used to politely mean "they"~
-どこ~; Where.~
-だれ~; Who.~
-ある~;There is. There exists (for non-living things)~
-いる~;There is. There exists (for living things)~
-だ~;Casual form of です (linking verb at the end of the sentence which means is/are).~
+これ~This.~
+それ~That.~
+あれ~That one (over there).~
+どれ~Which one.~
+あの~That... (over there) followed by a noun.~
+その~That... followed by a noun.~
+この~This... followed by a noun.~
+どの~Which... followed by a noun.~
+ここ~Here.~
+そこ~There.~
+あそこ~Over there.~
+どこ~Where.~
+こちら~Here. Can also be used to politely mean "I"~
+そちら~There. Can also be used to politely mean "you"~
+あちら~Over there. Can also be used to politely mean "they"~
+どこ~Where.~
+だれ~Who.~
+ある~There is. There exists (for non-living things)~
+いる~There is. There exists (for living things)~
+だ~Casual form of です (linking verb at the end of the sentence which means is/are).~
+いい~良い : 良い(P); 善い; 好い; 佳い; 吉い; 宜い(iK) 【よい】 (adj-i) (1) (uk) (also いい (all senses)) good; excellent; fine; nice; pleasant; agreeable; (2) sufficient (can be used to turn down an offer); ready; prepared; (3) profitable (e.g. deal, business offer, etc.); beneficial; (4) (See 構わない) OK; (P); ED~
