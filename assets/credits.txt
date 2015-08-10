@@ -26,6 +26,12 @@ Billy Ken B. Poon
 Chaleen Avery I. Bautista
 
 --Acknowledgments--
+Japanese Dictionary by Jim Breene. Can be found in http://www.wwwjdic.com/
+
+Chinese Dictionary by CC-CEdict. Can be found in http://www.mdbg.net/chindict/chindict.php?page=cedict
+
+Korean Dictionary by http://benhumphreys.co.uk/kdict/
+
 Pop-Up by Lorensius Londa: http://www.londatiga.net/it/how-to-create-quickaction-dialog-in-android/
 
 Instrument Vectors from http://www.freepik.com/free-vector/musical-instruments_766763.htm#term=instruments&page=1&position=3
