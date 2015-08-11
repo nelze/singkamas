@@ -3,28 +3,45 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity" 
+    android:background = "#ffffff"
     >
     <TextView
         android:id="@+id/textView1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBottom ="@+id/imageView1"
-        android:layout_toRightOf="@+id/imageView1"
-        android:layout_marginBottom="12dp"
-        android:layout_marginLeft="6dp"
+        android:layout_marginLeft="5dp"
         android:textSize="16sp"
         android:text="Voltes 5" 
         android:textColor="#613318"
+        android:layout_marginTop="5dp"
         />
-
+	<TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp"
+        android:layout_marginLeft="5dp"
+        android:textSize="13sp"
+        android:text="Voltes 5" 
+        android:textColor="#668D3C"
+        android:layout_marginTop="2dp"
+        android:layout_below="@+id/textView1"
+        />
         <TextView
         android:id="@+id/textViewPlaceHolder"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBottom ="@+id/textView1"
+        android:layout_alignBottom="@+id/textView1"
         android:text="textViewPlaceHolder" 
         android:textColor="#613318"
         android:visibility="invisible"/>
-
+        
+        <View 
+        android:id="@+id/separator" 
+ 		android:background="#B99C6B" 
+ 		android:layout_width = "fill_parent"
+ 		android:layout_height="1dip"
+ 		android:layout_centerVertical ="true"
+ 		android:layout_below="@+id/textView2"/>
     
 </RelativeLayout>

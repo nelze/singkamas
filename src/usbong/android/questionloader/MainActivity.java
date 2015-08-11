@@ -248,7 +248,6 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
     			    /*else if (event.getAction() == MotionEvent.ACTION_UP) {
     			        // set to default color
     		    		question.setTextColor(Color.parseColor("#acacab"));		
-
     		    		ClipboardManager clipboard = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
     		    		ClipData clip = ClipData.newPlainText("text", question.getText().toString());
     		    		clipboard.setPrimaryClip(clip);
@@ -283,18 +282,18 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
         	koreanwithspace = parts[0];
         	youTubePlayerView = (YouTubePlayerView) findViewById(R.id.youtube_player);
     		youTubePlayerView.initialize(API_KEY, this);
-    		if (difficulty.equalsIgnoreCase("easy"))
-    		{
-    			questionDifficultyFinal = language.equalsIgnoreCase("japanese")||language.equalsIgnoreCase("mandarin") ? parts[0].replace("　","").replace(" ", "").replace("\\", " "):parts[0];
-    			questionDifficulty = language.equalsIgnoreCase("japanese")? "　"+parts[0].replace(" ", "　")+"　": parts[0];
-    			translate1 = language.equalsIgnoreCase("japanese")? "　"+parts[1].replace(" ", "　")+"　":questionDifficulty;
-    		}
-    		else
-    		{
-    			questionDifficultyFinal =language.equalsIgnoreCase("japanese")||language.equalsIgnoreCase("mandarin")  ? parts[1].replace("　","").replace(" ", "").replace("\\", " "):parts[1];
-    			questionDifficulty = language.equalsIgnoreCase("japanese")?"　"+parts[1].replace(" ", "　")+"　":parts[1];
-    			translate1 = questionDifficulty;
-    		}
+        	if (difficulty.equalsIgnoreCase("easy"))
+        	{
+        		questionDifficultyFinal = language.equalsIgnoreCase("japanese")||language.equalsIgnoreCase("mandarin") ? parts[0].replace("　","").replace(" ", "").replace("\\", " "):parts[0];
+        		questionDifficulty = language.equalsIgnoreCase("japanese")? "　"+parts[0].replace(" ", "　")+"　": parts[0];
+        		translate1 = language.equalsIgnoreCase("japanese")? "　"+parts[1].replace(" ", "　")+"　":questionDifficulty;
+        	}
+        	else
+        	{
+        		questionDifficultyFinal =language.equalsIgnoreCase("japanese")||language.equalsIgnoreCase("mandarin")  ? parts[1].replace("　","").replace(" ", "").replace("\\", " "):parts[1];
+        		questionDifficulty = language.equalsIgnoreCase("japanese")?"　"+parts[1].replace(" ", "　")+"　":parts[1];
+        		translate1 = questionDifficulty;
+        	}
         	total = qm.getCount();//-1;//do a -1 because questionCounter starts at 0; added by Mike, 31 March 2015
         	System.out.println(">>>>TOTAL: "+total);
 //        	result.setText(""); //commented out by Mike, 27 March 2015
@@ -414,6 +413,7 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
     	{
 	    	for(int i = 0; i < dictEntries.size();)
 	    	{
+	    		System.out.println("inPostExecute");
 	    		int start = dictEntries.get(i).start();
 	    		int end = dictEntries.get(i).end();
 	    		if(start != -1)
@@ -466,7 +466,8 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
     			String s = questionDifficulty.substring(0,position);
     			int spaces = s.length() - s.replace("　", "").length();
     			dictEntries.add(new DictionaryEntry(query.replace("　",""),def,color,position-spaces,position+query.replace("　","").length()-spaces));
-    			position = questionDifficulty.indexOf(query, position+query.length());    		}
+    			position = questionDifficulty.indexOf(query, position+query.length());
+    		}
 			return true;
 		}
     	return false;
@@ -490,13 +491,13 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
     			String wholeWord = "";
     			if(questionDifficulty.indexOf("　",questionDifficulty.indexOf(query))!=-1)
     				wholeWord = questionDifficulty.substring(questionDifficulty.indexOf(query),questionDifficulty.indexOf("　",questionDifficulty.indexOf(query)));
-       			else if(questionDifficulty.indexOf(" ",questionDifficulty.indexOf(query))!=-1&&(language.equalsIgnoreCase("mandarin")||language.equalsIgnoreCase("korean")))
+    			else if(questionDifficulty.indexOf(" ",questionDifficulty.indexOf(query))!=-1&&(language.equalsIgnoreCase("mandarin")))
     				wholeWord = questionDifficulty.substring(questionDifficulty.indexOf(query),questionDifficulty.indexOf(" ",questionDifficulty.indexOf(query)));
     			else
     				wholeWord = questionDifficulty.substring(questionDifficulty.indexOf(query),questionDifficulty.indexOf(query)+query.length());
-    				dictEntries.add(new DictionaryEntry(wholeWord,def,position,position+wholeWord.length()));
-    				position = questionDifficultyFinal.indexOf(query, position+wholeWord.length()); 
-    			}			
+    			dictEntries.add(new DictionaryEntry(wholeWord,def,position,position+wholeWord.length()));
+    			position = questionDifficultyFinal.indexOf(query, position+wholeWord.length());
+    		}			
 			return true;
 		}
     	return false;
@@ -519,11 +520,11 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
 				else
 					inQuestion(parts[0],parts[1]);
 			}
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			Log.i("CANT FIND FILE","asdfasdf");
-			e.printStackTrace();
-		}
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				Log.i("CANT FIND FILE","asdfasdf");
+				e.printStackTrace();
+			}
     }
     private void japExecute()
     {
@@ -578,7 +579,8 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
 						outerloop:
 						while(kanaIndex!=-1)
 						{
-							int endKana = s.indexOf("】", kanaIndex+1);							String kana = s.substring(kanaIndex+1, endKana);
+							int endKana = s.indexOf("】", kanaIndex+1);
+							String kana = s.substring(kanaIndex+1, endKana);
 							System.out.println(kana+"kanaahahahahahahahahahahahah");
 							if(inQuestion(kana,s))
 								break outerloop;
@@ -688,7 +690,7 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
 				}
 		}
 	}
-	private boolean dictContains(String word)
+    private boolean dictContains(String word)
 	{
 		System.out.println("Entering dictcontains");
 		String url = "http://moscpas.dyndns.biz/getDefinitionMandarin.php?word='" + word+"'";
@@ -702,10 +704,11 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
 	            readUrlContentAsString = NetUtil.readUrlContentAsString(url);
 				ObjectMapper mapper = new ObjectMapper();
 				List<LinkedHashMap> map = mapper.readValue(readUrlContentAsString, List.class);
-				System.out.println("Korean here " + map.get(0).get("DEF").toString());
-				if (inQuestion(word, map.get(0).get("DEF").toString())) //save it to local
+				//System.out.println("Korean here " + map.get(0).get("DEF").toString());
+				String full = map.get(0).get("READING").toString()+"\n"+map.get(0).get("DEF").toString();
+				if (inQuestion(word, full)) //save it to local
 				{
-					dbHelper.createEntry( word, map.get(0).get("DEF").toString());
+					dbHelper.createEntry( word, map.get(0).get("DEF").toString(), map.get(0).get("READING").toString());
 					System.out.println("Entry created");
 					cursor.close();
 					return true;
@@ -716,8 +719,9 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
 	        	System.out.println("Cursor is not empty");
 	        	if  (cursor.moveToFirst()) {
 	                do {
-	                String dir = cursor.getString(cursor.getColumnIndex("def"));
-	                	if (inQuestion(word, dir))
+	                	String full =cursor.getString(cursor.getColumnIndex("READING"))  + "\n" + cursor.getString(cursor.getColumnIndex("DEF"));
+	                //String dir = cursor.getString(cursor.getColumnIndex("def"));
+	                	if (inQuestion(word, full))
 	                	{
 	                		cursor.close();
 	                		return true;
@@ -925,6 +929,7 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
     		dbHelper.close();
     		startActivity(i);
     		MainActivity.this.finish();
+    		
     		//Switch to scoreboard
     	}
     	
@@ -1123,11 +1128,10 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
     
     @Override
     public void finish()
-    {
-    	dbHelper.close();
-    	super.finish();
-    }
-    
+	{
+		dbHelper.close();
+		super.finish();
+	}
     public static String postFormDataToUrl(String url, String data) throws Exception
 	{
 		InputStream is = null;

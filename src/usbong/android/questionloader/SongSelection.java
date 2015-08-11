@@ -16,6 +16,7 @@ import android.graphics.Color;
 import android.graphics.Point;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
+import android.graphics.drawable.StateListDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.Display;
@@ -40,7 +41,7 @@ public class SongSelection extends ListActivity {
 	Button review;
 	Resources myRes;
 	Drawable myDrawableImage;
-	
+	View selected = null;
 	@SuppressLint("NewApi")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,6 +69,8 @@ public class SongSelection extends ListActivity {
         	//System.out.println(Arrays.toString(fileList));
         	        	
         	ListView list = getListView();
+        	list.setDividerHeight(0);
+        	//list.setDivider(new ColorDrawable(0xFF613318));
             //added by Mike, 12 June 2015
         	list.setCacheColorHint(0);
 //            list.setBackgroundResource(R.drawable.japanbanner);                    
@@ -91,8 +94,6 @@ public class SongSelection extends ListActivity {
 			
             list.addHeaderView(v);
         	list.setBackgroundColor(Color.parseColor("#FFFFFF")); //6f5c44 36342a
-        	//list.setDividerHeight(10);
-        	//list.setDivider(new ColorDrawable(0x00613318));
             list.setOnItemClickListener(new OnItemClickListener() {
 
 				@Override
@@ -100,7 +101,8 @@ public class SongSelection extends ListActivity {
 						int position, long id) {
 					if(position!=0)
 					{
-						//arg1.setBackgroundColor(Color.parseColor("#4e4b3c"));
+						arg1.setBackgroundColor(Color.parseColor("#BDD09F"));
+						selected = arg1;
 						// TODO Auto-generated method stub
 						TextView textPlaceHolder = (TextView) arg1.findViewById(R.id.textViewPlaceHolder);
 						//System.out.println(text.getText());
@@ -236,8 +238,9 @@ public class SongSelection extends ListActivity {
 *//*
 			ImageView banner_image = (ImageView) view.findViewById(R.id.banner_imageView);
 */
-
-			TextView text = (TextView) view.findViewById(R.id.textView1);			
+			
+			TextView text = (TextView) view.findViewById(R.id.textView1);
+			TextView artist = (TextView) view.findViewById(R.id.textView2);		
 			TextView textPlaceHolder = (TextView) view.findViewById(R.id.textViewPlaceHolder);			
 
 			
@@ -252,7 +255,8 @@ public class SongSelection extends ListActivity {
 	        	InputStream is = getResources().getAssets().open(language+"/" + fileList[position]);        	
 	        	BufferedReader br = new BufferedReader(new InputStreamReader(is));
 	        	String currentLine=br.readLine();
-	        	text.setText(currentLine+"\n"+br.readLine());	        	
+	        	text.setText(currentLine);
+	        	artist.setText(br.readLine());
 /*
 	        	String currentLine;
 	        	while((currentLine=br.readLine())!=null){
@@ -263,9 +267,14 @@ public class SongSelection extends ListActivity {
 	        catch(Exception e) {
 	        	e.printStackTrace();
 	        }
-			
 			return view;
 		}
-    	
     }    
+    @Override
+    protected void onStart()
+    {
+    	super.onStart();
+    	if (selected!=null)
+    		selected.setBackgroundColor(Color.parseColor("#ffffff"));
+    }
 }

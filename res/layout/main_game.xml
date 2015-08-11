@@ -31,7 +31,6 @@
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
-        android:layout_alignRight="@+id/textView1"
         android:layout_marginRight="15dp"
         android:layout_marginTop="5dp"
         android:background="@drawable/exit_idle"
@@ -43,7 +42,7 @@
         android:layout_height="wrap_content"
         android:layout_above="@+id/powered_by_usbong_imageview"
         android:layout_centerHorizontal="true"
-        android:text="*Multiple language support still in development" />
+        android:text="" />
 
     <Spinner
         android:id="@+id/spinner1"
