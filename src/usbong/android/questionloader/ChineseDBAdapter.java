@@ -38,7 +38,7 @@ public class ChineseDBAdapter {
 
 	private static final String DATABASE_NAME = "ChineseDict";
 	private static final String SQLITE_TABLE = "cdict";
-	private static final int DATABASE_VERSION = 1;
+	private static final int DATABASE_VERSION = 2;
 
 	private final Context mCtx;
 
