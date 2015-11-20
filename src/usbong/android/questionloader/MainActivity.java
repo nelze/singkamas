@@ -389,16 +389,16 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
 		protected Void doInBackground(Void... params) {
 			//EXECUTE THEM ALL!
         	if (language.equalsIgnoreCase("japanese"))
-        		japExecute();
+        		japaneseDictExecute();
         	else if (language.equalsIgnoreCase("mandarin"))
         	{
         		//if(!addedDict)
         			//addChineseDictionary();
-        		chineseExecute();
+        		chineseDictExecute();
         	}
         	else if(language.equalsIgnoreCase("korean"))
 				try {
-					koreanExecute();
+					koreanDictExecute();
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
 					System.out.println("Error " + e);
@@ -526,7 +526,7 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
 				e.printStackTrace();
 			}
     }
-    private void japExecute()
+    private void japaneseDictExecute()
     {
     	try
     	{
@@ -646,7 +646,7 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
      * chineseExecute uses dynamic programming. If it were to be put in the server side of the code, 
      * searchPrefix and dictContains need to be added there.
      */
-    private void chineseExecute()
+    private void chineseDictExecute()
 	{
     	dictEntries.clear();
 		//searchPrefix(translate1,"");
@@ -759,7 +759,7 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
 		}*/
 		return false;
 	}
-	private void koreanExecute() 
+	private void koreanDictExecute() 
 	{
 		
 		dictEntries.clear();

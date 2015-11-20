@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="usbong.android.questionloader"
-    android:versionCode="18"
-    android:versionName="Aug22,2015" >
+    android:versionCode="19"
+    android:versionName="Aug22,2015v2" >
 
     <uses-sdk
         android:minSdkVersion="8"
